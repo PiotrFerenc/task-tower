@@ -11,6 +11,7 @@ Distributed Work Automation System
 - kubernetes
 - go
 - docker
+  
 **Instalacja**
   
 **Konfiguracja**
