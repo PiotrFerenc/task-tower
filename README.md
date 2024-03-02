@@ -21,6 +21,7 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 - [ ] REST
 - [ ] Tests
 - [ ] saga
+- [ ] make
 
 ## Should Have
 
