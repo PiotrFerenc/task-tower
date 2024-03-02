@@ -3,17 +3,34 @@
 Distributed Work Automation System
 
 **Cechy**
-- GRPC
-  
+
+## Must Have
+
+- [ ] Worker
+- [ ] Controller
+- [ ] REST
+- [ ] Tests
+
+## Should Have
+
+- [ ] GRPC
+- [ ] docker
+
+## Could Have
+
+- [ ] Queue
+- [ ] SQL
+- [ ] mongo
+- [ ] kubernetes
+
+## Won't Have
+
 **Rozpoczęcie pracy**
-  
+
 **Wymagania**
-- kubernetes
-- go
-- docker
-  
+
 **Instalacja**
-  
+
 **Konfiguracja**
 
 **Przykład użycia**
