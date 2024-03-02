@@ -20,6 +20,7 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 - [ ] Controller
 - [ ] REST
 - [ ] Tests
+- [ ] saga
 
 ## Should Have
 
