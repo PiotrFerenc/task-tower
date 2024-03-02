@@ -26,6 +26,7 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 
 - [ ] GRPC
 - [ ] docker
+- [ ] yml config
 
 ## Could Have
 
