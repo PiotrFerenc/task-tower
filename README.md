@@ -5,6 +5,9 @@
 </p>
 <div style="text-align: justify;">
 
+[![Go](https://github.com/PiotrFerenc/mash2/actions/workflows/go.yml/badge.svg)](https://github.com/PiotrFerenc/mash2/actions/workflows/go.yml)
+
+
 **Distributed Work Automation System** (DWAS) to rozwiązanie zaprojektowane w celu usprawnienia procesów pracy i automatyzacji zadań w rozproszonych środowiskach pracy. 
 System ten integruje różnorodne narzędzia i platformy, umożliwiając automatyczną koordynację i wykonanie zadań w wielu lokalizacjach jednocześnie.
 Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zmieniających się warunków pracy, optymalizując procesy i zwiększając efektywność operacyjną.
