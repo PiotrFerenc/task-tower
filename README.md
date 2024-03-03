@@ -16,12 +16,14 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 
 - [ ] Worker
   - [ ] GIT
-  - [ ] System Command
+  - [ ] File System
+  - [x] Hallo Word
+  - [x] REST
 - [ ] Controller
-- [ ] REST
+- [x] REST
 - [ ] Tests
 - [ ] saga
-- [ ] make
+- [x] make
 
 ## Should Have
 
