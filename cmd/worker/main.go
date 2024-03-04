@@ -46,7 +46,6 @@ func (worker RestWorker) Run() {
 	if err != nil {
 		return
 	}
-
 }
 
 func Executor(actionName string, parameters ActionContext) error {
