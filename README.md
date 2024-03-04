@@ -24,6 +24,7 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
   - [ ] dotnet
   - [x] Hallo Word
   - [x] REST
+  - [ ] ...
 - [ ] Controller
    - [ ] REST
    - [ ] saga
