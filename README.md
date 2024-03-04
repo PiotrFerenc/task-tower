@@ -20,12 +20,15 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 - [ ] Worker
   - [ ] GIT
   - [ ] File System
+  - [ ] docker
+  - [ ] dotnet
   - [x] Hallo Word
   - [x] REST
 - [ ] Controller
-- [x] REST
+   - [ ] REST
+   - [ ] saga
+   - [ ] database
 - [ ] Tests
-- [ ] saga
 - [x] make
 
 ## Should Have
@@ -33,6 +36,7 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 - [ ] GRPC
 - [ ] docker
 - [ ] yml config
+- [ ] web
 
 ## Could Have
 
@@ -55,6 +59,7 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 **Konfiguracja**
 
 **Przykład użycia**
+- dżemkins (jenkins)
 
 **Rozwój**
 
