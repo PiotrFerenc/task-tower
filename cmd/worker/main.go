@@ -8,6 +8,23 @@ import (
 )
 
 func main() {
+	worker := RestWorker{
+		Address: "0.0.0.0",
+		Port:    "5000",
+	}
+	worker.Run()
+}
+
+type Worker interface {
+	Run()
+}
+
+type RestWorker struct {
+	Address string
+	Port    string
+}
+
+func (worker RestWorker) Run() {
 	server := gin.Default()
 	server.POST("/execute/:action", func(context *gin.Context) {
 		name := context.Param("action")
@@ -24,10 +41,11 @@ func main() {
 		}
 	})
 
-	err := server.Run("0.0.0.0:5000")
+	err := server.Run(fmt.Sprintf(`%s:%s`, worker.Address, worker.Port))
 	if err != nil {
 		return
 	}
+
 }
 
 func Executor(actionName string, parameters ActionContext) error {
