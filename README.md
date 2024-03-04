@@ -7,10 +7,12 @@
 
 [![Go](https://github.com/PiotrFerenc/mash2/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/PiotrFerenc/mash2/actions/workflows/go.yml)
 
-
-**Distributed Work Automation System** (DWAS) to rozwiązanie zaprojektowane w celu usprawnienia procesów pracy i automatyzacji zadań w rozproszonych środowiskach pracy. 
-System ten integruje różnorodne narzędzia i platformy, umożliwiając automatyczną koordynację i wykonanie zadań w wielu lokalizacjach jednocześnie.
-Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zmieniających się warunków pracy, optymalizując procesy i zwiększając efektywność operacyjną.
+**Distributed Work Automation System** (DWAS) to rozwiązanie zaprojektowane w celu usprawnienia procesów pracy i
+automatyzacji zadań w rozproszonych środowiskach pracy.
+System ten integruje różnorodne narzędzia i platformy, umożliwiając automatyczną koordynację i wykonanie zadań w wielu
+lokalizacjach jednocześnie.
+Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zmieniających się warunków pracy,
+optymalizując procesy i zwiększając efektywność operacyjną.
 </div>
 
 **Cechy**
@@ -18,23 +20,24 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 ## Must Have
 
 - [ ] Worker
-  - [ ] GIT
-  - [ ] File System
-  - [ ] docker
-  - [ ] dotnet
-  - [x] Hallo Word
-  - [x] REST
-  - [ ] ...
+    - [ ] GIT
+    - [ ] File System
+    - [ ] docker
+    - [ ] dotnet
+    - [ ] GRPC
+    - [x] Hallo Word
+    - [x] REST
+    - [ ] ...
 - [ ] Controller
-   - [ ] REST
-   - [ ] saga
-   - [ ] database
+    - [ ] REST
+    - [ ] saga
+    - [ ] database
+    - [ ] GRPC
 - [ ] Tests
 - [x] make
 
 ## Should Have
 
-- [ ] GRPC
 - [ ] docker
 - [ ] yml config
 - [ ] web
@@ -47,6 +50,7 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 - [ ] kubernetes
 
 ## Won't Have
+
 ??
 
 ----------------------------------
@@ -60,6 +64,7 @@ Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zm
 **Konfiguracja**
 
 **Przykład użycia**
+
 - dżemkins (jenkins)
 
 **Rozwój**

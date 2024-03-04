@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -32,7 +33,8 @@ func main() {
 
 func Executor(actionName string, parameters ActionContext) error {
 	actions := map[string]Action{
-		"hallo": Hallo{name: "Word"},
+		"hallo": Hallo{},
+		"sleep": Sleep{},
 	}
 	action, exist := actions[actionName]
 	if !exist {
@@ -47,7 +49,6 @@ type Action interface {
 }
 
 type Hallo struct {
-	name string
 }
 
 func (receiver Hallo) Execute(parameters ActionContext) string {
@@ -56,6 +57,14 @@ func (receiver Hallo) Execute(parameters ActionContext) string {
 	msg := "Hallo " + name
 	log.Print(msg)
 	return msg
+}
+
+type Sleep struct {
+}
+
+func (receiver Sleep) Execute(parameters ActionContext) string {
+	time.Sleep(5 * time.Second)
+	return ""
 }
 
 type ActionContext struct {
