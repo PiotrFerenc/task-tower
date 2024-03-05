@@ -9,11 +9,17 @@ import (
 )
 
 func main() {
-	worker := RestWorker{
+	config := &RestWorker{
 		Address: "0.0.0.0",
 		Port:    "5000",
 	}
+
+	worker := CreateWorker(config)
 	worker.Run()
+}
+
+func CreateWorker(worker Worker) Worker {
+	return worker
 }
 
 type Worker interface {
@@ -80,7 +86,11 @@ type Sleep struct {
 }
 
 func (receiver Sleep) Execute(parameters ActionContext) string {
-	time.Sleep(5 * time.Second)
+
+	for i := 0; i < 5; i++ {
+		time.Sleep(5 * time.Second)
+		log.Print("sleep")
+	}
 	return ""
 }
 
