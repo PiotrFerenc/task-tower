@@ -5,3 +5,9 @@ POST 0.0.0.0:5000/execute/hallo
  "name":"Piotr"
  }
 }
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
