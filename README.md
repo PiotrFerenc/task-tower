@@ -14,6 +14,10 @@ lokalizacjach jednocześnie.
 Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zmieniających się warunków pracy,
 optymalizując procesy i zwiększając efektywność operacyjną.
 </div>
+<p align="center">
+  <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/7e4f24c1-1a14-4840-a7af-1713b6c958d2" alt="logo" width="200"/>
+</p>
+
 
 **Cechy**
 
