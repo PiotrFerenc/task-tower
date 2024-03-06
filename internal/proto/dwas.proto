@@ -1,7 +1,0 @@
-syntax = "proto3";
-package internal.proto;
-option go_package = "github.com/PiotrFerenc/mash2/gen/go/internal/proto;dwaspb";
-message DwaAction{
-  string name = 1;
-  map<string, string> params = 2 ;
-}

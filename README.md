@@ -24,30 +24,31 @@ optymalizując procesy i zwiększając efektywność operacyjną.
     - [ ] File System
     - [ ] docker
     - [ ] dotnet
-    - [ ] GRPC
     - [x] Hallo Word
     - [x] REST
+    - [ ] RabbitMq
     - [ ] ...
 - [ ] Controller
     - [ ] REST
     - [ ] saga
     - [ ] database
-    - [ ] GRPC
+    - [ ] docker
+    - [ ] RabbitMq
 - [ ] Tests
 - [x] make
 
 ## Should Have
 
-- [ ] docker
 - [ ] yml config
 - [ ] web
 
 ## Could Have
 
-- [ ] Queue
+
 - [ ] SQL
 - [ ] mongo
 - [ ] kubernetes
+- [ ] GRPC
 
 ## Won't Have
 
