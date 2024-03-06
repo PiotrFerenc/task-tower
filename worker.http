@@ -1,0 +1,7 @@
+POST 0.0.0.0:5000/execute/hallo
+
+{
+ "Parameters":{
+ "name":"Piotr"
+ }
+}
