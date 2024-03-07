@@ -3,11 +3,12 @@ version: '3'
 services:
   rabbitmq:
     image: "rabbitmq:3-management"
+    container_name: "abbitmq-dwas"
     environment:
       RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
-      RABBITMQ_DEFAULT_USER: "user"
-      RABBITMQ_DEFAULT_PASS: "password"
-      RABBITMQ_DEFAULT_VHOST: "/"
+      RABBITMQ_DEFAULT_USER: "dwas"
+      RABBITMQ_DEFAULT_PASS: "RNeP2RpNDyY3s"
+      RABBITMQ_DEFAULT_VHOST: "/dwas"
     ports:
       - "5672:5672"
       - "15672:15672"

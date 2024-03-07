@@ -1,9 +1,11 @@
 package main
 
-import "github.com/PiotrFerenc/mash2/cmd/worker/workers"
+import (
+	workers2 "github.com/PiotrFerenc/mash2/internal/workers"
+)
 
 func main() {
-	config := &workers.RestWorker{
+	config := &workers2.RestWorker{
 		Address: "0.0.0.0",
 		Port:    "5000",
 	}
@@ -12,6 +14,6 @@ func main() {
 	worker.Run()
 }
 
-func CreateWorker(worker workers.Worker) workers.Worker {
+func CreateWorker(worker workers2.Worker) workers2.Worker {
 	return worker
 }
