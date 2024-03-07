@@ -5,7 +5,7 @@ docker-reset:
 	$(MAKE) docker-up
 docker-up:
 	docker-compose -f $(DOCKER_COMPOSE_FILE) up -d
-docker-down:config/docker-compose.yml
+docker-down:
 	docker-compose -f $(DOCKER_COMPOSE_FILE) down
 docker-clean:
 	docker stop $(docker ps -aq)
