@@ -1,0 +1,14 @@
+POST 0.0.0.0:5000/execute
+
+{
+"steps": [
+{
+"Name" :"hallo",
+ "Parameters":
+ {
+ "name":"Piotr",
+ "name2":"Piotr"
+ }
+}
+]
+}

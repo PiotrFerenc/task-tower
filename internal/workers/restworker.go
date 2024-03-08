@@ -13,7 +13,7 @@ type RestWorker struct {
 	Port    string
 }
 
-func (worker RestWorker) Run() {
+func (worker *RestWorker) Run() {
 	server := gin.Default()
 	server.POST("/execute/:action", func(context *gin.Context) {
 		name := context.Param("action")
