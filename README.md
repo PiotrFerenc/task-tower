@@ -1,3 +1,6 @@
+*DRAFT*
+---
+
 **Opis**
 
 <p align="center">
@@ -19,19 +22,21 @@ optymalizując procesy i zwiększając efektywność operacyjną.
 </p>
 
 
+
 **Cechy**
 
 ## Must Have
 
 - [ ] Worker
+  - [ ] Actions
     - [ ] GIT
     - [ ] File System
-    - [ ] docker
     - [ ] dotnet
     - [x] Hallo Word
-    - [x] REST
-    - [ ] RabbitMq
     - [ ] ...
+  - [ ] docker
+  - [x] REST
+  - [ ] RabbitMq
 - [ ] Controller
     - [ ] REST
     - [ ] saga
