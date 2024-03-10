@@ -17,7 +17,7 @@ func CreateRestController() Controller {
 func (controller *controller) Run(address, port string) error {
 	server := gin.Default()
 	server.POST("/execute", func(context *gin.Context) {
-		var workflow types.Workflow
+		var workflow types.Pipeline
 
 		if err := context.BindJSON(&workflow); err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
