@@ -7,6 +7,12 @@ func CreateRabbitMqMessageQueue() MessageQueue {
 	return &queue{}
 }
 
-func (queue *queue) Connect() {}
-func (queue *queue) Receive() {}
-func (queue *queue) Publish() {}
+func (queue *queue) Connect() {
+	//TODO: implement
+}
+func (queue *queue) Receive() {
+	//TODO: implement
+}
+func (queue *queue) Publish() {
+	//TODO: implement
+}
