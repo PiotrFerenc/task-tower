@@ -1,11 +1,13 @@
 package main
 
 import (
+	"github.com/PiotrFerenc/mash2/internal/executor"
 	"github.com/PiotrFerenc/mash2/internal/workers"
 )
 
 var (
-	worker = workers.CreateRestWorker()
+	exec   = executor.CreateMapExecutor()
+	worker = workers.CreateRestWorker(exec)
 )
 
 func main() {

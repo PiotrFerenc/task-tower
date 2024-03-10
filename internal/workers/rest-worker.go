@@ -3,16 +3,19 @@ package workers
 import (
 	"fmt"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
-	"github.com/PiotrFerenc/mash2/internal"
+	"github.com/PiotrFerenc/mash2/internal/executor"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type worker struct {
+	executor executor.Executor
 }
 
-func CreateRestWorker() Worker {
-	return &worker{}
+func CreateRestWorker(executor executor.Executor) Worker {
+	return &worker{
+		executor: executor,
+	}
 }
 
 func (worker *worker) Run(address, port string) {
@@ -26,7 +29,7 @@ func (worker *worker) Run(address, port string) {
 			return
 		}
 
-		err := internal.Executor(name, parameters)
+		err := worker.executor.Execute(name, parameters)
 		if err != nil {
 			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Error": err.Error()})
 		}
