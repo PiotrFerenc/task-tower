@@ -8,12 +8,14 @@ import (
 	"net/http"
 )
 
-type RestWorker struct {
-	Address string
-	Port    string
+type worker struct {
 }
 
-func (worker *RestWorker) Run() {
+func CreateRestWorker() Worker {
+	return &worker{}
+}
+
+func (worker *worker) Run(address, port string) {
 	server := gin.Default()
 	server.POST("/execute/:action", func(context *gin.Context) {
 		name := context.Param("action")
@@ -30,7 +32,7 @@ func (worker *RestWorker) Run() {
 		}
 	})
 
-	err := server.Run(fmt.Sprintf(`%s:%s`, worker.Address, worker.Port))
+	err := server.Run(fmt.Sprintf(`%s:%s`, address, port))
 	if err != nil {
 		return
 	}

@@ -1,5 +1,5 @@
 package workers
 
 type Worker interface {
-	Run()
+	Run(address, port string)
 }
