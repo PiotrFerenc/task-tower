@@ -6,7 +6,10 @@ type Hallo struct {
 }
 
 func (receiver Hallo) Execute(parameters ActionContext) string {
-	name := parameters.Parameters["name"]
+	name, err := parameters.GetProperty("name")
+	if err == nil {
+
+	}
 
 	msg := "Hallo " + name
 	log.Print(msg)
