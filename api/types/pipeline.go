@@ -1,5 +1,5 @@
 package types
 
 type Pipeline struct {
-	Steps []Stage `json:"stages"`
+	Stages []Stage `json:"stages"`
 }

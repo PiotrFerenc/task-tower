@@ -1,6 +1,8 @@
 package services
 
-import "github.com/PiotrFerenc/mash2/internal/repositories"
+import (
+	"github.com/PiotrFerenc/mash2/internal/repositories"
+)
 
 type ProcessService interface {
 	MarkAsStarted()
