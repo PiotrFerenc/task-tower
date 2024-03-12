@@ -11,8 +11,9 @@ import (
 var (
 	messageQueue      = queues.CreateRabbitMqMessageQueue()
 	processRepository = repositories.CreatePostgresRepository()
-	processService    = services.CreateProcessService(processRepository, messageQueue)
-	controller        = controllers.CreateRestController(processService)
+	processService    = services.CreateProcessService(processRepository)
+	pipeLineService   = services.CreatePipelineService(messageQueue, processService)
+	controller        = controllers.CreateRestController(pipeLineService)
 )
 
 func main() {

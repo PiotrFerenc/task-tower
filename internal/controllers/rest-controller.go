@@ -3,18 +3,19 @@ package controllers
 import (
 	"fmt"
 	"github.com/PiotrFerenc/mash2/api/types"
+	"github.com/PiotrFerenc/mash2/internal/Consts"
 	"github.com/PiotrFerenc/mash2/internal/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type controller struct {
-	processService services.ProcessService
+	pipelineService services.PipelineService
 }
 
-func CreateRestController(processService services.ProcessService) Controller {
+func CreateRestController(pipelineService services.PipelineService) Controller {
 	return &controller{
-		processService: processService,
+		pipelineService: pipelineService,
 	}
 }
 
@@ -28,10 +29,11 @@ func (controller *controller) Run(address, port string) error {
 			return
 		}
 		if len(pipe.Stages) == 0 {
-			context.JSON(http.StatusBadRequest, gin.H{"error": "Empty list"})
+			context.JSON(http.StatusBadRequest, gin.H{"error": Message.EmptyStageList})
 			return
 		}
 
+		controller.pipelineService.Run(pipe)
 	})
 
 	err := server.Run(fmt.Sprintf(`%s:%s`, address, port))

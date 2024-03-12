@@ -13,6 +13,7 @@ func (queue *queue) Connect() {
 func (queue *queue) Receive() {
 	//TODO: implement
 }
-func (queue *queue) Publish() {
+func (queue *queue) Publish() error {
 	//TODO: implement
+	return nil
 }
