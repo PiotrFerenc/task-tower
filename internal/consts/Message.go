@@ -1,4 +1,4 @@
-package Message
+package ConfigurationConsts
 
 const (
 	EmptyStageList = "Empty stage list."

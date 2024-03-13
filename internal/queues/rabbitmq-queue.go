@@ -24,16 +24,16 @@ func (queue *queue) Connect() error {
 		}
 	}(conn)
 
-	rabbit.Chanel, err = conn.Channel()
-	if err != nil {
-		return err
-	}
-	defer func(ch *amqp.Channel) {
-		err := ch.Close()
-		if err != nil {
-
-		}
-	}(rabbit.Chanel)
+	//rabbit.Chanel, err = conn.Channel()
+	//if err != nil {
+	//	return err
+	//}
+	//defer func(ch *amqp.Channel) {
+	//	err := ch.Close()
+	//	if err != nil {
+	//
+	//	}
+	//}(rabbit.Chanel)
 
 	return nil
 }

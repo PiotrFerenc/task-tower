@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/PiotrFerenc/mash2/api/types"
-	"github.com/PiotrFerenc/mash2/internal/Consts"
+	"github.com/PiotrFerenc/mash2/internal/consts"
 	"github.com/PiotrFerenc/mash2/internal/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
