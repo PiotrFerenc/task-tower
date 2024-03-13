@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/PiotrFerenc/mash2/api/types"
-	"github.com/PiotrFerenc/mash2/internal/consts"
+	Message "github.com/PiotrFerenc/mash2/internal/consts"
 	"github.com/PiotrFerenc/mash2/internal/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -33,7 +33,11 @@ func (controller *controller) Run(address, port string) error {
 			return
 		}
 
-		controller.pipelineService.Run(pipe)
+		err := controller.pipelineService.Run(pipe)
+		if err == nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": err})
+			return
+		}
 	})
 
 	err := server.Run(fmt.Sprintf(`%s:%s`, address, port))
