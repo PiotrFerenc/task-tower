@@ -26,17 +26,37 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 	}
 }
 
-func (p *pipelineService) Run(pipeline types.Pipeline) error {
-	//var stage = pipeline.Stages[0]
+func start(os func(pipeline types.Pipeline)) {
 
-	//err := p.queue.Publish(stage)
-	//if err == nil {
-	//	return err
-	//}
-	//p.processService.MarkAsStarted()
-	//
-	//p.queue.Receive()
-	//
-	//p.processService.MarkAsDone()
+}
+
+func onSuccess(os func()) {
+
+}
+func onFail(fail func()) {
+
+}
+
+func (p *pipelineService) Run(pipeline types.Pipeline) error {
+	// dodac kroki do bazy
+	// pobrac pierwszy
+	// wyslac do kolejki -> Execute_action
+	start(func(pipeline types.Pipeline) {
+		err := p.queue.Publish(types.Stage{})
+		if err != nil {
+			return
+		}
+		p.processService.MarkAsStarted()
+	})
+
+	onSuccess(func() {
+		p.queue.Subscribe()
+	})
+
+	onFail(func() {
+		p.queue.Subscribe()
+		p.processService.MarkAsFailed()
+	})
+
 	return nil
 }

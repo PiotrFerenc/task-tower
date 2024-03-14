@@ -36,7 +36,8 @@ func (queue *queue) Connect() error {
 
 	return nil
 }
-func (queue *queue) Receive() {
+func (queue *queue) Subscribe() {
+
 	//TODO: implement
 }
 func (queue *queue) Publish(message types.Stage) error {
