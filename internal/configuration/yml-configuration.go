@@ -16,12 +16,20 @@ func CreateYmlConfiguration() Configuration {
 func (config *configuration) LoadConfiguration() *Config {
 	viper.SetConfigName(cfg.ConfigurationFileName)
 	viper.AddConfigPath(cfg.ConfigurationFolderName)
+
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("fatal error config file: %w", err))
 	}
 
 	return &Config{
-		QueueHost: viper.GetString(cfg.QueueName),
+		Queue: QueueConfig{
+			QueueName:     viper.GetString(cfg.QueueName),
+			QueueHost:     viper.GetString(cfg.QueueHost),
+			QueueVhost:    viper.GetString(cfg.QueueVhost),
+			QueueUser:     viper.GetString(cfg.QueueUser),
+			QueuePassword: viper.GetString(cfg.QueuePassword),
+			QueuePort:     viper.GetString(cfg.QueuePort),
+		},
 	}
 }

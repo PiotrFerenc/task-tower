@@ -2,6 +2,11 @@ package ConfigurationConsts
 
 const (
 	QueueName               = "QUEUE_NAME"
-	ConfigurationFolderName = "../config"
+	QueueHost               = "QUEUE_HOST"
+	QueueVhost              = "QUEUE_VHOST"
+	QueueUser               = "QUEUE_USER"
+	QueuePassword           = "QUEUE_PASSWORD"
+	QueuePort               = "QUEUE_PORT"
+	ConfigurationFolderName = "config"
 	ConfigurationFileName   = "config"
 )

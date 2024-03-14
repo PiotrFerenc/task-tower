@@ -15,6 +15,11 @@ type pipelineService struct {
 }
 
 func CreatePipelineService(queue queues.MessageQueue, processService ProcessService) PipelineService {
+	err := queue.Connect()
+	if err != nil {
+		panic(err)
+	}
+
 	return &pipelineService{
 		queue:          queue,
 		processService: processService,
@@ -22,20 +27,16 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 }
 
 func (p *pipelineService) Run(pipeline types.Pipeline) error {
-	var stage = pipeline.Stages[0]
-	err := p.queue.Connect()
-	if err == nil {
-		return err
-	}
+	//var stage = pipeline.Stages[0]
 
-	err = p.queue.Publish(stage)
-	if err == nil {
-		return err
-	}
-	p.processService.MarkAsStarted()
-
-	p.queue.Receive()
-
-	p.processService.MarkAsDone()
+	//err := p.queue.Publish(stage)
+	//if err == nil {
+	//	return err
+	//}
+	//p.processService.MarkAsStarted()
+	//
+	//p.queue.Receive()
+	//
+	//p.processService.MarkAsDone()
 	return nil
 }
