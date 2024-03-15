@@ -1,7 +1,7 @@
 POST 0.0.0.0:5000/execute
 
 {
-"steps": [
+"Stages": [
 {
 "Name" :"hallo",
  "Parameters":

@@ -1,7 +1,7 @@
 package configuration
 
 type QueueConfig struct {
-	QueueName     string
+	QueueRunPipe  string
 	QueueHost     string
 	QueuePort     string
 	QueueVhost    string

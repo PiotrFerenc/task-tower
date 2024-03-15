@@ -1,7 +1,7 @@
 package ConfigurationConsts
 
 const (
-	QueueName               = "QUEUE_NAME"
+	QueueRunPipe            = "QUEUE_RUN_PIPE"
 	QueueHost               = "QUEUE_HOST"
 	QueueVhost              = "QUEUE_VHOST"
 	QueueUser               = "QUEUE_USER"

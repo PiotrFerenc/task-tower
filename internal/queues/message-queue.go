@@ -6,4 +6,5 @@ type MessageQueue interface {
 	Connect() error
 	Publish(message types.Stage) error
 	Subscribe()
+	CreateQueue(name string) error
 }
