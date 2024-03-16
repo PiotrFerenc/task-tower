@@ -40,10 +40,10 @@ optymalizując procesy i zwiększając efektywność operacyjną.
     - [ ] ...
   - [ ] docker
   - [x] REST
-  - [ ] RabbitMq
+  - [x] RabbitMq
 - [ ] Controller
     - [ ] REST
-    - [ ] saga
+    - [x] saga
     - [ ] database
     - [ ] docker
     - [ ] RabbitMq
@@ -52,7 +52,7 @@ optymalizując procesy i zwiększając efektywność operacyjną.
 
 ## Should Have
 
-- [ ] yml config
+- [x] yml config
 - [ ] web
 
 ## Could Have
