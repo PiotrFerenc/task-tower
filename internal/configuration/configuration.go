@@ -1,12 +1,14 @@
 package configuration
 
 type QueueConfig struct {
-	QueueRunPipe  string
-	QueueHost     string
-	QueuePort     string
-	QueueVhost    string
-	QueueUser     string
-	QueuePassword string
+	QueueRunPipe      string
+	QueueStageSucceed string
+	QueueStageFailed  string
+	QueueHost         string
+	QueuePort         string
+	QueueVhost        string
+	QueueUser         string
+	QueuePassword     string
 }
 
 type Config struct {

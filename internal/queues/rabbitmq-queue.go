@@ -30,6 +30,16 @@ func CreateRabbitMqMessageQueue(configuration *configuration.QueueConfig) Messag
 		panic(err)
 	}
 
+	err = q.CreateQueue(configuration.QueueStageSucceed)
+	if err != nil {
+		panic(err)
+	}
+
+	err = q.CreateQueue(configuration.QueueStageFailed)
+	if err != nil {
+		panic(err)
+	}
+
 	return q
 }
 
@@ -63,7 +73,7 @@ func (queue *queue) Publish(message types.Stage) error {
 	defer cancel()
 
 	err := queue.client.ch.PublishWithContext(ctx,
-		"	",                              // exchange
+		"",                               // exchange
 		queue.configuration.QueueRunPipe, // routing key
 		false,                            // mandatory
 		false,                            // immediate

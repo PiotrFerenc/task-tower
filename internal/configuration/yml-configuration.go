@@ -24,12 +24,14 @@ func (config *configuration) LoadConfiguration() *Config {
 
 	return &Config{
 		Queue: QueueConfig{
-			QueueRunPipe:  viper.GetString(cfg.QueueRunPipe),
-			QueueHost:     viper.GetString(cfg.QueueHost),
-			QueueVhost:    viper.GetString(cfg.QueueVhost),
-			QueueUser:     viper.GetString(cfg.QueueUser),
-			QueuePassword: viper.GetString(cfg.QueuePassword),
-			QueuePort:     viper.GetString(cfg.QueuePort),
+			QueueRunPipe:      viper.GetString(cfg.QueueRunPipe),
+			QueueStageSucceed: viper.GetString(cfg.QueueStageSucceed),
+			QueueStageFailed:  viper.GetString(cfg.QueueStageFailed),
+			QueueHost:         viper.GetString(cfg.QueueHost),
+			QueueVhost:        viper.GetString(cfg.QueueVhost),
+			QueueUser:         viper.GetString(cfg.QueueUser),
+			QueuePassword:     viper.GetString(cfg.QueuePassword),
+			QueuePort:         viper.GetString(cfg.QueuePort),
 		},
 	}
 }
