@@ -1,10 +1,16 @@
 package queues
 
-import "github.com/PiotrFerenc/mash2/api/types"
+import (
+	"github.com/PiotrFerenc/mash2/api/types"
+	amqp "github.com/rabbitmq/amqp091-go"
+)
 
 type MessageQueue interface {
 	Connect() error
-	Publish(message types.Stage) error
-	Subscribe()
+	AddStageToQueue(message types.Stage) error
+	AddStageAsSuccess(message string) error
+	WaitingForFailedStage() (<-chan amqp.Delivery, error)
+	WaitingForSucceedStage() (<-chan amqp.Delivery, error)
+	WaitingForStage() (<-chan amqp.Delivery, error)
 	CreateQueue(name string) error
 }

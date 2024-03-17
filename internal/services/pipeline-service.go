@@ -3,6 +3,8 @@ package services
 import (
 	"github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/internal/queues"
+	"github.com/rabbitmq/amqp091-go"
+	"log"
 )
 
 type PipelineService interface {
@@ -15,7 +17,35 @@ type pipelineService struct {
 }
 
 func CreatePipelineService(queue queues.MessageQueue, processService ProcessService) PipelineService {
+	s := func(d amqp091.Delivery) {
+		log.Printf(" success [x] %s", d.Body)
+	}
 
+	f := func(d amqp091.Delivery) {
+		log.Printf(" fail [x] %s", d.Body)
+	}
+
+	go func(onSucces func(amqp091.Delivery), onFail func(amqp091.Delivery)) {
+		ss, _ := queue.WaitingForSucceedStage()
+		fs, _ := queue.WaitingForFailedStage()
+
+		var forever chan struct{}
+
+		go func() {
+			for d := range ss {
+				onSucces(d)
+			}
+		}()
+
+		go func() {
+			for d := range fs {
+				onFail(d)
+			}
+		}()
+
+		<-forever
+
+	}(s, f)
 	return &pipelineService{
 		queue:          queue,
 		processService: processService,
@@ -35,30 +65,10 @@ func onFail(fail func()) {
 
 func (p *pipelineService) Run(pipeline *types.Pipeline) error {
 
-	err := p.queue.Publish(pipeline.Stages[0])
+	err := p.queue.AddStageToQueue(pipeline.Stages[0])
 	if err != nil {
 		return err
 	}
-	// saga provider
-	// dodac kroki do bazy
-	// pobrac pierwszy
-	// wyslac do kolejki -> Execute_action
-	//start(pipeline, func(pipeline *types.Pipeline) {
-	//	err := p.queue.Publish(types.Stage{})
-	//	if err != nil {
-	//		return
-	//	}
-	//	p.processService.MarkAsStarted()
-	//})
-	//
-	//onSuccess(func() {
-	//	p.queue.Subscribe()
-	//})
-	//
-	//onFail(func() {
-	//	p.queue.Subscribe()
-	//	p.processService.MarkAsFailed()
-	//})
 
 	return nil
 }

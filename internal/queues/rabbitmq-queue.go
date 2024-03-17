@@ -63,11 +63,46 @@ func (queue *queue) Connect() error {
 
 	return nil
 }
-func (queue *queue) Subscribe() {
+func (queue *queue) WaitingForFailedStage() (<-chan amqp.Delivery, error) {
 
-	//TODO: implement
+	return queue.client.ch.Consume(
+		queue.configuration.QueueStageFailed,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
 }
-func (queue *queue) Publish(message types.Stage) error {
+func (queue *queue) WaitingForSucceedStage() (<-chan amqp.Delivery, error) {
+
+	return queue.client.ch.Consume(
+		queue.configuration.QueueStageSucceed,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+}
+func (queue *queue) WaitingForStage() (<-chan amqp.Delivery, error) {
+
+	return queue.client.ch.Consume(
+		queue.configuration.QueueRunPipe,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+}
+func (queue *queue) AddStageToQueue(message types.Stage) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -82,6 +117,25 @@ func (queue *queue) Publish(message types.Stage) error {
 			CorrelationId: "1",
 			ReplyTo:       queue.configuration.QueueRunPipe,
 			Body:          []byte(message.Name),
+		})
+
+	return err
+}
+func (queue *queue) AddStageAsSuccess(message string) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err := queue.client.ch.PublishWithContext(ctx,
+		"",                                    // exchange
+		queue.configuration.QueueStageSucceed, // routing key
+		false,                                 // mandatory
+		false,                                 // immediate
+		amqp.Publishing{
+			ContentType:   "text/plain",
+			CorrelationId: "1",
+			ReplyTo:       queue.configuration.QueueStageSucceed,
+			Body:          []byte(message),
 		})
 
 	return err

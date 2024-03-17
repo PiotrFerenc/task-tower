@@ -1,13 +1,17 @@
 package main
 
 import (
+	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/executor"
+	"github.com/PiotrFerenc/mash2/internal/queues"
 	"github.com/PiotrFerenc/mash2/internal/workers"
 )
 
 var (
-	exec   = executor.CreateMapExecutor()
-	worker = workers.CreateRestWorker(exec)
+	config       = configuration.CreateYmlConfiguration().LoadConfiguration()
+	messageQueue = queues.CreateRabbitMqMessageQueue(&config.Queue)
+	exec         = executor.CreateMapExecutor(messageQueue)
+	worker       = workers.CreateRestWorker(exec)
 )
 
 func main() {
