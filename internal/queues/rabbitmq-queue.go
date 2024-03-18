@@ -48,13 +48,15 @@ func (queue *queue) CreateQueue(name string) error {
 }
 
 func (queue *queue) Connect() error {
-
-	conn, err := ConnectRabbitMQ(queue.configuration.QueueUser, queue.configuration.QueuePassword, queue.configuration.QueueHost, queue.configuration.QueuePort, queue.configuration.QueueVhost)
-	if err != nil {
-		panic(err)
+	var connection *amqp.Connection
+	for {
+		conn, err := ConnectRabbitMQ(queue.configuration.QueueUser, queue.configuration.QueuePassword, queue.configuration.QueueHost, queue.configuration.QueuePort, queue.configuration.QueueVhost)
+		if err == nil {
+			connection = conn
+			break
+		}
 	}
-
-	client, err := NewRabbitMQClient(conn)
+	client, err := NewRabbitMQClient(connection)
 	if err != nil {
 		panic(err)
 	}
