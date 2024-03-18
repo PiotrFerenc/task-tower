@@ -1,6 +1,7 @@
 package executor
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/queues"
@@ -24,8 +25,21 @@ func CreateMapExecutor(queue queues.MessageQueue) Executor {
 
 		go func() {
 			for d := range stage {
-				log.Printf(" [x] %s", d.Body)
-				err := queue.AddStageAsSuccess(d.MessageId)
+				log.Printf(" execute [x] %s", d.MessageId)
+				var message queues.Message
+				err := json.Unmarshal(d.Body, &message)
+				if err != nil {
+					panic(err)
+				}
+				a := map[string]actions.Action{
+					"hallo": actions.Hallo{},
+					"sleep": actions.Sleep{},
+				}
+				action, _ := a[message.CurrentStage.Name]
+
+				action.Execute(actions.ActionContext{Parameters: message.CurrentStage.Parameters})
+
+				err = queue.AddStageAsSuccess(message)
 				if err != nil {
 					panic(err)
 				}

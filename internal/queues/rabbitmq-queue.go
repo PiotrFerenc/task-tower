@@ -2,9 +2,10 @@ package queues
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
+	"github.com/google/uuid"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"time"
 )
@@ -102,40 +103,70 @@ func (queue *queue) WaitingForStage() (<-chan amqp.Delivery, error) {
 	)
 
 }
-func (queue *queue) AddStageToQueue(message types.Stage) error {
+func (queue *queue) AddStageToQueue(message Message) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	err := queue.client.ch.PublishWithContext(ctx,
-		"",                               // exchange
-		queue.configuration.QueueRunPipe, // routing key
-		false,                            // mandatory
-		false,                            // immediate
+	bytes, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+
+	err = queue.client.ch.PublishWithContext(ctx,
+		"",
+		queue.configuration.QueueRunPipe,
+		false,
+		false,
 		amqp.Publishing{
 			ContentType:   "text/plain",
-			CorrelationId: "1",
+			CorrelationId: uuid.NewString(),
 			ReplyTo:       queue.configuration.QueueRunPipe,
-			Body:          []byte(message.Name),
+			Body:          bytes,
 		})
 
 	return err
 }
-func (queue *queue) AddStageAsSuccess(message string) error {
+func (queue *queue) AddStageAsSuccess(message Message) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-
-	err := queue.client.ch.PublishWithContext(ctx,
+	bytes, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	err = queue.client.ch.PublishWithContext(ctx,
 		"",                                    // exchange
 		queue.configuration.QueueStageSucceed, // routing key
 		false,                                 // mandatory
 		false,                                 // immediate
 		amqp.Publishing{
 			ContentType:   "text/plain",
-			CorrelationId: "1",
+			CorrelationId: uuid.NewString(),
 			ReplyTo:       queue.configuration.QueueStageSucceed,
-			Body:          []byte(message),
+			Body:          bytes,
+		})
+
+	return err
+}
+func (queue *queue) AddStageAsFailed(message Message) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	bytes, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	err = queue.client.ch.PublishWithContext(ctx,
+		"",                                   // exchange
+		queue.configuration.QueueStageFailed, // routing key
+		false,                                // mandatory
+		false,                                // immediate
+		amqp.Publishing{
+			ContentType:   "text/plain",
+			CorrelationId: uuid.NewString(),
+			ReplyTo:       queue.configuration.QueueStageFailed,
+			Body:          bytes,
 		})
 
 	return err

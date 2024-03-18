@@ -3,7 +3,7 @@ package services
 import (
 	"github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/internal/queues"
-	"github.com/rabbitmq/amqp091-go"
+	"github.com/goccy/go-json"
 	"log"
 )
 
@@ -17,15 +17,30 @@ type pipelineService struct {
 }
 
 func CreatePipelineService(queue queues.MessageQueue, processService ProcessService) PipelineService {
-	s := func(d amqp091.Delivery) {
-		log.Printf(" success [x] %s", d.Body)
+	s := func(message queues.Message) {
+		log.Printf(" success [x] %s", message.CurrentStage.Name)
+
+		index := message.CurrentStage.Order + 1
+
+		if index >= 0 && index < len(message.Pipeline.Stages) {
+			err := queue.AddStageToQueue(queues.Message{
+				CurrentStage: message.Pipeline.Stages[index],
+				Pipeline:     message.Pipeline,
+			})
+			if err != nil {
+				panic(err)
+			}
+		} else {
+
+		}
+
 	}
 
-	f := func(d amqp091.Delivery) {
-		log.Printf(" fail [x] %s", d.Body)
+	f := func(message queues.Message) {
+		log.Printf(" fail [x] %s", message.CurrentStage.Name)
 	}
 
-	go func(onSucces func(amqp091.Delivery), onFail func(amqp091.Delivery)) {
+	go func(onSucces func(queues.Message), onFail func(queues.Message)) {
 		ss, _ := queue.WaitingForSucceedStage()
 		fs, _ := queue.WaitingForFailedStage()
 
@@ -33,19 +48,32 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 
 		go func() {
 			for d := range ss {
-				onSucces(d)
+				var message queues.Message
+				err := json.Unmarshal(d.Body, &message)
+				if err != nil {
+					panic(err)
+				}
+
+				onSucces(message)
 			}
 		}()
 
 		go func() {
 			for d := range fs {
-				onFail(d)
+				var message queues.Message
+				err := json.Unmarshal(d.Body, &message)
+				if err != nil {
+					panic(err)
+				}
+
+				onFail(message)
 			}
 		}()
 
 		<-forever
 
 	}(s, f)
+
 	return &pipelineService{
 		queue:          queue,
 		processService: processService,
@@ -56,16 +84,12 @@ func start(pipeline *types.Pipeline, start func(pipeline *types.Pipeline)) {
 	start(pipeline)
 }
 
-func onSuccess(os func()) {
-
-}
-func onFail(fail func()) {
-
-}
-
 func (p *pipelineService) Run(pipeline *types.Pipeline) error {
 
-	err := p.queue.AddStageToQueue(pipeline.Stages[0])
+	err := p.queue.AddStageToQueue(queues.Message{
+		CurrentStage: pipeline.Stages[0],
+		Pipeline:     *pipeline,
+	})
 	if err != nil {
 		return err
 	}
