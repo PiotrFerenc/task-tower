@@ -3,12 +3,31 @@ POST 0.0.0.0:5000/execute
 {
 "Stages": [
 {
+"Order":1,
+"Name" :"sleep",
+"Parameters":
+{
+"name":"Piotr",
+"name2":"Piotr"
+}
+},
+{
+"Order":2,
 "Name" :"hallo",
- "Parameters":
- {
- "name":"Piotr",
- "name2":"Piotr"
- }
+"Parameters":
+{
+"name":"Piotr",
+"name2":"Piotr"
+}
+},
+{
+"Order":3,
+"Name" :"hallo",
+"Parameters":
+{
+"name":"Piotr",
+"name2":"Piotr"
+}
 }
 ]
 }

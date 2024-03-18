@@ -18,72 +18,10 @@
 automatyzacji zadań w rozproszonych środowiskach pracy.
 System ten integruje różnorodne narzędzia i platformy, umożliwiając automatyczną koordynację i wykonanie zadań w wielu
 lokalizacjach jednocześnie.
-Dzięki zastosowaniu najnowszych technologii, DWAS potrafi adaptować się do zmieniających się warunków pracy,
-optymalizując procesy i zwiększając efektywność operacyjną.
 </div>
 <p align="center">
   <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/7e4f24c1-1a14-4840-a7af-1713b6c958d2" alt="logo" width="200"/>
+ 
+  <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/105cd7c5-bccb-435c-aa4d-fb33930ab2f8" alt="logo" width="200"/>
 </p>
-
-
-
-**Cechy**
-
-## Must Have
-
-- [ ] Worker
-  - [ ] Actions
-    - [ ] GIT
-    - [ ] File System
-    - [ ] dotnet
-    - [x] Hallo Word
-    - [ ] ...
-  - [ ] docker
-  - [x] REST
-  - [x] RabbitMq
-- [ ] Controller
-    - [ ] REST
-    - [x] saga
-    - [ ] database
-    - [ ] docker
-    - [ ] RabbitMq
-- [ ] Tests
-- [x] make
-
-## Should Have
-
-- [x] yml config
-- [ ] web
-
-## Could Have
-
-
-- [ ] SQL
-- [ ] mongo
-- [ ] kubernetes
-- [ ] GRPC
-
-## Won't Have
-
-??
-
-----------------------------------
-
-**Rozpoczęcie pracy**
-
-**Wymagania**
-
-**Instalacja**
-
-**Konfiguracja**
-
-**Przykład użycia**
-
-- dżemkins (jenkins)
-
-**Rozwój**
-
-**Licencja**
-
-**Wsparcie i Współpraca**
 
