@@ -13,6 +13,7 @@ docker-clean:
 
 docker-build:
 	docker build -t dwas/controller -f config/controller/Dockerfile .
+	docker build -t dwas/worker -f config/worker/Dockerfile .
 docker-rebuild:
 	$(MAKE) docker-down
 	$(MAKE) docker-build
