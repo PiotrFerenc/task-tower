@@ -25,7 +25,15 @@ services:
   dwas_worker_1:
     container_name: "worker-dwas-1"
     image: "dwas/worker"
-    ports:
-      - "5001:5001"
+    depends_on:
+      - rabbitmq
+  dwas_worker_2:
+    container_name: "worker-dwas-2"
+    image: "dwas/worker"
+    depends_on:
+      - rabbitmq
+  dwas_worker_3:
+    container_name: "worker-dwas-3"
+    image: "dwas/worker"
     depends_on:
       - rabbitmq

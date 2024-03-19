@@ -25,7 +25,6 @@ func CreateMapExecutor(queue queues.MessageQueue) Executor {
 
 		go func() {
 			for d := range stage {
-				log.Printf(" execute [x] %s", d.MessageId)
 				var message queues.Message
 				err := json.Unmarshal(d.Body, &message)
 				if err != nil {

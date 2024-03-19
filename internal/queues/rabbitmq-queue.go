@@ -46,7 +46,7 @@ func CreateRabbitMqMessageQueue(configuration *configuration.QueueConfig) Messag
 }
 
 func (queue *queue) CreateQueue(name string) error {
-	return queue.client.CreateQueue(name, true, false)
+	return queue.client.CreateQueue(name)
 }
 
 func (queue *queue) Connect() error {
@@ -165,10 +165,10 @@ func (queue *queue) AddStageAsFailed(message Message) error {
 		return err
 	}
 	err = queue.client.ch.PublishWithContext(ctx,
-		"",                                   // exchange
-		queue.configuration.QueueStageFailed, // routing key
-		false,                                // mandatory
-		false,                                // immediate
+		"",
+		queue.configuration.QueueStageFailed,
+		false,
+		false,
 		amqp.Publishing{
 			ContentType:   "text/plain",
 			CorrelationId: uuid.NewString(),
@@ -199,8 +199,15 @@ func NewRabbitMQClient(connection *amqp.Connection) (RabbitClient, error) {
 	}, nil
 }
 
-func (rc RabbitClient) CreateQueue(name string, durable, autoDelete bool) error {
-	_, err := rc.ch.QueueDeclare(name, durable, autoDelete, false, false, nil)
+func (rc RabbitClient) CreateQueue(name string) error {
+	_, err := rc.ch.QueueDeclare(
+		name,
+		true,
+		false,
+		false,
+		false,
+		amqp.Table{},
+	)
 	return err
 }
 

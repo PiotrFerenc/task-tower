@@ -18,20 +18,19 @@ type pipelineService struct {
 
 func CreatePipelineService(queue queues.MessageQueue, processService ProcessService) PipelineService {
 	s := func(message queues.Message) {
-		log.Printf(" success [x] %s", message.CurrentStage.Name)
 
-		index := message.CurrentStage.Order + 1
-
-		if index >= 0 && index < len(message.Pipeline.Stages) {
+		index := message.CurrentStage.Order
+		if index < len(message.Pipeline.Stages) {
+			current := message.Pipeline.Stages[index]
 			err := queue.AddStageToQueue(queues.Message{
-				CurrentStage: message.Pipeline.Stages[index],
+				CurrentStage: current,
 				Pipeline:     message.Pipeline,
 			})
 			if err != nil {
 				panic(err)
 			}
 		} else {
-
+			log.Printf("Done")
 		}
 
 	}
@@ -78,10 +77,6 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 		queue:          queue,
 		processService: processService,
 	}
-}
-
-func start(pipeline *types.Pipeline, start func(pipeline *types.Pipeline)) {
-	start(pipeline)
 }
 
 func (p *pipelineService) Run(pipeline *types.Pipeline) error {
