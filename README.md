@@ -14,14 +14,12 @@
 
 ![100 - commitów](https://img.shields.io/badge/100-commitów-2ea44f?logo=go)
 
-**Distributed Work Automation System** (DWAS) to rozwiązanie zaprojektowane w celu usprawnienia procesów pracy i
-automatyzacji zadań w rozproszonych środowiskach pracy.
-System ten integruje różnorodne narzędzia i platformy, umożliwiając automatyczną koordynację i wykonanie zadań w wielu
-lokalizacjach jednocześnie.
+**Distributed Work Automation System (DWAS)** is a system designed to automate and streamline processes in distributed
+work environments, integrating various tools and platforms to coordinate tasks across multiple locations.
 </div>
 <p align="center">
   <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/7e4f24c1-1a14-4840-a7af-1713b6c958d2" alt="logo" width="200"/>
- 
+
   <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/105cd7c5-bccb-435c-aa4d-fb33930ab2f8" alt="logo" width="200"/>
 </p>
 
