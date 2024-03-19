@@ -8,6 +8,6 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o my-application cmd/worker/main.go
+RUN go build -o dwas-worker cmd/worker/main.go
 
-CMD ["./my-application"]
+CMD ["./dwas-worker"]

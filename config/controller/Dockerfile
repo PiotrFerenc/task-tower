@@ -8,6 +8,6 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o my-application cmd/controller/main.go
+RUN go build -o dwas-controller cmd/controller/main.go
 
-CMD ["./my-application"]
+CMD ["./dwas-controller"]
