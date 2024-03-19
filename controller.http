@@ -1,4 +1,4 @@
-POST 0.0.0.0:5000/execute
+POST localhost:5000/execute
 
 {
 "Stages": [

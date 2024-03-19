@@ -3,7 +3,7 @@ version: '3'
 services:
   rabbitmq:
     image: "rabbitmq:3-management"
-    container_name: "abbitmq-dwas"
+    container_name: "rabbitmq-dwas"
     environment:
       RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
       RABBITMQ_DEFAULT_USER: "dwas"
@@ -15,3 +15,10 @@ services:
     volumes:
       - "./data/rabbitmq:/var/lib/rabbitmq"
     restart: always
+  dwas_controller:
+    container_name: "controller-dwas"
+    image: "dwas/controller"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - rabbitmq

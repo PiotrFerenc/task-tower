@@ -7,6 +7,7 @@ import (
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/google/uuid"
 	amqp "github.com/rabbitmq/amqp091-go"
+	"log"
 	"time"
 )
 
@@ -54,8 +55,12 @@ func (queue *queue) Connect() error {
 		conn, err := ConnectRabbitMQ(queue.configuration.QueueUser, queue.configuration.QueuePassword, queue.configuration.QueueHost, queue.configuration.QueuePort, queue.configuration.QueueVhost)
 		if err == nil {
 			connection = conn
+			log.Printf("Connected to rabbitmq")
 			break
+		} else {
+			log.Printf("waiting for rabbitmq")
 		}
+		time.Sleep(1 * time.Second)
 	}
 	client, err := NewRabbitMQClient(connection)
 	if err != nil {
