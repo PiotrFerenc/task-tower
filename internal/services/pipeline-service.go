@@ -17,12 +17,12 @@ type pipelineService struct {
 }
 
 func CreatePipelineService(queue queues.MessageQueue, processService ProcessService) PipelineService {
-	s := func(message queues.Message) {
+	s := func(message types.Message) {
 
 		index := message.CurrentStage.Order
 		if index < len(message.Pipeline.Stages) {
 			current := message.Pipeline.Stages[index]
-			err := queue.AddStageToQueue(queues.Message{
+			err := queue.AddStageToQueue(types.Message{
 				CurrentStage: current,
 				Pipeline:     message.Pipeline,
 			})
@@ -35,11 +35,11 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 
 	}
 
-	f := func(message queues.Message) {
+	f := func(message types.Message) {
 		log.Printf(" fail [x] %s", message.CurrentStage.Name)
 	}
 
-	go func(onSucces func(queues.Message), onFail func(queues.Message)) {
+	go func(onSucces func(types.Message), onFail func(types.Message)) {
 		ss, _ := queue.WaitingForSucceedStage()
 		fs, _ := queue.WaitingForFailedStage()
 
@@ -47,7 +47,7 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 
 		go func() {
 			for d := range ss {
-				var message queues.Message
+				var message types.Message
 				err := json.Unmarshal(d.Body, &message)
 				if err != nil {
 					panic(err)
@@ -59,7 +59,7 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 
 		go func() {
 			for d := range fs {
-				var message queues.Message
+				var message types.Message
 				err := json.Unmarshal(d.Body, &message)
 				if err != nil {
 					panic(err)
@@ -81,7 +81,7 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 
 func (p *pipelineService) Run(pipeline *types.Pipeline) error {
 
-	err := p.queue.AddStageToQueue(queues.Message{
+	err := p.queue.AddStageToQueue(types.Message{
 		CurrentStage: pipeline.Stages[0],
 		Pipeline:     *pipeline,
 	})

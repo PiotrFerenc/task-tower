@@ -2,7 +2,7 @@ package executor
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/queues"
 	"log"
@@ -25,18 +25,24 @@ func CreateMapExecutor(queue queues.MessageQueue) Executor {
 
 		go func() {
 			for d := range stage {
-				var message queues.Message
+				var message types.Message
 				err := json.Unmarshal(d.Body, &message)
 				if err != nil {
 					panic(err)
 				}
 				a := map[string]actions.Action{
-					"hallo": actions.Hallo{},
-					"sleep": actions.Sleep{},
+					"hallo": actions.CreateHalloAction(),
 				}
-				action, _ := a[message.CurrentStage.Name]
+				action, _ := a[message.CurrentStage.Action]
 
-				action.Execute(actions.ActionContext{Parameters: message.CurrentStage.Parameters})
+				message, err = action.Execute(message)
+				if err != nil {
+					err = queue.AddStageAsFailed(message)
+					if err != nil {
+
+						panic(err)
+					}
+				}
 
 				err = queue.AddStageAsSuccess(message)
 				if err != nil {
@@ -54,17 +60,8 @@ func CreateMapExecutor(queue queues.MessageQueue) Executor {
 	}
 }
 
-func (executor *executor) Execute(actionName string, parameters actions.ActionContext) error {
+func (executor *executor) Execute(actionName string, parameters types.Message) error {
 
-	a := map[string]actions.Action{
-		"hallo": actions.Hallo{},
-		"sleep": actions.Sleep{},
-	}
-	action, exist := a[actionName]
-	if !exist {
-		return fmt.Errorf("action %v not found", actionName)
-	}
-	action.Execute(parameters)
-
+	//TODO: remove
 	return nil
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/google/uuid"
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -110,7 +111,7 @@ func (queue *queue) WaitingForStage() (<-chan amqp.Delivery, error) {
 	)
 
 }
-func (queue *queue) AddStageToQueue(message Message) error {
+func (queue *queue) AddStageToQueue(message types.Message) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -134,7 +135,7 @@ func (queue *queue) AddStageToQueue(message Message) error {
 
 	return err
 }
-func (queue *queue) AddStageAsSuccess(message Message) error {
+func (queue *queue) AddStageAsSuccess(message types.Message) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -156,7 +157,7 @@ func (queue *queue) AddStageAsSuccess(message Message) error {
 
 	return err
 }
-func (queue *queue) AddStageAsFailed(message Message) error {
+func (queue *queue) AddStageAsFailed(message types.Message) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
