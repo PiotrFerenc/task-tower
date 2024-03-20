@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gobeam/stringy"
+	"github.com/valyala/fasttemplate"
 	"strconv"
 )
 
@@ -16,11 +17,15 @@ func (message *Message) GetInternalName(propertyName string) string {
 
 func (message *Message) GetString(name string) (string, error) {
 	internalName := message.GetInternalName(name)
-	value, ok := message.Pipeline.Parameters[internalName]
+	parameter, ok := message.Pipeline.Parameters[internalName]
 	if !ok {
 		return " ", errors.New("key not found")
 	}
+	value := parameter.(string)
 
+	template := fasttemplate.New(value, "{{", "}}")
+	value = template.ExecuteString(message.Pipeline.Parameters)
+	message.Pipeline.Parameters[internalName] = value
 	return value, nil
 }
 
@@ -29,12 +34,8 @@ func (message *Message) GetInt(name string) (int, error) {
 	if !ok {
 		return 0, errors.New("key not found")
 	}
-	result, err := strconv.Atoi(value)
-	if err != nil {
-		return 0, err
-	}
 
-	return result, nil
+	return value.(int), nil
 }
 func (message *Message) SetInt(name string, value int) (*Message, error) {
 	message.Pipeline.Parameters[message.GetInternalName(name)] = strconv.Itoa(value)
