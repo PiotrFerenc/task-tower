@@ -1,0 +1,27 @@
+POST localhost:5000/execute
+
+{
+    "Parameters": {
+        "moje_imie" : "Jan",
+        "czesc.name": "Piotr",
+        "cze.name": "Marian i {{czesc.name}}",
+        "czes.name": "{{czesc.name}} i {{cze.name}} oraz sw {{moje_imie}}"
+    },
+    "Stages": [
+        {
+            "Order": 1,
+            "Name": "czesc",
+            "Action": "hallo"
+        },
+        {
+            "Order": 2,
+            "Name": "cze",
+            "Action": "hallo"
+        },
+        {
+            "Order": 3,
+            "Name": "czes",
+            "Action": "hallo"
+        }
+    ]
+}

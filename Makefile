@@ -1,4 +1,4 @@
-DOCKER_COMPOSE_FILE := config/docker-compose.yml
+DOCKER_COMPOSE_FILE := docker/docker-compose.yml
 
 docker-reset:
 	$(MAKE) docker-down
@@ -12,8 +12,8 @@ docker-clean:
 	docker rm $(docker ps -aq)
 
 docker-build:
-	docker build -t dwas/controller -f config/controller/Dockerfile .
-	docker build -t dwas/worker -f config/worker/Dockerfile .
+	docker build -t dwas/controller -f docker/controller/Dockerfile .
+	docker build -t dwas/worker -f docker/worker/Dockerfile .
 docker-rebuild:
 	$(MAKE) docker-down
 	$(MAKE) docker-build

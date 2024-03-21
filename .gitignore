@@ -1,2 +1,2 @@
-internal/proto/gen/go/dwas.pb.go
-config/data
+src/config/data
+docker/data
