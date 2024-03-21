@@ -4,6 +4,7 @@ import (
 	"github.com/PiotrFerenc/mash2/src/api/types"
 	"github.com/PiotrFerenc/mash2/src/internal/queues"
 	"github.com/goccy/go-json"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"log"
 )
 
@@ -16,67 +17,60 @@ type pipelineService struct {
 	processService ProcessService
 }
 
-func CreatePipelineService(queue queues.MessageQueue, processService ProcessService) PipelineService {
-	s := func(message types.Message) {
-
-		index := message.CurrentStage.Order
-		if index < len(message.Pipeline.Stages) {
-			current := message.Pipeline.Stages[index]
-			err := queue.AddStageToQueue(types.Message{
-				CurrentStage: current,
-				Pipeline:     message.Pipeline,
-			})
-			if err != nil {
-				panic(err)
-			}
-		} else {
-			log.Printf("Done")
+func onSuccess(message types.Message, queue queues.MessageQueue) {
+	index := message.CurrentStage.Order
+	if index < len(message.Pipeline.Stages) {
+		current := message.Pipeline.Stages[index]
+		err := queue.AddStageToQueue(types.Message{
+			CurrentStage: current,
+			Pipeline:     message.Pipeline,
+		})
+		if err != nil {
+			panic(err)
 		}
-
+	} else {
+		log.Printf("Done")
 	}
+}
 
-	f := func(message types.Message) {
-		log.Printf(" fail [x] %s", message.CurrentStage.Name)
-	}
+func onFail(message types.Message, queue queues.MessageQueue) {
+	log.Printf(" fail [x] %s", message.CurrentStage.Name)
+}
 
-	go func(onSucces func(types.Message), onFail func(types.Message)) {
-		ss, _ := queue.WaitingForSucceedStage()
-		fs, _ := queue.WaitingForFailedStage()
-
-		var forever chan struct{}
-
-		go func() {
-			for d := range ss {
-				var message types.Message
-				err := json.Unmarshal(d.Body, &message)
-				if err != nil {
-					panic(err)
-				}
-
-				onSucces(message)
-			}
-		}()
-
-		go func() {
-			for d := range fs {
-				var message types.Message
-				err := json.Unmarshal(d.Body, &message)
-				if err != nil {
-					panic(err)
-				}
-
-				onFail(message)
-			}
-		}()
-
-		<-forever
-
-	}(s, f)
-
+func CreatePipelineService(queue queues.MessageQueue, processService ProcessService) PipelineService {
+	go watchForMessages(queue, onSuccess, onFail)
 	return &pipelineService{
 		queue:          queue,
 		processService: processService,
 	}
+}
+
+func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Message, queues.MessageQueue), onFail func(types.Message, queues.MessageQueue)) {
+	successStages, _ := queue.WaitingForSucceedStage()
+	failedStages, _ := queue.WaitingForFailedStage()
+	var forever chan struct{}
+	go processStages(successStages, queue, onSuccess)
+	go processStages(failedStages, queue, onFail)
+	<-forever
+}
+
+func processStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onSuccess func(types.Message, queues.MessageQueue)) {
+	for d := range stages {
+		message, err := unmarshalMessage(d.Body)
+		if err != nil {
+			panic(err)
+		}
+		onSuccess(*message, queue)
+	}
+}
+
+func unmarshalMessage(body []byte) (*types.Message, error) {
+	var message types.Message
+	err := json.Unmarshal(body, &message)
+	if err != nil {
+		return nil, err
+	}
+	return &message, nil
 }
 
 func (p *pipelineService) Run(pipeline *types.Pipeline) error {
