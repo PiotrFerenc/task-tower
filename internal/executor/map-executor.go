@@ -69,9 +69,3 @@ func unmarshal(d amqp.Delivery) (types.Message, error) {
 	}
 	return message, err
 }
-
-func (executor *executor) Execute(actionName string, parameters types.Message) error {
-
-	//TODO: remove
-	return nil
-}
