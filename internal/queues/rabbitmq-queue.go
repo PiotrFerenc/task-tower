@@ -12,6 +12,10 @@ import (
 	"time"
 )
 
+const (
+	ContentType = "text/plain"
+)
+
 type queue struct {
 	configuration *configuration.QueueConfig
 	client        *RabbitClient
@@ -127,7 +131,7 @@ func (queue *queue) AddStageToQueue(message types.Message) error {
 		false,
 		false,
 		amqp.Publishing{
-			ContentType:   "text/plain",
+			ContentType:   ContentType,
 			CorrelationId: uuid.NewString(),
 			ReplyTo:       queue.configuration.QueueRunPipe,
 			Body:          bytes,
@@ -149,7 +153,7 @@ func (queue *queue) AddStageAsSuccess(message types.Message) error {
 		false,                                 // mandatory
 		false,                                 // immediate
 		amqp.Publishing{
-			ContentType:   "text/plain",
+			ContentType:   ContentType,
 			CorrelationId: uuid.NewString(),
 			ReplyTo:       queue.configuration.QueueStageSucceed,
 			Body:          bytes,
@@ -171,7 +175,7 @@ func (queue *queue) AddStageAsFailed(message types.Message) error {
 		false,
 		false,
 		amqp.Publishing{
-			ContentType:   "text/plain",
+			ContentType:   ContentType,
 			CorrelationId: uuid.NewString(),
 			ReplyTo:       queue.configuration.QueueStageFailed,
 			Body:          bytes,
