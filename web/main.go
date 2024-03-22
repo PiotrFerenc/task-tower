@@ -13,7 +13,7 @@ func main() {
 	}
 	e := echo.New()
 	e.Renderer = t
-	e.Static("/css", "web/public/static")
+	e.Static("/assets", "web/public/static")
 	e.GET("/", func(c echo.Context) error {
 		data := map[string]interface{}{
 			"Title":   "Strona główna",
