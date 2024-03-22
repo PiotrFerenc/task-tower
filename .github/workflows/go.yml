@@ -22,6 +22,9 @@ jobs:
         go-version: '1.22.0'
     
     - name: Build worker
-      run: go build -v ./cmd/worker/main.g
-    - name: Build controller 
+      run: go build -v ./cmd/worker/main.go
+
+    - name: Build controller
       run: go build -v ./cmd/controller/main.go
+
+
