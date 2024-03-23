@@ -25,3 +25,27 @@ POST localhost:5000/execute
         }
     ]
 }
+
+
+###
+
+POST localhost:5000/execute
+
+{
+    "Parameters": {
+        "numbers.a" : "1",
+        "numbers.b": "2",
+        "wynik.text": "{{numbers.a}} + {{numbers.b}} = {{numbers.c}}"
+    },
+    "Stages": [
+        {
+            "Order": 1,
+            "Name": "numbers",
+            "Action": "addnumbers"
+        },{
+            "Order": 2,
+            "Name": "wynik",
+            "Action": "console"
+        }
+    ]
+}

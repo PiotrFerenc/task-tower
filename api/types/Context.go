@@ -30,12 +30,15 @@ func (message *Message) GetString(name string) (string, error) {
 }
 
 func (message *Message) GetInt(name string) (int, error) {
-	value, ok := message.Pipeline.Parameters[message.GetInternalName(name)]
-	if !ok {
-		return 0, errors.New("key not found")
+	value, err := message.GetString(name)
+	if err != nil {
+		return 0, err
 	}
-
-	return value.(int), nil
+	conv, err := strconv.Atoi(value)
+	if err != nil {
+		return 0, err
+	}
+	return conv, nil
 }
 func (message *Message) SetInt(name string, value int) (*Message, error) {
 	message.Pipeline.Parameters[message.GetInternalName(name)] = strconv.Itoa(value)

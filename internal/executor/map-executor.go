@@ -18,7 +18,8 @@ type executor struct {
 
 func CreateMapExecutor(queue queues.MessageQueue) Executor {
 	a := map[string]actions.Action{
-		"hallo": actions.CreateHalloAction(),
+		"console":    actions.CreateConsoleAction(),
+		"addnumbers": actions.CreateAddNumbers(),
 	}
 
 	go func() {
