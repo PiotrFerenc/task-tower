@@ -20,6 +20,7 @@ func CreateMapExecutor(queue queues.MessageQueue) Executor {
 	a := map[string]actions.Action{
 		"console":    actions.CreateConsoleAction(),
 		"addnumbers": actions.CreateAddNumbers(),
+		"git-clone":  actions.CreateGitClone(),
 	}
 
 	go func() {
