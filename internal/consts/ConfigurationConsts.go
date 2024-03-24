@@ -11,4 +11,5 @@ const (
 	QueuePort               = "QUEUE_PORT"
 	ConfigurationFolderName = "config"
 	ConfigurationFileName   = "config"
+	TmpFolder               = "TMP_FOLDER"
 )

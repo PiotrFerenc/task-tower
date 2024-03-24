@@ -49,3 +49,25 @@ POST localhost:5000/execute
         }
     ]
 }
+
+###
+
+POST localhost:5000/execute
+
+{
+    "Parameters": {
+        "clone.url" : "https://github.com/PiotrFerenc/mash2",
+        "console.text":"repo znajduje się w {{clone.path}}"
+    },
+    "Stages": [
+        {
+            "Order": 1,
+            "Name": "clone",
+            "Action": "git-clone"
+        }  ,{
+            "Order": 2,
+            "Name": "console",
+            "Action": "console"
+        }
+    ]
+}

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
+	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/queues"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"log"
@@ -16,11 +17,11 @@ type executor struct {
 	queue queues.MessageQueue
 }
 
-func CreateMapExecutor(queue queues.MessageQueue) Executor {
+func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) Executor {
 	a := map[string]actions.Action{
-		"console":    actions.CreateConsoleAction(),
-		"addnumbers": actions.CreateAddNumbers(),
-		"git-clone":  actions.CreateGitClone(),
+		"console":     actions.CreateConsoleAction(),
+		"add-numbers": actions.CreateAddNumbers(),
+		"git-clone":   actions.CreateGitClone(config),
 	}
 
 	go func() {

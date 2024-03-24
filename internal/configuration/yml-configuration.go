@@ -33,5 +33,8 @@ func (config *configuration) LoadConfiguration() *Config {
 			QueuePassword:     viper.GetString(cfg.QueuePassword),
 			QueuePort:         viper.GetString(cfg.QueuePort),
 		},
+		Folder: FolderConfig{
+			TmpFolder: viper.GetString(cfg.TmpFolder),
+		},
 	}
 }

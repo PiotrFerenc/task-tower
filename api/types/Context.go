@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gobeam/stringy"
+	"github.com/google/uuid"
 	"github.com/valyala/fasttemplate"
 	"strconv"
 )
@@ -27,6 +28,10 @@ func (message *Message) GetString(name string) (string, error) {
 	value = template.ExecuteString(message.Pipeline.Parameters)
 	message.Pipeline.Parameters[internalName] = value
 	return value, nil
+}
+
+func (message *Message) NewFolder(path string) string {
+	return fmt.Sprintf("%s/%s", path, uuid.NewString())
 }
 
 func (message *Message) GetInt(name string) (int, error) {

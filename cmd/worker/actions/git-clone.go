@@ -2,15 +2,21 @@ package actions
 
 import (
 	"github.com/PiotrFerenc/mash2/api/types"
+	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/go-git/go-git/v5"
 	"os"
 )
 
+var ()
+
 type gitClone struct {
+	config *configuration.Config
 }
 
-func CreateGitClone() Action {
-	return &gitClone{}
+func CreateGitClone(config *configuration.Config) Action {
+	return &gitClone{
+		config: config,
+	}
 }
 
 func (action *gitClone) Inputs() []Property {
@@ -35,7 +41,8 @@ func (action *gitClone) Execute(message types.Message) (types.Message, error) {
 		return types.Message{}, err
 	}
 
-	path := "/tmp/"
+	path := message.NewFolder(action.config.Folder.TmpFolder)
+
 	_, err = git.PlainClone(path, false, &git.CloneOptions{
 		URL:      repositoryUrl,
 		Progress: os.Stdout,

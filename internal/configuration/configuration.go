@@ -9,10 +9,15 @@ type QueueConfig struct {
 	QueueVhost        string
 	QueueUser         string
 	QueuePassword     string
+	TmpFolder         string
+}
+type FolderConfig struct {
+	TmpFolder string
 }
 
 type Config struct {
-	Queue QueueConfig
+	Queue  QueueConfig
+	Folder FolderConfig
 }
 
 type Configuration interface {
