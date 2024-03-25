@@ -41,11 +41,13 @@ git clone https://github.com/PiotrFerenc/mash2
 ```shell
 cd mash2
 ```
+serve
 
 ```makefile
 make docker-rebuild
 ```
 or
+
 ```shell
 docker build -t dwas/controller -f docker/Dockerfile-controller .
 docker build -t dwas/worker -f docker/Dockerfile-worker .
