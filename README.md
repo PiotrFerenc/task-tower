@@ -10,97 +10,115 @@
 
 [![Go](https://github.com/PiotrFerenc/mash2/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/PiotrFerenc/mash2/actions/workflows/go.yml)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=bugs)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=coverage)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2)  [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2)
 
 ![100 - commitów](https://img.shields.io/badge/100-commitów-2ea44f?logo=go)
 
-**Distributed Work Automation System (DWAS)** is a system designed to automate and streamline processes in distributed
+# DWAS
+
+------------------------
+
+**D**istributed **W**ork **A**utomation **S**ystem is a system designed to automate and streamline processes in
+distributed
 work environments, integrating various tools and platforms to coordinate tasks across multiple locations.
 </div>
-<p align="center">
-  <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/7e4f24c1-1a14-4840-a7af-1713b6c958d2" alt="logo" width="200"/>
 
-  <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/105cd7c5-bccb-435c-aa4d-fb33930ab2f8" alt="logo" width="200"/>
-</p>
+## Installation
 
+----------------------
 
+### requirements
 
-**Build**
------------------------
+- [MAKE](https://www.gnu.org/software/make/)
+- [docker](https://docs.docker.com/engine/install/)
+- [docker-compose](https://docs.docker.com/compose/install/)
+- [GO](https://go.dev/doc/install)
 
-- clone repo
 
 ```git
 git clone https://github.com/PiotrFerenc/mash2
 ```
-
-- impl interface Action 
-
-```go
-package actions
-
-import (
-	"github.com/PiotrFerenc/mash2/api/types"
-)
-
-type addnumbers struct {
-}
-
-// CreateAddNumbers This is a function that initializes an instance of the addnumbers struct.
-// It returns a pointer to the addnumbers instance.
-// This is useful when we don't want to pass the struct by value in subsequent calls.
-func CreateAddNumbers() Action {
-	return &addnumbers{}
-}
-
-// Inputs The Inputs() method returns a slice of Property structure.
-// The Property structure includes two fields: Name and Type, both of which are strings.
-// These property structures are created for two inputs, 'a' and 'b', of 'number' type.
-// It then returns these properties.
-func (action *addnumbers) Inputs() []Property {
-	output := make([]Property, 2)
-	output[0] = Property{
-		Name: "a",
-		Type: "number",
-	}
-	output[1] = Property{
-		Name: "b",
-		Type: "number",
-	}
-	return output
-}
-
-// Outputs The Outputs() method returns a slice of Property structure.
-// It creates a property structure for an output, 'c', of 'number' type and returns it.
-func (action *addnumbers) Outputs() []Property {
-	output := make([]Property, 1)
-	output[0] = Property{
-		Name: "c",
-		Type: "number",
-	}
-	return output
-}
-
-// Execute The Execute() method receives a parameter of types.Message type and returns (types.Message, error).
-func (action *addnumbers) Execute(message types.Message) (types.Message, error) {
-
-	// In this Execute() method, first, it retrieves the integer values 'a' and 'b' from the message.
-	a, _ := message.GetInt("a")
-	b, _ := message.GetInt("b")
-
-	//Then it adds them together and sets the resulting 'c' back into the message.
-	c := a + b
-
-	//After performing these operations, it returns the updated message and nil for the error value.
-	_, _ = message.SetInt("c", c)
-
-	return message, nil
-
-}
-
+```shell
+cd mash2
 ```
 
-register: 
+```makefile
+make docker-rebuild #down + build controller + build workers + up
+```
+or
+```shell
+docker build -t dwas/controller -f docker/Dockerfile-controller .
+docker build -t dwas/worker -f docker/Dockerfile-worker .
+docker-compose -f docker/docker-compose.yml up
+```
 
-https://github.com/PiotrFerenc/mash2/blob/main/internal/executor/map-executor.go#L20
+## Usage
 
+---------
+
+
+This is a cURL command which sends a POST request to the URL "http://localhost:5000/execute". It sends a payload of JSON data where it sets a series of parameters and stages. The parameters and actions in the stages seem to indicate a sequence of operations to be performed.
+
+```shell
+curl -X POST --location "http://localhost:5000/execute" \
+    -d '{
+    "Parameters": {
+        "numbers.a" : "1",
+        "numbers.b": "2",
+        "wynik.text": "{{numbers.a}} + {{numbers.b}} = {{numbers.c}}"
+    },
+    "Stages": [
+        {
+            "Order": 1,
+            "Name": "numbers",
+            "Action": "add-numbers"
+        },{
+            "Order": 2,
+            "Name": "wynik",
+            "Action": "console"
+        }
+    ]
+}'
+```
+
+`Parameters`- In the "Parameters" section, we can declare variables that will be used in the "Stages" section.
+
+`Stages`- In the "Stages" section, we define the next steps.
+
+`Order`- means the sequence of performing actions
+
+`Name`- the proper name of the action
+
+`Action` - the name of the action
+
+
+
+STATISTICS
+------------------------
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=bugs)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=coverage)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2)  [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2)
+
+## License
+
+--------------
+
+MIT License
+
+Copyright (c) 2024 DWAS
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
