@@ -43,7 +43,7 @@ cd mash2
 ```
 
 ```makefile
-make docker-rebuild #down + build controller + build workers + up
+make docker-rebuild
 ```
 or
 ```shell
@@ -81,7 +81,10 @@ curl -X POST --location "http://localhost:5000/execute" \
 }'
 ```
 
-`Parameters`- In the "Parameters" section, we can declare variables that will be used in the "Stages" section.
+`Parameters`- In the "Parameters" section, we can declare variables that will be used in the "Stages" section. 
+
+`numbers.a`- `numbers`- proper name of action, `a`- name of input argument [link](https://github.com/PiotrFerenc/mash2/blob/main/cmd/worker/actions/add-numbers.go#L24)
+
 
 `Stages`- In the "Stages" section, we define the next steps.
 
