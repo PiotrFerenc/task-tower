@@ -64,7 +64,8 @@ POST localhost:5000/execute
             "Order": 1,
             "Name": "clone",
             "Action": "git-clone"
-        }  ,{
+        }
+         ,{
             "Order": 2,
             "Name": "console",
             "Action": "console"

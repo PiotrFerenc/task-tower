@@ -53,6 +53,7 @@ func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) 
 
 func addToQueue(err error, queue queues.MessageQueue, message types.Message) {
 	if err != nil {
+		message.Error = err.Error()
 		err = queue.AddStageAsFailed(message)
 		if err != nil {
 			panic(err)

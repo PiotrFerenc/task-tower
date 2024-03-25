@@ -28,18 +28,18 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - "./tmp:/tmp"
+      - "./temp:/home/appuser/temp"
   dwas_worker_2:
     container_name: "worker-dwas-2"
     image: "dwas/worker"
     depends_on:
       - rabbitmq
     volumes:
-      - "./tmp:/tmp"
+      - "./temp:/home/appuser/temp"
   dwas_worker_3:
     container_name: "worker-dwas-3"
     image: "dwas/worker"
     depends_on:
       - rabbitmq
     volumes:
-      - "./tmp:/tmp"
+      - "./temp:/home/appuser/temp"

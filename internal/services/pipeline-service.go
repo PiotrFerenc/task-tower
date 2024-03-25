@@ -34,7 +34,7 @@ func onSuccess(message types.Message, queue queues.MessageQueue) {
 }
 
 func onFail(message types.Message, queue queues.MessageQueue) {
-	log.Printf(" fail [x] %s", message.CurrentStage.Name)
+	log.Printf("Fail %s => %+v\\n", message.CurrentStage.Name, message.Error)
 }
 
 func CreatePipelineService(queue queues.MessageQueue, processService ProcessService) PipelineService {
