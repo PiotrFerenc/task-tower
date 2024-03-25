@@ -35,10 +35,13 @@ func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) 
 			for d := range stage {
 				message, err := unmarshal(d)
 
-				action := a[message.CurrentStage.Action]
-
-				message, err = action.Execute(message)
-				addToQueue(err, queue, message)
+				action, ok := a[message.CurrentStage.Action]
+				if ok {
+					message, err = action.Execute(message)
+					addToQueue(err, queue, message)
+				} else {
+					log.Printf("No action: %s", message.CurrentStage.Action)
+				}
 			}
 		}()
 

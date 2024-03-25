@@ -41,7 +41,7 @@ POST localhost:5000/execute
         {
             "Order": 1,
             "Name": "numbers",
-            "Action": "addnumbers"
+            "Action": "add-numbers"
         },{
             "Order": 2,
             "Name": "wynik",
