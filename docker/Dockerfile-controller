@@ -19,7 +19,7 @@ USER appuser
 WORKDIR /home/appuser
 
 COPY --from=builder /app/dwas-controller .
-COPY --from=builder /app/config/config.yml ./config/config.yml
+COPY --from=builder /app/config/release-config.yml ./config/config.yml
 ENV GIN_MODE=release
 
 CMD ["./dwas-controller"]
