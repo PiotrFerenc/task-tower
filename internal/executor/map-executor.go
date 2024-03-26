@@ -3,6 +3,7 @@ package executor
 import (
 	"encoding/json"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions/file"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/queues"
 	"github.com/PiotrFerenc/mash2/internal/types"
@@ -22,6 +23,7 @@ func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) 
 		"console":     actions.CreateConsoleAction(),
 		"add-numbers": actions.CreateAddNumbers(),
 		"git-clone":   actions.CreateGitClone(config),
+		"file-create": file.CreateContentToFile(config),
 	}
 
 	go func() {

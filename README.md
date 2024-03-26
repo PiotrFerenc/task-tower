@@ -34,18 +34,20 @@ work environments, integrating various tools and platforms to coordinate tasks a
 - [docker-compose](https://docs.docker.com/compose/install/)
 - [GO](https://go.dev/doc/install)
 
-
 ```git
 git clone https://github.com/PiotrFerenc/mash2
 ```
+
 ```shell
 cd mash2
 ```
+
 serve
 
 ```makefile
 make docker-rebuild
 ```
+
 or
 
 ```shell
@@ -59,7 +61,9 @@ docker-compose -f docker/docker-compose.yml up
 ---------
 
 
-This is a cURL command which sends a POST request to the URL "http://localhost:5000/execute". It sends a payload of JSON data where it sets a series of parameters and stages. The parameters and actions in the stages seem to indicate a sequence of operations to be performed.
+This is a cURL command which sends a POST request to the URL "http://localhost:5000/execute". It sends a payload of JSON
+data where it sets a series of parameters and stages. The parameters and actions in the stages seem to indicate a
+sequence of operations to be performed.
 
 ```shell
 curl -X POST --location "http://localhost:5000/execute" \
@@ -83,10 +87,10 @@ curl -X POST --location "http://localhost:5000/execute" \
 }'
 ```
 
-`Parameters`- In the "Parameters" section, we can declare variables that will be used in the "Steps" section. 
+`Parameters`- In the "Parameters" section, we can declare variables that will be used in the "Steps" section.
 
-`numbers.a`- `numbers`- proper name of action, `a`- name of input argument [link](https://github.com/PiotrFerenc/mash2/blob/main/cmd/worker/actions/add-numbers.go#L24)
-
+`numbers.a`- `numbers`- proper name of action, `a`- name of input
+argument [link](https://github.com/PiotrFerenc/mash2/blob/main/cmd/worker/actions/add-numbers.go#L24)
 
 `Steps`- In the "Steps" section, we define the next steps.
 
@@ -95,6 +99,12 @@ curl -X POST --location "http://localhost:5000/execute" \
 `Name`- the proper name of the action
 
 `Action` - the name of the action
+
+## Actions
+
+- [ ] create file
+    - arguments `fileName`, `content`
+    - return `createdFilePath`
 
 ## Todo
 
