@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-type Process struct {
+type Pipeline struct {
 	Id          uuid.UUID
 	Steps       []Step
 	Error       string
@@ -24,16 +24,26 @@ type Step struct {
 	Sequence int
 	Action   string
 	Name     string
+	Status   StepStatus
 }
 
-func (message *Process) GetInternalName(propertyName string) string {
+type StepStatus int
+
+const (
+	Waiting StepStatus = iota
+	Processing
+	Done
+	Fail
+)
+
+func (message *Pipeline) GetInternalName(propertyName string) string {
 	str := stringy.New(message.CurrentStep.Name)
 	internalName := str.CamelCase("?", "")
 	internalName = stringy.New(internalName).ToLower()
 	return fmt.Sprintf("%s.%s", internalName, propertyName)
 }
 
-func (message *Process) GetString(name string) (string, error) {
+func (message *Pipeline) GetString(name string) (string, error) {
 	internalName := message.GetInternalName(name)
 	parameter, ok := message.Parameters[internalName]
 	if !ok {
@@ -47,11 +57,11 @@ func (message *Process) GetString(name string) (string, error) {
 	return value, nil
 }
 
-func (message *Process) NewFolder(path string) string {
+func (message *Pipeline) NewFolder(path string) string {
 	return fmt.Sprintf("%s/%s", path, uuid.NewString())
 }
 
-func (message *Process) GetInt(name string) (int, error) {
+func (message *Pipeline) GetInt(name string) (int, error) {
 	value, err := message.GetString(name)
 	if err != nil {
 		return 0, err
@@ -62,16 +72,16 @@ func (message *Process) GetInt(name string) (int, error) {
 	}
 	return conv, nil
 }
-func (message *Process) SetInt(name string, value int) (*Process, error) {
+func (message *Pipeline) SetInt(name string, value int) (*Pipeline, error) {
 	message.Parameters[message.GetInternalName(name)] = strconv.Itoa(value)
 	return message, nil
 }
-func (message *Process) SetString(name, value string) (*Process, error) {
+func (message *Pipeline) SetString(name, value string) (*Pipeline, error) {
 	message.Parameters[message.GetInternalName(name)] = value
 	return message, nil
 }
-func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Process {
-	process := &Process{
+func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
+	process := &Pipeline{
 		Id:         uuid.New(),
 		Parameters: pipeline.Parameters,
 		Steps:      make([]Step, len(pipeline.Stages)),
@@ -87,6 +97,7 @@ func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Process {
 			Sequence: stage.Sequence,
 			Action:   stage.Action,
 			Name:     stage.Name,
+			Status:   Waiting,
 		}
 	}
 

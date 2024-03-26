@@ -7,7 +7,7 @@ import (
 type Action interface {
 	Inputs() []Property
 	Outputs() []Property
-	Execute(process types.Process) (types.Process, error)
+	Execute(process types.Pipeline) (types.Pipeline, error)
 }
 
 type Property struct {

@@ -18,7 +18,7 @@ type pipelineService struct {
 	processService ProcessService
 }
 
-func onSuccess(process types.Process, queue queues.MessageQueue) {
+func onSuccess(process types.Pipeline, queue queues.MessageQueue) {
 	index := process.CurrentStep.Sequence
 	if index < len(process.Steps) {
 		current := process.Steps[index]
@@ -32,7 +32,7 @@ func onSuccess(process types.Process, queue queues.MessageQueue) {
 	}
 }
 
-func onFail(message types.Process, queue queues.MessageQueue) {
+func onFail(message types.Pipeline, queue queues.MessageQueue) {
 	log.Printf("Fail %s => %+v\\n", message.CurrentStep.Name, message.Error)
 }
 
@@ -44,7 +44,7 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 	}
 }
 
-func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Process, queues.MessageQueue), onFail func(types.Process, queues.MessageQueue)) {
+func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Pipeline, queues.MessageQueue), onFail func(types.Pipeline, queues.MessageQueue)) {
 	successStages, _ := queue.WaitingForSucceedStage()
 	failedStages, _ := queue.WaitingForFailedStage()
 	var forever chan struct{}
@@ -53,7 +53,7 @@ func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Process, q
 	<-forever
 }
 
-func processStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onSuccess func(types.Process, queues.MessageQueue)) {
+func processStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onSuccess func(types.Pipeline, queues.MessageQueue)) {
 	for d := range stages {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
@@ -63,8 +63,8 @@ func processStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onSuc
 	}
 }
 
-func unmarshalMessage(body []byte) (*types.Process, error) {
-	var message types.Process
+func unmarshalMessage(body []byte) (*types.Pipeline, error) {
+	var message types.Pipeline
 	err := json.Unmarshal(body, &message)
 	if err != nil {
 		return nil, err

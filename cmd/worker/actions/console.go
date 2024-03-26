@@ -30,7 +30,7 @@ func (action *console) Outputs() []Property {
 	return output
 }
 
-func (action *console) Execute(message types.Process) (types.Process, error) {
+func (action *console) Execute(message types.Pipeline) (types.Pipeline, error) {
 	name, _ := message.GetString("text")
 
 	log.Print(name)

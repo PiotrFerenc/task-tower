@@ -7,9 +7,9 @@ import (
 
 type MessageQueue interface {
 	Connect() error
-	AddStageToQueue(message types.Process) error
-	AddStageAsFailed(message types.Process) error
-	AddStageAsSuccess(message types.Process) error
+	AddStageToQueue(message types.Pipeline) error
+	AddStageAsFailed(message types.Pipeline) error
+	AddStageAsSuccess(message types.Pipeline) error
 	WaitingForFailedStage() (<-chan amqp.Delivery, error)
 	WaitingForSucceedStage() (<-chan amqp.Delivery, error)
 	WaitingForStage() (<-chan amqp.Delivery, error)

@@ -115,7 +115,7 @@ func (queue *queue) WaitingForStage() (<-chan amqp.Delivery, error) {
 	)
 
 }
-func (queue *queue) AddStageToQueue(message types.Process) error {
+func (queue *queue) AddStageToQueue(message types.Pipeline) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -139,7 +139,7 @@ func (queue *queue) AddStageToQueue(message types.Process) error {
 
 	return err
 }
-func (queue *queue) AddStageAsSuccess(message types.Process) error {
+func (queue *queue) AddStageAsSuccess(message types.Pipeline) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -161,7 +161,7 @@ func (queue *queue) AddStageAsSuccess(message types.Process) error {
 
 	return err
 }
-func (queue *queue) AddStageAsFailed(message types.Process) error {
+func (queue *queue) AddStageAsFailed(message types.Pipeline) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

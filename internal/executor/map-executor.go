@@ -54,7 +54,7 @@ func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) 
 	}
 }
 
-func addToQueue(err error, queue queues.MessageQueue, message types.Process) {
+func addToQueue(err error, queue queues.MessageQueue, message types.Pipeline) {
 	if err != nil {
 		message.Error = err.Error()
 		err = queue.AddStageAsFailed(message)
@@ -68,8 +68,8 @@ func addToQueue(err error, queue queues.MessageQueue, message types.Process) {
 	}
 }
 
-func unmarshal(d amqp.Delivery) (types.Process, error) {
-	var message types.Process
+func unmarshal(d amqp.Delivery) (types.Pipeline, error) {
+	var message types.Pipeline
 	err := json.Unmarshal(d.Body, &message)
 	if err != nil {
 		panic(err)
