@@ -1,12 +1,9 @@
 package repositories
 
-type PostgresRepository struct {
-}
-
 type repository struct {
 }
 
-func CreatePostgresRepository() ProcessRepository {
+func CreateInMemoryRepository() ProcessRepository {
 	return &repository{}
 }
 

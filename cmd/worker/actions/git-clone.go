@@ -1,13 +1,11 @@
 package actions
 
 import (
-	"github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
+	"github.com/PiotrFerenc/mash2/internal/types"
 	"github.com/go-git/go-git/v5"
 	"os"
 )
-
-var ()
 
 type gitClone struct {
 	config *configuration.Config
@@ -35,10 +33,10 @@ func (action *gitClone) Outputs() []Property {
 	}
 	return output
 }
-func (action *gitClone) Execute(message types.Message) (types.Message, error) {
+func (action *gitClone) Execute(message types.Process) (types.Process, error) {
 	repositoryUrl, err := message.GetString("url")
 	if err != nil {
-		return types.Message{}, err
+		return types.Process{}, err
 	}
 
 	path := message.NewFolder(action.config.Folder.TmpFolder)
@@ -49,7 +47,7 @@ func (action *gitClone) Execute(message types.Message) (types.Message, error) {
 	})
 
 	if err != nil {
-		return types.Message{}, err
+		return types.Process{}, err
 	}
 	_, _ = message.SetString("path", path)
 	return message, nil

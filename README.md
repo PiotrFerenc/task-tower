@@ -67,13 +67,13 @@ curl -X POST --location "http://localhost:5000/execute" \
         "numbers.b": "2",
         "wynik.text": "{{numbers.a}} + {{numbers.b}} = {{numbers.c}}"
     },
-    "Stages": [
+    "Steps": [
         {
-            "Order": 1,
+            "Sequence": 1,
             "Name": "numbers",
             "Action": "add-numbers"
         },{
-            "Order": 2,
+            "Sequence": 2,
             "Name": "wynik",
             "Action": "console"
         }
@@ -81,14 +81,14 @@ curl -X POST --location "http://localhost:5000/execute" \
 }'
 ```
 
-`Parameters`- In the "Parameters" section, we can declare variables that will be used in the "Stages" section. 
+`Parameters`- In the "Parameters" section, we can declare variables that will be used in the "Steps" section. 
 
 `numbers.a`- `numbers`- proper name of action, `a`- name of input argument [link](https://github.com/PiotrFerenc/mash2/blob/main/cmd/worker/actions/add-numbers.go#L24)
 
 
-`Stages`- In the "Stages" section, we define the next steps.
+`Steps`- In the "Steps" section, we define the next steps.
 
-`Order`- means the sequence of performing actions
+`Sequence`- means the sequence of performing actions
 
 `Name`- the proper name of the action
 

@@ -1,7 +1,7 @@
 package actions
 
 import (
-	"github.com/PiotrFerenc/mash2/api/types"
+	"github.com/PiotrFerenc/mash2/internal/types"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func (action *console) Outputs() []Property {
 	return output
 }
 
-func (action *console) Execute(message types.Message) (types.Message, error) {
+func (action *console) Execute(message types.Process) (types.Process, error) {
 	name, _ := message.GetString("text")
 
 	log.Print(name)

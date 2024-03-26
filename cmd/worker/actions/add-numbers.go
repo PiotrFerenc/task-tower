@@ -1,7 +1,7 @@
 package actions
 
 import (
-	"github.com/PiotrFerenc/mash2/api/types"
+	"github.com/PiotrFerenc/mash2/internal/types"
 )
 
 type addnumbers struct {
@@ -43,7 +43,7 @@ func (action *addnumbers) Outputs() []Property {
 }
 
 // Execute The Execute() method receives a parameter of types.Message type and returns (types.Message, error).
-func (action *addnumbers) Execute(message types.Message) (types.Message, error) {
+func (action *addnumbers) Execute(message types.Process) (types.Process, error) {
 
 	// In this Execute() method, first, it retrieves the integer values 'a' and 'b' from the message.
 	a, _ := message.GetInt("a")

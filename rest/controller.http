@@ -9,17 +9,17 @@ POST localhost:5000/execute
     },
     "Stages": [
         {
-            "Order": 1,
+            "Sequence": 1,
             "Name": "czesc",
             "Action": "hallo"
         },
         {
-            "Order": 2,
+            "Sequence": 2,
             "Name": "cze",
             "Action": "hallo"
         },
         {
-            "Order": 3,
+            "Sequence": 3,
             "Name": "czes",
             "Action": "hallo"
         }
@@ -39,11 +39,11 @@ POST localhost:5000/execute
     },
     "Stages": [
         {
-            "Order": 1,
+            "Sequence": 1,
             "Name": "numbers",
             "Action": "add-numbers"
         },{
-            "Order": 2,
+            "Sequence": 2,
             "Name": "wynik",
             "Action": "console"
         }
@@ -61,12 +61,12 @@ POST localhost:5000/execute
     },
     "Stages": [
         {
-            "Order": 1,
+            "Sequence": 1,
             "Name": "clone",
             "Action": "git-clone"
         }
          ,{
-            "Order": 2,
+            "Sequence": 2,
             "Name": "console",
             "Action": "console"
         }

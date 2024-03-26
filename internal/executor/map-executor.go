@@ -2,10 +2,10 @@ package executor
 
 import (
 	"encoding/json"
-	"github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/queues"
+	"github.com/PiotrFerenc/mash2/internal/types"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"log"
 )
@@ -35,12 +35,12 @@ func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) 
 			for d := range stage {
 				message, err := unmarshal(d)
 
-				action, ok := a[message.CurrentStage.Action]
+				action, ok := a[message.CurrentStep.Action]
 				if ok {
 					message, err = action.Execute(message)
 					addToQueue(err, queue, message)
 				} else {
-					log.Printf("No action: %s", message.CurrentStage.Action)
+					log.Printf("No action: %s", message.CurrentStep.Action)
 				}
 			}
 		}()
@@ -54,7 +54,7 @@ func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) 
 	}
 }
 
-func addToQueue(err error, queue queues.MessageQueue, message types.Message) {
+func addToQueue(err error, queue queues.MessageQueue, message types.Process) {
 	if err != nil {
 		message.Error = err.Error()
 		err = queue.AddStageAsFailed(message)
@@ -68,8 +68,8 @@ func addToQueue(err error, queue queues.MessageQueue, message types.Message) {
 	}
 }
 
-func unmarshal(d amqp.Delivery) (types.Message, error) {
-	var message types.Message
+func unmarshal(d amqp.Delivery) (types.Process, error) {
+	var message types.Process
 	err := json.Unmarshal(d.Body, &message)
 	if err != nil {
 		panic(err)

@@ -1,13 +1,13 @@
 package actions
 
 import (
-	"github.com/PiotrFerenc/mash2/api/types"
+	"github.com/PiotrFerenc/mash2/internal/types"
 )
 
 type Action interface {
 	Inputs() []Property
 	Outputs() []Property
-	Execute(message types.Message) (types.Message, error)
+	Execute(process types.Process) (types.Process, error)
 }
 
 type Property struct {
