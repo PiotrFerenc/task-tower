@@ -5,7 +5,6 @@ import (
 	"github.com/PiotrFerenc/mash2/internal/queues"
 	"github.com/PiotrFerenc/mash2/internal/types"
 	"github.com/goccy/go-json"
-	"github.com/google/uuid"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"log"
 )
@@ -74,20 +73,8 @@ func unmarshalMessage(body []byte) (*types.Process, error) {
 }
 
 func (p *pipelineService) Run(pipeline *apitypes.Pipeline) error {
-	process := new(types.Process)
-	process.Id = uuid.New()
-	process.Parameters = pipeline.Parameters
-	process.Steps = make([]types.Step, len(pipeline.Stages))
-	for i, stage := range pipeline.Stages {
-		step := types.Step{
-			Id:       uuid.New(),
-			Sequence: stage.Sequence,
-			Action:   stage.Action,
-			Name:     stage.Name,
-		}
-		process.Steps[i] = step
-	}
-	process.CurrentStep = process.Steps[0]
+	process := types.NewProcessFromPipeline(pipeline)
+
 	err := p.queue.AddStageToQueue(*process)
 	if err != nil {
 		return err
