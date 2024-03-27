@@ -16,7 +16,6 @@
 
 # DWAS
 
-------------------------
 
 **D**istributed **W**ork **A**utomation **S**ystem is a system designed to automate and streamline processes in
 distributed
@@ -24,8 +23,6 @@ work environments, integrating various tools and platforms to coordinate tasks a
 </div>
 
 ## Installation
-
-----------------------
 
 ### requirements
 
@@ -42,23 +39,11 @@ git clone https://github.com/PiotrFerenc/mash2
 cd mash2
 ```
 
-serve
-
 ```makefile
 make docker-rebuild
 ```
 
-or
-
-```shell
-docker build -t dwas/controller -f docker/Dockerfile-controller .
-docker build -t dwas/worker -f docker/Dockerfile-worker .
-docker-compose -f docker/docker-compose.yml up
-```
-
-## Usage
-
----------
+## Osage 
 
 
 This is a cURL command which sends a POST request to the URL "http://localhost:5000/execute". It sends a payload of JSON
@@ -123,12 +108,10 @@ argument [link](https://github.com/PiotrFerenc/mash2/blob/main/cmd/worker/action
 - [x] Configuration
 
 ## STATISTICS
-------------------------
+
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=bugs)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=coverage)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2)  [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=PiotrFerenc_mash2&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=PiotrFerenc_mash2)
 
 ## License
-
---------------
 
 MIT License
 
