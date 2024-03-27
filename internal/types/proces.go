@@ -17,6 +17,7 @@ type Pipeline struct {
 	Error       string
 	CurrentStep Step
 	Parameters  map[string]interface{}
+	Status      StepStatus
 }
 
 type Step struct {
@@ -85,6 +86,7 @@ func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 		Id:         uuid.New(),
 		Parameters: pipeline.Parameters,
 		Steps:      make([]Step, len(pipeline.Stages)),
+		Status:     Processing,
 	}
 
 	sort.SliceStable(pipeline.Stages, func(i, j int) bool {
@@ -103,6 +105,7 @@ func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 
 	if len(process.Steps) > 0 {
 		process.CurrentStep = process.Steps[0]
+		process.CurrentStep.Status = Processing
 	}
 
 	return process
