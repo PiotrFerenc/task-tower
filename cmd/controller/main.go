@@ -14,7 +14,7 @@ var (
 	messageQueue      = queues.CreateRabbitMqMessageQueue(&config.Queue)
 	processRepository = repositories.CreateInMemoryRepository()
 	processService    = services.CreateProcessService(processRepository)
-	pipeLineService   = services.CreatePipelineService(messageQueue, processService)
+	pipeLineService   = services.CreatePipelineService(messageQueue, processService, services.CreateOnSuccessFunc(), services.CreateOnFailFunc(), services.CreateOnFinishFunc())
 	controller        = controllers.CreateRestController(pipeLineService)
 )
 
