@@ -10,8 +10,10 @@ type MessageQueue interface {
 	AddStageToQueue(message types.Pipeline) error
 	AddStageAsFailed(message types.Pipeline) error
 	AddStageAsSuccess(message types.Pipeline) error
+	AddStageAsFinished(message types.Pipeline) error
 	WaitingForFailedStage() (<-chan amqp.Delivery, error)
 	WaitingForSucceedStage() (<-chan amqp.Delivery, error)
+	WaitingForFinishedStage() (<-chan amqp.Delivery, error)
 	WaitingForStage() (<-chan amqp.Delivery, error)
 	CreateQueue(name string) error
 }
