@@ -1,11 +1,11 @@
 package services
 
 import (
+	"encoding/json"
 	"errors"
 	apitypes "github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/internal/queues"
 	"github.com/PiotrFerenc/mash2/internal/types"
-	"github.com/goccy/go-json"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"log"
 )
