@@ -1,15 +1,15 @@
 package configuration
 
 type QueueConfig struct {
-	QueueRunPipe      string
-	QueueStageSucceed string
-	QueueStageFailed  string
-	QueueHost         string
-	QueuePort         string
-	QueueVhost        string
-	QueueUser         string
-	QueuePassword     string
-	TmpFolder         string
+	QueueRunPipe       string
+	QueueStageSucceed  string
+	QueueStageFailed   string
+	QueueStageFinished string
+	QueueHost          string
+	QueuePort          string
+	QueueVhost         string
+	QueueUser          string
+	QueuePassword      string
 }
 type FolderConfig struct {
 	TmpFolder string
