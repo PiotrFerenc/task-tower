@@ -25,19 +25,16 @@ func (controller *controller) Run(address, port string) error {
 		var pipe types.Pipeline
 
 		if err := context.BindJSON(&pipe); err != nil {
-			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
 		if len(pipe.Stages) == 0 {
-			context.JSON(http.StatusBadRequest, gin.H{"error": Message.EmptyStageList})
-			return
+			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": Message.EmptyStageList})
 		}
 
 		go func() {
 			err := controller.pipelineService.Run(&pipe)
 			if err != nil {
-				context.JSON(http.StatusBadRequest, gin.H{"error": err})
-				return
+				context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
 			}
 		}()
 	})
