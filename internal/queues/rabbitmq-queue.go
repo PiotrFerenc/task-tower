@@ -47,6 +47,11 @@ func CreateRabbitMqMessageQueue(configuration *configuration.QueueConfig) Messag
 		panic(err)
 	}
 
+	err = q.CreateQueue(configuration.QueueStageFinished)
+	if err != nil {
+		panic(err)
+	}
+
 	return q
 }
 
@@ -115,6 +120,19 @@ func (queue *queue) WaitingForStage() (<-chan amqp.Delivery, error) {
 	)
 
 }
+func (queue *queue) WaitingForFinishedStage() (<-chan amqp.Delivery, error) {
+
+	return queue.client.ch.Consume(
+		queue.configuration.QueueStageFinished,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+}
 func (queue *queue) AddStageToQueue(message types.Pipeline) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -156,6 +174,28 @@ func (queue *queue) AddStageAsSuccess(message types.Pipeline) error {
 			ContentType:   ContentType,
 			CorrelationId: uuid.NewString(),
 			ReplyTo:       queue.configuration.QueueStageSucceed,
+			Body:          bytes,
+		})
+
+	return err
+}
+func (queue *queue) AddStageAsFinished(message types.Pipeline) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	bytes, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	err = queue.client.ch.PublishWithContext(ctx,
+		"",                                     // exchange
+		queue.configuration.QueueStageFinished, // routing key
+		false,                                  // mandatory
+		false,                                  // immediate
+		amqp.Publishing{
+			ContentType:   ContentType,
+			CorrelationId: uuid.NewString(),
+			ReplyTo:       queue.configuration.QueueStageFinished,
 			Body:          bytes,
 		})
 
