@@ -13,7 +13,7 @@ type repository struct {
 }
 
 func CreateInMemoryRepository() ProcessRepository {
-	processes = make([]*types.Pipeline, 1)
+	processes = make([]*types.Pipeline, 0)
 	return &repository{}
 }
 
@@ -34,6 +34,6 @@ func (r *repository) UpdateStatus(pipeline *types.Pipeline) {
 		}
 	}
 }
-func (r *repository) Start(pipeline *types.Pipeline) {
-	processes[0] = pipeline
+func (r *repository) Save(pipeline *types.Pipeline) {
+	processes = append(processes, pipeline)
 }

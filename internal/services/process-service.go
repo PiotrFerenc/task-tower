@@ -23,7 +23,7 @@ func CreateProcessService(repository repositories.ProcessRepository) ProcessServ
 }
 
 func (process *processService) MarkAsStarted(pipeline *types.Pipeline) {
-	process.repository.Start(pipeline)
+	process.repository.Save(pipeline)
 }
 func (process *processService) MarkAsDone(pipeline *types.Pipeline) {
 	pipeline.Status = types.Done
