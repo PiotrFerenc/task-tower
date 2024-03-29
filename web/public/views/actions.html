@@ -1,0 +1,36 @@
+{{define "actions-box"}}
+{{range  $name, $action := .actions}}
+
+<div class="pipeline-step">
+    <div class="card" style="width: 18rem;">
+        <a href="#" class="card-body" data-bs-toggle="popover" title="{{$name}}" content="{{$name}}-box">
+            <p class="card-text">{{$name}}</p>
+        </a>
+    </div>
+</div>
+
+
+<div id="{{$name}}-box" class="d-none">
+    {{range $action.Inputs}}
+    <div class="row">
+        <code>
+            {{.Name}}
+        </code>
+    </div>
+
+    {{end}}
+
+    {{range $action.Outputs}}
+    <div class="row">
+        <code>
+            {{.Name}}
+        </code>
+    </div>
+    {{end}}
+</div>
+
+
+{{end}}
+{{end}}
+
+

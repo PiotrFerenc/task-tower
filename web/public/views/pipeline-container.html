@@ -1,0 +1,64 @@
+{{define "pipeline-container"}}
+<div class="pipeline-container">
+    <div class="pipeline-step">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Krok 1</h5>
+                <p class="card-text">Opis działania pierwszego kroku w pipeline.</p>
+                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100"
+                     aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pipeline-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down"
+             viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+        </svg>
+    </div>
+    <div class="pipeline-step">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Krok 2</h5>
+                <p class="card-text">Opis działania drugiego kroku w pipeline.</p>
+                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100"
+                     aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pipeline-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down"
+             viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+        </svg>
+    </div>
+    <div class="pipeline-step">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Krok 3</h5>
+                <p class="card-text">Opis działania trzeciego kroku w pipeline.</p>
+                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50"
+                     aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar" style="width: 50%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pipeline-arrow">
+        <button class="btn btn-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-plus-square"
+                 viewBox="0 0 16 16">
+                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+            </svg>
+        </button>
+    </div>
+</div>
+{{end}}
