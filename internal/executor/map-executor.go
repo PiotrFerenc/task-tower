@@ -2,6 +2,8 @@ package executor
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/file"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
@@ -18,13 +20,8 @@ type executor struct {
 	queue queues.MessageQueue
 }
 
-func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) Executor {
-	a := map[string]actions.Action{
-		"console":     actions.CreateConsoleAction(),
-		"add-numbers": actions.CreateAddNumbers(),
-		"git-clone":   actions.CreateGitClone(config),
-		"file-create": file.CreateContentToFile(config),
-	}
+func CreateMapExecutor(queue queues.MessageQueue, actions map[string]actions.Action) Executor {
+	a := actions
 
 	go func() {
 		stage, err := queue.WaitingForStage()
@@ -42,7 +39,8 @@ func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) 
 					message, err = action.Execute(message)
 					addToQueue(err, queue, message)
 				} else {
-					log.Printf("No action: %s", message.CurrentStep.Action)
+					e := fmt.Sprintf("Action %s not found", message.CurrentStep.Action)
+					addToQueue(errors.New(e), queue, message)
 				}
 			}
 		}()
@@ -58,15 +56,14 @@ func CreateMapExecutor(queue queues.MessageQueue, config *configuration.Config) 
 
 func addToQueue(err error, queue queues.MessageQueue, message types.Pipeline) {
 	if err != nil {
-		message.Error = err.Error()
-		err = queue.AddStageAsFailed(message)
+		err = queue.AddStageAsFailed(err, message)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	}
 	err = queue.AddStageAsSuccess(message)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
@@ -74,7 +71,17 @@ func unmarshal(d amqp.Delivery) (types.Pipeline, error) {
 	var message types.Pipeline
 	err := json.Unmarshal(d.Body, &message)
 	if err != nil {
-		panic(err)
+
+		log.Fatal(err)
 	}
 	return message, err
+}
+
+func CreateActionMap(config *configuration.Config) map[string]actions.Action {
+	return map[string]actions.Action{
+		"console":     actions.CreateConsoleAction(),
+		"add-numbers": actions.CreateAddNumbers(),
+		"git-clone":   actions.CreateGitClone(config),
+		"file-create": file.CreateContentToFile(config),
+	}
 }

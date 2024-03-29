@@ -10,7 +10,7 @@ import (
 var (
 	config       = configuration.CreateYmlConfiguration().LoadConfiguration()
 	messageQueue = queues.CreateRabbitMqMessageQueue(&config.Queue)
-	exec         = executor.CreateMapExecutor(messageQueue, config)
+	exec         = executor.CreateMapExecutor(messageQueue, executor.CreateActionMap(config))
 	worker       = workers.CreateRestWorker(exec)
 )
 

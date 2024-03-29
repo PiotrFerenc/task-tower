@@ -201,8 +201,8 @@ func (queue *queue) AddStageAsFinished(message types.Pipeline) error {
 
 	return err
 }
-func (queue *queue) AddStageAsFailed(message types.Pipeline) error {
-
+func (queue *queue) AddStageAsFailed(error error, message types.Pipeline) error {
+	message.Error = error.Error()
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	bytes, err := json.Marshal(message)
