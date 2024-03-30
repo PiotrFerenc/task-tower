@@ -41,6 +41,8 @@ func (config *configuration) LoadConfiguration() *Config {
 			DbHost:     viper.GetString(cfg.DbHost),
 			DbUser:     viper.GetString(cfg.DbUser),
 			DbPassword: viper.GetString(cfg.DbPassword),
+			DbPort:     viper.GetString(cfg.DbPort),
+			DbName:     viper.GetString(cfg.DbName),
 		},
 	}
 }
