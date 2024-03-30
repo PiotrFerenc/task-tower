@@ -5,6 +5,7 @@ import (
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/executor"
 	"github.com/PiotrFerenc/mash2/web/persistence"
+	"github.com/PiotrFerenc/mash2/web/repositories"
 	"github.com/labstack/echo/v4"
 	"html/template"
 	"io"
@@ -12,22 +13,36 @@ import (
 )
 
 var (
-	config  = configuration.CreateYmlConfiguration().LoadConfiguration()
-	databse = persistence.CreatePostgresDatabase(&config.Database)
+	config             = configuration.CreateYmlConfiguration().LoadConfiguration()
+	database           = persistence.CreatePostgresDatabase(&config.Database)
+	connection         = database.Connect()
+	pipelineRepository = repositories.CreatePipelineRepository(connection)
 )
 
 func main() {
 
-	_ = databse.Connect()
-	databse.RunMigration()
+	database.RunMigration()
 
 	t := &Template{
 		templates: template.Must(template.ParseGlob("web/public/views/*.html")),
 	}
 	e := echo.New()
 	e.Renderer = t
-	e.Static("/assets", "web/public/ static")
+	e.Static("/assets", "web/public/static")
 	e.GET("/", func(c echo.Context) error {
+		pipelines, err := pipelineRepository.GetAll()
+		if err != nil {
+			return c.Render(http.StatusOK, "pipelines.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+		data := map[string]interface{}{
+			"Title":     "Strona główna",
+			"pipelines": pipelines,
+		}
+		return c.Render(http.StatusOK, "pipelines.html", data)
+	})
+	e.GET("/pipeline", func(c echo.Context) error {
 		data := map[string]interface{}{
 			"Title":   "Strona główna",
 			"actions": mapItems(executor.CreateActionMap(&configuration.Config{})),

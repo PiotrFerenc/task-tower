@@ -1,0 +1,33 @@
+body {
+    background-color: #343a40; /* Tło strony */
+    color: #f8f9fa; /* Kolor tekstu */
+}
+
+.pipeline-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+.pipeline-arrow {
+    font-size: 24px;
+    color: #f8f9fa; /* Kolor strzałek */
+}
+
+.card {
+    background-color: #495057; /* Tło kart */
+}
+
+.card-body {
+    color: #f8f9fa; /* Kolor tekstu w kartach */
+}
+
+.fly-button {
+    transition: transform 0.3s ease;
+}
+
+.fly-button:hover {
+    transform: translateY(-5px); /* Efekt "unosi się" */
+    cursor: pointer;
+}
