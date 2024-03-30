@@ -24,6 +24,8 @@ type DatabaseConfig struct {
 	DbHost     string
 	DbUser     string
 	DbPassword string
+	DbPort     string
+	DbName     string
 }
 
 type Configuration interface {
