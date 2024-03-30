@@ -29,10 +29,26 @@ func main() {
 	e := echo.New()
 	e.Renderer = t
 	e.Static("/assets", "web/public/static")
+	e.POST("/pipeline", func(c echo.Context) error {
+		pipelines, err := pipelineRepository.GetAll()
+		if err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+
+		data := map[string]interface{}{
+			"Title":     "Strona główna",
+			"pipelines": pipelines,
+		}
+
+		return c.Render(http.StatusOK, "pipeline-list.html", data)
+
+	})
 	e.GET("/", func(c echo.Context) error {
 		pipelines, err := pipelineRepository.GetAll()
 		if err != nil {
-			return c.Render(http.StatusOK, "pipelines.html", map[string]interface{}{
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
 				"error": err.Error(),
 			})
 		}

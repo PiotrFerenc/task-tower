@@ -8,32 +8,29 @@
 </head>
 <body>
 <div class="container mt-2">
-    <div class="row">
-        <div class="col-11">
-            <div class="mb-3">
-                <input type="text" class="form-control" id="pipeline-name" placeholder="pipeline name">
-            </div>
-        </div>
-        <div class="col-1">
-            <button type="button" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Add
-            </button>
+    <form hx-post="/pipeline" hx-target="#pipeline-list" hx-swap="innerHTML">
 
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            {{range $pipeline := .pipelines}}
-            <div class="card">
-                <div class="card-body">
-                    <a href="/pipeline/{{.ID}}">
-                        {{.Name}}
-                    </a>
+        <div class="row">
+            <div class="col-11">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="pipeline-name" placeholder="pipeline name">
                 </div>
             </div>
-            {{end}}
+            <div class="col-1">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Add
+                </button>
+
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col" id="pipeline-list">
+                {{template "pipeline-list" .}}
+
+            </div>
+        </div>
+    </form>
+
 </div>
 {{template "scripts" .}}
 </body>

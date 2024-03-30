@@ -1,0 +1,11 @@
+{{define "pipeline-list"}}
+{{range $pipeline := .pipelines}}
+<div class="card">
+    <div class="card-body">
+        <a href="/pipeline/{{.ID}}">
+            {{.Name}}
+        </a>
+    </div>
+</div>
+{{end}}
+{{end}}
