@@ -37,5 +37,10 @@ func (config *configuration) LoadConfiguration() *Config {
 		Folder: FolderConfig{
 			TmpFolder: viper.GetString(cfg.TmpFolder),
 		},
+		Database: DatabaseConfig{
+			DbHost:     viper.GetString(cfg.DbHost),
+			DbUser:     viper.GetString(cfg.DbUser),
+			DbPassword: viper.GetString(cfg.DbPassword),
+		},
 	}
 }

@@ -13,4 +13,7 @@ const (
 	ConfigurationFolderName = "config"
 	ConfigurationFileName   = "config"
 	TmpFolder               = "TMP_FOLDER"
+	DbHost                  = "DB_HOST"
+	DbUser                  = "DB_USER"
+	DbPassword              = "DB_PASSWORD"
 )

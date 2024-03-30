@@ -16,8 +16,14 @@ type FolderConfig struct {
 }
 
 type Config struct {
-	Queue  QueueConfig
-	Folder FolderConfig
+	Queue    QueueConfig
+	Folder   FolderConfig
+	Database DatabaseConfig
+}
+type DatabaseConfig struct {
+	DbHost     string
+	DbUser     string
+	DbPassword string
 }
 
 type Configuration interface {
