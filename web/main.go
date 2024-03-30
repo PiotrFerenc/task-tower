@@ -42,7 +42,7 @@ func main() {
 		}
 		return c.Render(http.StatusOK, "pipelines.html", data)
 	})
-	e.GET("/pipeline", func(c echo.Context) error {
+	e.GET("/pipeline/:id", func(c echo.Context) error {
 		data := map[string]interface{}{
 			"Title":   "Strona główna",
 			"actions": mapItems(executor.CreateActionMap(&configuration.Config{})),
