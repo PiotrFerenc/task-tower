@@ -4,19 +4,29 @@ import (
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/executor"
+	"github.com/PiotrFerenc/mash2/web/persistence"
 	"github.com/labstack/echo/v4"
 	"html/template"
 	"io"
 	"net/http"
 )
 
+var (
+	config  = configuration.CreateYmlConfiguration().LoadConfiguration()
+	databse = persistence.CreatePostgresDatabase(&config.Database)
+)
+
 func main() {
+
+	_ = databse.Connect()
+	databse.RunMigration()
+
 	t := &Template{
 		templates: template.Must(template.ParseGlob("web/public/views/*.html")),
 	}
 	e := echo.New()
 	e.Renderer = t
-	e.Static("/assets", "web/public/static")
+	e.Static("/assets", "web/public/ static")
 	e.GET("/", func(c echo.Context) error {
 		data := map[string]interface{}{
 			"Title":   "Strona główna",
