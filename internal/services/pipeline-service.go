@@ -36,45 +36,54 @@ func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Pipeline, 
 	var forever chan struct{}
 
 	go func() {
-		err := processStages(finishedStages, queue, onFinish, processService)
+		message, err := processStages(finishedStages, queue, onFinish, processService)
 		if err != nil {
-			panic(err)
+			err := queue.AddStageAsFailed(err, *message)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}()
 
 	go func() {
-		err := processStages(successStages, queue, onSuccess, processService)
+		message, err := processStages(successStages, queue, onSuccess, processService)
 		if err != nil {
-			panic(err)
+			err = queue.AddStageAsFailed(err, *message)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}()
 
 	go func() {
-		err := processStages(failedStages, queue, onFail, processService)
+		message, err := processStages(failedStages, queue, onFail, processService)
 		if err != nil {
-			panic(err)
+			err = queue.AddStageAsFailed(err, *message)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}()
 
 	<-forever
 }
 
-func processStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(types.Pipeline, queues.MessageQueue) error, processService ProcessService) error {
+func processStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(types.Pipeline, queues.MessageQueue) error, processService ProcessService) (*types.Pipeline, error) {
 	for d := range stages {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
 			processService.MarkAsFailed(message, err)
-			return err
+			return message, err
 		}
 		processService.MarkAsStarted(message)
 		err = onFunc(*message, queue)
 		if err != nil {
 			processService.MarkAsFailed(message, err)
-			return err
+			return message, err
 		}
 		processService.MarkAsDone(message)
 	}
-	return nil
+	return nil, nil
 }
 
 func unmarshalMessage(body []byte) (*types.Pipeline, error) {

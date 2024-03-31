@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions/docker"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/file"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/queues"
@@ -83,5 +84,6 @@ func CreateActionMap(config *configuration.Config) map[string]actions.Action {
 		"add-numbers": actions.CreateAddNumbers(),
 		"git-clone":   actions.CreateGitClone(config),
 		"file-create": file.CreateContentToFile(config),
+		"docker-run":  docker.CreateDockerRun(),
 	}
 }
