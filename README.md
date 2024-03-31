@@ -43,7 +43,7 @@ cd mash2
 make docker-rebuild
 ```
 
-## Osage 
+## Usage 
 
 
 This is a cURL command which sends a POST request to the URL "http://localhost:5000/execute". It sends a payload of JSON
@@ -90,6 +90,9 @@ argument [link](https://github.com/PiotrFerenc/mash2/blob/main/cmd/worker/action
 - [ ] create file
     - arguments `fileName`, `content`
     - return `createdFilePath`
+```shell
+sudo chmod 666 /var/run/docker.sock
+```
 
 ## Todo
 
