@@ -19,25 +19,25 @@ func CreateContentToFile(config *configuration.Config) actions.Action {
 }
 
 func (action *contentToFile) Inputs() []actions.Property {
-	output := make([]actions.Property, 2)
-	output[0] = actions.Property{
-		Name: "fileName",
-		Type: "text",
+	return []actions.Property{
+		{
+			Name: "fileName",
+			Type: "text",
+		},
+		{
+			Name: "content",
+			Type: "text",
+		},
 	}
-	output[1] = actions.Property{
-		Name: "content",
-		Type: "text",
-	}
-	return output
 }
 
 func (action *contentToFile) Outputs() []actions.Property {
-	output := make([]actions.Property, 1)
-	output[0] = actions.Property{
-		Name: "createdFilePath",
-		Type: "text",
+	return []actions.Property{
+		{
+			Name: "createdFilePath",
+			Type: "text",
+		},
 	}
-	return output
 }
 
 func (action *contentToFile) Execute(message types.Pipeline) (types.Pipeline, error) {
