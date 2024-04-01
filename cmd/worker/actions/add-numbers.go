@@ -19,27 +19,26 @@ func CreateAddNumbers() Action {
 // These property structures are created for two inputs, 'a' and 'b', of 'number' type.
 // It then returns these properties.
 func (action *addnumbers) Inputs() []Property {
-	output := make([]Property, 2)
-	output[0] = Property{
-		Name: "a",
-		Type: "number",
+	return []Property{
+		{
+			Name: "a",
+			Type: "number",
+		},
+		{
+			Name: "b",
+			Type: "number",
+		},
 	}
-	output[1] = Property{
-		Name: "b",
-		Type: "number",
-	}
-	return output
 }
 
 // Outputs The Outputs() method returns a slice of Property structure.
 // It creates a property structure for an output, 'c', of 'number' type and returns it.
 func (action *addnumbers) Outputs() []Property {
-	output := make([]Property, 1)
-	output[0] = Property{
-		Name: "c",
-		Type: "number",
-	}
-	return output
+	return []Property{
+		{
+			Name: "c",
+			Type: "number",
+		}}
 }
 
 // Execute The Execute() method receives a parameter of types.Message type and returns (types.Message, error).
