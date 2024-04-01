@@ -27,7 +27,7 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 	}
 }
 
-func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Pipeline, queues.MessageQueue) error, onFail func(types.Pipeline, queues.MessageQueue), onFinish func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) {
+func watchForMessages(queue queues.MessageQueue, onSuccess func(*types.Pipeline, queues.MessageQueue, ProcessService) error, onFail func(*types.Pipeline, queues.MessageQueue, ProcessService), onFinish func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) {
 	successStages, _ := queue.WaitingForSucceedStage()
 	failedStages, _ := queue.WaitingForFailedStage()
 	finishedStages, _ := queue.WaitingForFinishedStage()
@@ -58,13 +58,13 @@ func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Pipeline, 
 	<-forever
 }
 
-func processSuccessStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(types.Pipeline, queues.MessageQueue) error, processService ProcessService) error {
+func processSuccessStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Pipeline, queues.MessageQueue, ProcessService) error, processService ProcessService) error {
 	for d := range stages {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
 			return err
 		}
-		err = onFunc(*message, queue)
+		err = onFunc(message, queue, processService)
 		if err != nil {
 			return err
 		}
@@ -81,13 +81,13 @@ func processFinishStages(stages <-chan amqp.Delivery, queue queues.MessageQueue,
 	}
 	return nil
 }
-func processFailStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(types.Pipeline, queues.MessageQueue), processService ProcessService) error {
+func processFailStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) error {
 	for d := range stages {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
 			return err
 		}
-		onFunc(*message, queue)
+		onFunc(message, queue, processService)
 	}
 	return nil
 }
@@ -113,22 +113,23 @@ func (p *pipelineService) Run(pipeline *apitypes.Pipeline) error {
 	return nil
 }
 
-type OnSuccessFunc func(process types.Pipeline, queue queues.MessageQueue) error
-type OnFailFunc func(process types.Pipeline, queue queues.MessageQueue)
+type OnSuccessFunc func(process *types.Pipeline, queue queues.MessageQueue, service ProcessService) error
+type OnFailFunc func(process *types.Pipeline, queue queues.MessageQueue, service ProcessService)
 type OnFinishFunc func(process *types.Pipeline, queue queues.MessageQueue, service ProcessService)
 
 func CreateOnSuccessFunc() OnSuccessFunc {
-	return func(process types.Pipeline, queue queues.MessageQueue) error {
+	return func(process *types.Pipeline, queue queues.MessageQueue, service ProcessService) error {
 		index := process.CurrentStep.Sequence
 		if index < len(process.Steps) {
 			current := process.Steps[index]
 			process.CurrentStep = current
-			err := queue.AddStageToQueue(process)
+			err := queue.AddStageToQueue(*process)
 			if err != nil {
 				return err
 			}
+			service.MarkAsDone(process)
 		} else {
-			err := queue.AddStageAsFinished(process)
+			err := queue.AddStageAsFinished(*process)
 			if err != nil {
 				return err
 			}
@@ -139,8 +140,9 @@ func CreateOnSuccessFunc() OnSuccessFunc {
 }
 
 func CreateOnFailFunc() OnFailFunc {
-	return func(process types.Pipeline, queue queues.MessageQueue) {
+	return func(process *types.Pipeline, queue queues.MessageQueue, service ProcessService) {
 		log.Printf("Fail %s => %+v\\n", process.CurrentStep.Name, process.Error)
+		service.MarkAsFailed(process, process.Error)
 	}
 }
 

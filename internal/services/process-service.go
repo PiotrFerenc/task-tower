@@ -9,7 +9,7 @@ import (
 type ProcessService interface {
 	MarkAsStarted(types *types.Pipeline)
 	MarkAsDone(types *types.Pipeline)
-	MarkAsFailed(types *types.Pipeline, err error)
+	MarkAsFailed(types *types.Pipeline, err string)
 	GetProcess(id uuid.UUID) *types.Pipeline
 }
 type processService struct {
@@ -29,9 +29,9 @@ func (process *processService) MarkAsDone(pipeline *types.Pipeline) {
 	pipeline.Status = types.Done
 	process.repository.UpdateStatus(*pipeline)
 }
-func (process *processService) MarkAsFailed(pipeline *types.Pipeline, err error) {
+func (process *processService) MarkAsFailed(pipeline *types.Pipeline, err string) {
 	pipeline.Status = types.Fail
-	pipeline.Error = err.Error()
+	pipeline.Error = err
 	process.repository.UpdateStatus(*pipeline)
 }
 func (process *processService) GetProcess(id uuid.UUID) *types.Pipeline {
