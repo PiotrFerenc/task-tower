@@ -27,7 +27,7 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 	}
 }
 
-func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Pipeline, queues.MessageQueue) error, onFail func(types.Pipeline, queues.MessageQueue), onFinish func(types.Pipeline, queues.MessageQueue), processService ProcessService) {
+func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Pipeline, queues.MessageQueue) error, onFail func(types.Pipeline, queues.MessageQueue), onFinish func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) {
 	successStages, _ := queue.WaitingForSucceedStage()
 	failedStages, _ := queue.WaitingForFailedStage()
 	finishedStages, _ := queue.WaitingForFinishedStage()
@@ -71,13 +71,13 @@ func processSuccessStages(stages <-chan amqp.Delivery, queue queues.MessageQueue
 	}
 	return nil
 }
-func processFinishStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(types.Pipeline, queues.MessageQueue), processService ProcessService) error {
+func processFinishStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) error {
 	for d := range stages {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
 			return err
 		}
-		onFunc(*message, queue)
+		onFunc(message, queue, processService)
 	}
 	return nil
 }
@@ -115,7 +115,7 @@ func (p *pipelineService) Run(pipeline *apitypes.Pipeline) error {
 
 type OnSuccessFunc func(process types.Pipeline, queue queues.MessageQueue) error
 type OnFailFunc func(process types.Pipeline, queue queues.MessageQueue)
-type OnFinishFunc func(process types.Pipeline, queue queues.MessageQueue)
+type OnFinishFunc func(process *types.Pipeline, queue queues.MessageQueue, service ProcessService)
 
 func CreateOnSuccessFunc() OnSuccessFunc {
 	return func(process types.Pipeline, queue queues.MessageQueue) error {
@@ -145,7 +145,8 @@ func CreateOnFailFunc() OnFailFunc {
 }
 
 func CreateOnFinishFunc() OnFinishFunc {
-	return func(process types.Pipeline, queue queues.MessageQueue) {
+	return func(process *types.Pipeline, queue queues.MessageQueue, service ProcessService) {
 		log.Printf("Done %s ", process.Id)
+		service.MarkAsDone(process)
 	}
 }
