@@ -18,20 +18,20 @@ func CreateGitClone(config *configuration.Config) Action {
 }
 
 func (action *gitClone) Inputs() []Property {
-	output := make([]Property, 1)
-	output[0] = Property{
-		Name: "url",
-		Type: "text",
+	return []Property{
+		{
+			Name: "url",
+			Type: "text",
+		},
 	}
-	return output
 }
+
 func (action *gitClone) Outputs() []Property {
-	output := make([]Property, 1)
-	output[0] = Property{
-		Name: "path",
-		Type: "text",
-	}
-	return output
+	return []Property{
+		{
+			Name: "path",
+			Type: "text",
+		}}
 }
 func (action *gitClone) Execute(message types.Pipeline) (types.Pipeline, error) {
 	repositoryUrl, err := message.GetString("url")
