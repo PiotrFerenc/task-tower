@@ -51,3 +51,8 @@ func (property *Property) GetStringFrom(message *types.Pipeline) (string, error)
 
 	return value, nil
 }
+
+const (
+	Text   = "text"
+	Number = "number"
+)

@@ -20,19 +20,19 @@ func CreateContentToFile(config *configuration.Config) actions.Action {
 		config: config,
 		fileName: actions.Property{
 			Name:        "fileName",
-			Type:        "text",
+			Type:        actions.Text,
 			Description: "",
 			Validation:  "required",
 		},
 		content: actions.Property{
 			Name:        "content",
-			Type:        "text",
+			Type:        actions.Text,
 			Description: "",
 			Validation:  "required",
 		},
 		createdFilePath: actions.Property{
 			Name:        "createdFilePath",
-			Type:        "text",
+			Type:        actions.Text,
 			Description: "",
 			Validation:  "",
 		},

@@ -19,13 +19,13 @@ func CreateGitClone(config *configuration.Config) actions.Action {
 		config: config,
 		url: actions.Property{
 			Name:        "url",
-			Type:        "text",
+			Type:        actions.Text,
 			Description: "",
 			Validation:  "required",
 		},
 		path: actions.Property{
 			Name:        "path",
-			Type:        "text",
+			Type:        actions.Text,
 			Description: "",
 			Validation:  "required",
 		},

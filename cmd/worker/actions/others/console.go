@@ -14,7 +14,7 @@ func CreateConsoleAction() actions.Action {
 	return &console{
 		text: actions.Property{
 			Name:        "text",
-			Type:        "text",
+			Type:        actions.Text,
 			Description: "Text to display",
 			Validation:  "required",
 		},

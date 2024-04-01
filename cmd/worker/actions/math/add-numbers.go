@@ -18,19 +18,19 @@ func CreateAddNumbers() actions.Action {
 	return &addnumbers{
 		actions.Property{
 			Name:        "a",
-			Type:        "number",
+			Type:        actions.Number,
 			Description: "a",
 			Validation:  "required,number",
 		},
 		actions.Property{
 			Name:        "b",
-			Type:        "number",
+			Type:        actions.Number,
 			Description: "b",
 			Validation:  "required,number",
 		},
 		actions.Property{
 			Name:        "c",
-			Type:        "number",
+			Type:        actions.Number,
 			Description: "c",
 			Validation:  "",
 		},

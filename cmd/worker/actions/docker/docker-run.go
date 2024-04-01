@@ -15,19 +15,19 @@ func CreateDockerRun() actions.Action {
 	return &dockerContainer{
 		imageName: actions.Property{
 			Name:        "image",
-			Type:        "text",
+			Type:        actions.Text,
 			Description: "",
 			Validation:  "required",
 		},
 		ports: actions.Property{
 			Name:        "ports",
-			Type:        "text",
+			Type:        actions.Text,
 			Description: "",
 			Validation:  "required",
 		},
 		containerId: actions.Property{
 			Name:        "id",
-			Type:        "text",
+			Type:        actions.Text,
 			Description: "",
 			Validation:  "",
 		},
