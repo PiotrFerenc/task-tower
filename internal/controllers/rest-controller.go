@@ -26,9 +26,16 @@ func (controller *controller) Run(address, port string) error {
 
 		if err := context.BindJSON(&pipe); err != nil {
 			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
+		if err := pipe.Validate(); err != nil {
+			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
 		if len(pipe.Stages) == 0 {
 			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": Message.EmptyStageList})
+			return
 		}
 
 		go func() {

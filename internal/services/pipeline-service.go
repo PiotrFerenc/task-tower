@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/json"
-	"errors"
 	apitypes "github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/internal/queues"
 	"github.com/PiotrFerenc/mash2/internal/types"
@@ -28,7 +27,7 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 	}
 }
 
-func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Pipeline, queues.MessageQueue) error, onFail func(types.Pipeline, queues.MessageQueue) error, onFinish func(types.Pipeline, queues.MessageQueue) error, processService ProcessService) {
+func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Pipeline, queues.MessageQueue) error, onFail func(types.Pipeline, queues.MessageQueue), onFinish func(types.Pipeline, queues.MessageQueue), processService ProcessService) {
 	successStages, _ := queue.WaitingForSucceedStage()
 	failedStages, _ := queue.WaitingForFailedStage()
 	finishedStages, _ := queue.WaitingForFinishedStage()
@@ -36,54 +35,61 @@ func watchForMessages(queue queues.MessageQueue, onSuccess func(types.Pipeline, 
 	var forever chan struct{}
 
 	go func() {
-		message, err := processStages(finishedStages, queue, onFinish, processService)
+		err := processFinishStages(finishedStages, queue, onFinish, processService)
 		if err != nil {
-			err := queue.AddStageAsFailed(err, *message)
-			if err != nil {
-				panic(err)
-			}
+			panic(err)
 		}
 	}()
 
 	go func() {
-		message, err := processStages(successStages, queue, onSuccess, processService)
+		err := processSuccessStages(successStages, queue, onSuccess, processService)
 		if err != nil {
-			err = queue.AddStageAsFailed(err, *message)
-			if err != nil {
-				panic(err)
-			}
+			panic(err)
 		}
 	}()
 
 	go func() {
-		message, err := processStages(failedStages, queue, onFail, processService)
+		err := processFailStages(failedStages, queue, onFail, processService)
 		if err != nil {
-			err = queue.AddStageAsFailed(err, *message)
-			if err != nil {
-				panic(err)
-			}
+			panic(err)
 		}
 	}()
 
 	<-forever
 }
 
-func processStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(types.Pipeline, queues.MessageQueue) error, processService ProcessService) (*types.Pipeline, error) {
+func processSuccessStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(types.Pipeline, queues.MessageQueue) error, processService ProcessService) error {
 	for d := range stages {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
-			processService.MarkAsFailed(message, err)
-			return message, err
+			return err
 		}
-		processService.MarkAsStarted(message)
 		err = onFunc(*message, queue)
 		if err != nil {
-			processService.MarkAsFailed(message, err)
-			return message, err
+			return err
 		}
-		processService.MarkAsDone(message)
 	}
-	return nil, nil
+	return nil
+}
+func processFinishStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(types.Pipeline, queues.MessageQueue), processService ProcessService) error {
+	for d := range stages {
+		message, err := unmarshalMessage(d.Body)
+		if err != nil {
+			return err
+		}
+		onFunc(*message, queue)
+	}
+	return nil
+}
+func processFailStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(types.Pipeline, queues.MessageQueue), processService ProcessService) error {
+	for d := range stages {
+		message, err := unmarshalMessage(d.Body)
+		if err != nil {
+			return err
+		}
+		onFunc(*message, queue)
+	}
+	return nil
 }
 
 func unmarshalMessage(body []byte) (*types.Pipeline, error) {
@@ -108,8 +114,8 @@ func (p *pipelineService) Run(pipeline *apitypes.Pipeline) error {
 }
 
 type OnSuccessFunc func(process types.Pipeline, queue queues.MessageQueue) error
-type OnFailFunc func(process types.Pipeline, queue queues.MessageQueue) error
-type OnFinishFunc func(process types.Pipeline, queue queues.MessageQueue) error
+type OnFailFunc func(process types.Pipeline, queue queues.MessageQueue)
+type OnFinishFunc func(process types.Pipeline, queue queues.MessageQueue)
 
 func CreateOnSuccessFunc() OnSuccessFunc {
 	return func(process types.Pipeline, queue queues.MessageQueue) error {
@@ -133,15 +139,13 @@ func CreateOnSuccessFunc() OnSuccessFunc {
 }
 
 func CreateOnFailFunc() OnFailFunc {
-	return func(process types.Pipeline, queue queues.MessageQueue) error {
+	return func(process types.Pipeline, queue queues.MessageQueue) {
 		log.Printf("Fail %s => %+v\\n", process.CurrentStep.Name, process.Error)
-		return errors.New(process.Error)
 	}
 }
 
 func CreateOnFinishFunc() OnFinishFunc {
-	return func(process types.Pipeline, queue queues.MessageQueue) error {
+	return func(process types.Pipeline, queue queues.MessageQueue) {
 		log.Printf("Done %s ", process.Id)
-		return nil
 	}
 }

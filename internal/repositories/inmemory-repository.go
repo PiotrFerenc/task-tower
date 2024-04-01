@@ -26,14 +26,14 @@ func (r *repository) GetProcess(id uuid.UUID) *types.Pipeline {
 	return nil
 }
 
-func (r *repository) UpdateStatus(pipeline *types.Pipeline) {
+func (r *repository) UpdateStatus(pipeline types.Pipeline) {
 	for i, process := range processes {
 		if process.Id == pipeline.Id {
-			processes[i] = pipeline
+			processes[i] = &pipeline
 			return
 		}
 	}
 }
-func (r *repository) Save(pipeline *types.Pipeline) {
-	processes = append(processes, pipeline)
+func (r *repository) Save(pipeline types.Pipeline) {
+	processes = append(processes, &pipeline)
 }

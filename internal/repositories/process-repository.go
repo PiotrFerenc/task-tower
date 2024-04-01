@@ -6,7 +6,7 @@ import (
 )
 
 type ProcessRepository interface {
-	UpdateStatus(pipeline *types.Pipeline)
-	Save(pipeline *types.Pipeline)
+	UpdateStatus(pipeline types.Pipeline)
+	Save(pipeline types.Pipeline)
 	GetProcess(id uuid.UUID) *types.Pipeline
 }

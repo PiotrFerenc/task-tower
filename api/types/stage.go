@@ -1,7 +1,7 @@
 package types
 
 type Stage struct {
-	Sequence int    `json:"sequence"`
-	Action   string `json:"action"`
-	Name     string `json:"name"`
+	Sequence int    `json:"sequence" validate:"required,gte=0"`
+	Action   string `json:"action" validate:"required"`
+	Name     string `json:"name" validate:"required"`
 }

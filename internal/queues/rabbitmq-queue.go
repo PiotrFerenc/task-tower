@@ -143,7 +143,7 @@ func (queue *queue) AddStageToQueue(message types.Pipeline) error {
 		return err
 	}
 
-	err = queue.client.ch.PublishWithContext(ctx,
+	return queue.client.ch.PublishWithContext(ctx,
 		"",
 		queue.configuration.QueueRunPipe,
 		false,
@@ -154,8 +154,6 @@ func (queue *queue) AddStageToQueue(message types.Pipeline) error {
 			ReplyTo:       queue.configuration.QueueRunPipe,
 			Body:          bytes,
 		})
-
-	return err
 }
 func (queue *queue) AddStageAsSuccess(message types.Pipeline) error {
 
@@ -165,7 +163,7 @@ func (queue *queue) AddStageAsSuccess(message types.Pipeline) error {
 	if err != nil {
 		return err
 	}
-	err = queue.client.ch.PublishWithContext(ctx,
+	return queue.client.ch.PublishWithContext(ctx,
 		"",                                    // exchange
 		queue.configuration.QueueStageSucceed, // routing key
 		false,                                 // mandatory
@@ -176,8 +174,6 @@ func (queue *queue) AddStageAsSuccess(message types.Pipeline) error {
 			ReplyTo:       queue.configuration.QueueStageSucceed,
 			Body:          bytes,
 		})
-
-	return err
 }
 func (queue *queue) AddStageAsFinished(message types.Pipeline) error {
 
@@ -187,7 +183,7 @@ func (queue *queue) AddStageAsFinished(message types.Pipeline) error {
 	if err != nil {
 		return err
 	}
-	err = queue.client.ch.PublishWithContext(ctx,
+	return queue.client.ch.PublishWithContext(ctx,
 		"",                                     // exchange
 		queue.configuration.QueueStageFinished, // routing key
 		false,                                  // mandatory
@@ -199,7 +195,6 @@ func (queue *queue) AddStageAsFinished(message types.Pipeline) error {
 			Body:          bytes,
 		})
 
-	return err
 }
 func (queue *queue) AddStageAsFailed(error error, message types.Pipeline) error {
 	message.Error = error.Error()
@@ -209,7 +204,7 @@ func (queue *queue) AddStageAsFailed(error error, message types.Pipeline) error 
 	if err != nil {
 		return err
 	}
-	err = queue.client.ch.PublishWithContext(ctx,
+	return queue.client.ch.PublishWithContext(ctx,
 		"",
 		queue.configuration.QueueStageFailed,
 		false,
@@ -220,8 +215,6 @@ func (queue *queue) AddStageAsFailed(error error, message types.Pipeline) error 
 			ReplyTo:       queue.configuration.QueueStageFailed,
 			Body:          bytes,
 		})
-
-	return err
 }
 
 type RabbitClient struct {

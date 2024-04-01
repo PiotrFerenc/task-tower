@@ -64,6 +64,7 @@ func addToQueue(err error, queue queues.MessageQueue, message types.Pipeline) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		return
 	}
 	err = queue.AddStageAsSuccess(message)
 	if err != nil {

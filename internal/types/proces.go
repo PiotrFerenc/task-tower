@@ -1,12 +1,10 @@
 package types
 
 import (
-	"errors"
 	"fmt"
 	apitypes "github.com/PiotrFerenc/mash2/api/types"
 	"github.com/gobeam/stringy"
 	"github.com/google/uuid"
-	"github.com/valyala/fasttemplate"
 	"sort"
 	"strconv"
 )
@@ -44,42 +42,15 @@ func (message *Pipeline) GetInternalName(propertyName string) string {
 	return fmt.Sprintf("%s.%s", internalName, propertyName)
 }
 
-func (message *Pipeline) GetString(name string) (string, error) {
-	internalName := message.GetInternalName(name)
-	parameter, ok := message.Parameters[internalName]
-	if !ok {
-		return " ", errors.New("key not found")
-	}
-	value := parameter.(string)
-
-	template := fasttemplate.New(value, "{{", "}}")
-	value = template.ExecuteString(message.Parameters)
-	message.Parameters[internalName] = value
-	return value, nil
-}
-
 func (message *Pipeline) NewFolder(path string) string {
 	return fmt.Sprintf("%s/%s", path, uuid.NewString())
 }
 
-func (message *Pipeline) GetInt(name string) (int, error) {
-	value, err := message.GetString(name)
-	if err != nil {
-		return 0, err
-	}
-	conv, err := strconv.Atoi(value)
-	if err != nil {
-		return 0, err
-	}
-	return conv, nil
-}
-func (message *Pipeline) SetInt(name string, value int) (*Pipeline, error) {
+func (message *Pipeline) SetInt(name string, value int) {
 	message.Parameters[message.GetInternalName(name)] = strconv.Itoa(value)
-	return message, nil
 }
-func (message *Pipeline) SetString(name, value string) (*Pipeline, error) {
+func (message *Pipeline) SetString(name, value string) {
 	message.Parameters[message.GetInternalName(name)] = value
-	return message, nil
 }
 func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 	process := &Pipeline{
