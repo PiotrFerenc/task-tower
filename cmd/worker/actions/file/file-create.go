@@ -9,44 +9,55 @@ import (
 )
 
 type contentToFile struct {
-	config *configuration.Config
+	config          *configuration.Config
+	fileName        actions.Property
+	content         actions.Property
+	createdFilePath actions.Property
 }
 
 func CreateContentToFile(config *configuration.Config) actions.Action {
 	return &contentToFile{
 		config: config,
+		fileName: actions.Property{
+			Name:        "fileName",
+			Type:        "text",
+			Description: "",
+			Validation:  "required",
+		},
+		content: actions.Property{
+			Name:        "content",
+			Type:        "text",
+			Description: "",
+			Validation:  "required",
+		},
+		createdFilePath: actions.Property{
+			Name:        "createdFilePath",
+			Type:        "text",
+			Description: "",
+			Validation:  "",
+		},
 	}
 }
 
 func (action *contentToFile) Inputs() []actions.Property {
 	return []actions.Property{
-		{
-			Name: "fileName",
-			Type: "text",
-		},
-		{
-			Name: "content",
-			Type: "text",
-		},
+		action.fileName, action.content,
 	}
 }
 
 func (action *contentToFile) Outputs() []actions.Property {
 	return []actions.Property{
-		{
-			Name: "createdFilePath",
-			Type: "text",
-		},
+		action.createdFilePath,
 	}
 }
 
 func (action *contentToFile) Execute(message types.Pipeline) (types.Pipeline, error) {
-	fileName, err := message.GetString("fileName")
+	fileName, err := action.fileName.GetStringFrom(&message)
 	if err != nil {
 		return types.Pipeline{}, err
 	}
 
-	content, err := message.GetString("content")
+	content, err := action.content.GetStringFrom(&message)
 	if err != nil {
 		return types.Pipeline{}, err
 	}
@@ -57,6 +68,7 @@ func (action *contentToFile) Execute(message types.Pipeline) (types.Pipeline, er
 		return types.Pipeline{}, err
 	}
 
-	_, _ = message.SetString("createdFilePath", filePath)
+	message.SetString(action.createdFilePath.Name, filePath)
+
 	return message, nil
 }

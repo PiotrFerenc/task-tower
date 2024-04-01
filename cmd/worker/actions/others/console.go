@@ -7,34 +7,36 @@ import (
 )
 
 type console struct {
+	text actions.Property
 }
 
 func CreateConsoleAction() actions.Action {
-	return &console{}
-}
-
-func (action *console) Inputs() []actions.Property {
-	return []actions.Property{
-		{
-			Name: "text",
-			Type: "text",
-		}}
-}
-
-func (action *console) Outputs() []actions.Property {
-	return []actions.Property{
-		{
-			Name: "text",
-			Type: "text",
+	return &console{
+		text: actions.Property{
+			Name:        "text",
+			Type:        "text",
+			Description: "Text to display",
+			Validation:  "required",
 		},
 	}
 }
 
-func (action *console) Execute(message types.Pipeline) (types.Pipeline, error) {
-	name, _ := message.GetString("text")
+func (action *console) Inputs() []actions.Property {
+	return []actions.Property{
+		action.text,
+	}
+}
 
-	log.Print(name)
-	_, _ = message.SetString("text", name)
+func (action *console) Outputs() []actions.Property {
+	return []actions.Property{}
+}
 
-	return message, nil
+func (action *console) Execute(pipeline types.Pipeline) (types.Pipeline, error) {
+	text, err := action.text.GetStringFrom(&pipeline)
+	if err != nil {
+		return types.Pipeline{}, err
+	}
+	log.Print(text)
+
+	return pipeline, nil
 }

@@ -10,32 +10,41 @@ import (
 
 type gitClone struct {
 	config *configuration.Config
+	url    actions.Property
+	path   actions.Property
 }
 
 func CreateGitClone(config *configuration.Config) actions.Action {
 	return &gitClone{
 		config: config,
+		url: actions.Property{
+			Name:        "url",
+			Type:        "text",
+			Description: "",
+			Validation:  "required",
+		},
+		path: actions.Property{
+			Name:        "path",
+			Type:        "text",
+			Description: "",
+			Validation:  "required",
+		},
 	}
 }
 
 func (action *gitClone) Inputs() []actions.Property {
 	return []actions.Property{
-		{
-			Name: "url",
-			Type: "text",
-		},
+		action.url,
 	}
 }
 
 func (action *gitClone) Outputs() []actions.Property {
 	return []actions.Property{
-		{
-			Name: "path",
-			Type: "text",
-		}}
+		action.path,
+	}
 }
 func (action *gitClone) Execute(message types.Pipeline) (types.Pipeline, error) {
-	repositoryUrl, err := message.GetString("url")
+	repositoryUrl, err := action.url.GetStringFrom(&message)
 	if err != nil {
 		return types.Pipeline{}, err
 	}
@@ -50,6 +59,6 @@ func (action *gitClone) Execute(message types.Pipeline) (types.Pipeline, error) 
 	if err != nil {
 		return types.Pipeline{}, err
 	}
-	_, _ = message.SetString("path", path)
+	message.SetString(action.path.Name, path)
 	return message, nil
 }

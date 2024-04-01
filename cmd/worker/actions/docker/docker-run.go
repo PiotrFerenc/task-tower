@@ -12,34 +12,42 @@ import (
 )
 
 func CreateDockerRun() actions.Action {
-	return &dockerContainer{}
+	return &dockerContainer{
+		imageName: actions.Property{
+			Name:        "image",
+			Type:        "text",
+			Description: "",
+			Validation:  "required",
+		},
+		ports: actions.Property{
+			Name:        "ports",
+			Type:        "text",
+			Description: "",
+			Validation:  "required",
+		},
+		containerId: actions.Property{
+			Name:        "id",
+			Type:        "text",
+			Description: "",
+			Validation:  "",
+		},
+	}
 }
 
 type dockerContainer struct {
+	imageName   actions.Property
+	ports       actions.Property
+	containerId actions.Property
 }
-
-const (
-	imageName = "image"
-	ports     = "ports"
-)
 
 func (c *dockerContainer) Inputs() []actions.Property {
 	return []actions.Property{
-		{
-			Name: imageName,
-			Type: "text",
-		},
-		{
-			Name: ports,
-			Type: "text",
-		},
+		c.imageName, c.ports,
 	}
 }
 func (c *dockerContainer) Outputs() []actions.Property {
 	return []actions.Property{
-		{Name: "container-id",
-			Type: "text",
-		},
+		c.containerId,
 	}
 }
 
@@ -49,12 +57,12 @@ func (c *dockerContainer) Execute(process types.Pipeline) (types.Pipeline, error
 	if err != nil {
 		return process, err
 	}
-	imageName, err := process.GetString(imageName)
+	imageName, err := c.imageName.GetStringFrom(&process)
 
 	if err != nil {
 		return process, err
 	}
-	ports, err := process.GetString(ports)
+	ports, err := c.ports.GetStringFrom(&process)
 	if err != nil {
 		return process, err
 	}
@@ -78,7 +86,7 @@ func (c *dockerContainer) Execute(process types.Pipeline) (types.Pipeline, error
 		return process, err
 	}
 
-	process.SetString("container-id", resp.ID)
+	process.SetString(c.containerId.Name, resp.ID)
 	return process, nil
 }
 
