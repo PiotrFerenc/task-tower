@@ -13,21 +13,20 @@ func CreateConsoleAction() Action {
 }
 
 func (action *console) Inputs() []Property {
-	output := make([]Property, 1)
-	output[0] = Property{
-		Name: "text",
-		Type: "text",
-	}
-	return output
+	return []Property{
+		{
+			Name: "text",
+			Type: "text",
+		}}
 }
 
 func (action *console) Outputs() []Property {
-	output := make([]Property, 1)
-	output[0] = Property{
-		Name: "text",
-		Type: "text",
+	return []Property{
+		{
+			Name: "text",
+			Type: "text",
+		},
 	}
-	return output
 }
 
 func (action *console) Execute(message types.Pipeline) (types.Pipeline, error) {
