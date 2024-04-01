@@ -7,6 +7,9 @@ import (
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/docker"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/file"
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions/git"
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions/math"
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions/others"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/queues"
 	"github.com/PiotrFerenc/mash2/internal/types"
@@ -80,9 +83,9 @@ func unmarshal(d amqp.Delivery) (types.Pipeline, error) {
 
 func CreateActionMap(config *configuration.Config) map[string]actions.Action {
 	return map[string]actions.Action{
-		"console":     actions.CreateConsoleAction(),
-		"add-numbers": actions.CreateAddNumbers(),
-		"git-clone":   actions.CreateGitClone(config),
+		"console":     others.CreateConsoleAction(),
+		"add-numbers": math.CreateAddNumbers(),
+		"git-clone":   git.CreateGitClone(config),
 		"file-create": file.CreateContentToFile(config),
 		"docker-run":  docker.CreateDockerRun(),
 	}

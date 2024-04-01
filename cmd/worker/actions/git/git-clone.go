@@ -1,6 +1,7 @@
-package actions
+package git
 
 import (
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/types"
 	"github.com/go-git/go-git/v5"
@@ -11,14 +12,14 @@ type gitClone struct {
 	config *configuration.Config
 }
 
-func CreateGitClone(config *configuration.Config) Action {
+func CreateGitClone(config *configuration.Config) actions.Action {
 	return &gitClone{
 		config: config,
 	}
 }
 
-func (action *gitClone) Inputs() []Property {
-	return []Property{
+func (action *gitClone) Inputs() []actions.Property {
+	return []actions.Property{
 		{
 			Name: "url",
 			Type: "text",
@@ -26,8 +27,8 @@ func (action *gitClone) Inputs() []Property {
 	}
 }
 
-func (action *gitClone) Outputs() []Property {
-	return []Property{
+func (action *gitClone) Outputs() []actions.Property {
+	return []actions.Property{
 		{
 			Name: "path",
 			Type: "text",

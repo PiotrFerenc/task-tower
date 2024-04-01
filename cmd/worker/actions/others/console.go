@@ -1,6 +1,7 @@
-package actions
+package others
 
 import (
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/types"
 	"log"
 )
@@ -8,20 +9,20 @@ import (
 type console struct {
 }
 
-func CreateConsoleAction() Action {
+func CreateConsoleAction() actions.Action {
 	return &console{}
 }
 
-func (action *console) Inputs() []Property {
-	return []Property{
+func (action *console) Inputs() []actions.Property {
+	return []actions.Property{
 		{
 			Name: "text",
 			Type: "text",
 		}}
 }
 
-func (action *console) Outputs() []Property {
-	return []Property{
+func (action *console) Outputs() []actions.Property {
+	return []actions.Property{
 		{
 			Name: "text",
 			Type: "text",

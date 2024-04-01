@@ -1,6 +1,7 @@
-package actions
+package math
 
 import (
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/types"
 )
 
@@ -10,7 +11,7 @@ type addnumbers struct {
 // CreateAddNumbers This is a function that initializes an instance of the addnumbers struct.
 // It returns a pointer to the addnumbers instance.
 // This is useful when we don't want to pass the struct by value in subsequent calls.
-func CreateAddNumbers() Action {
+func CreateAddNumbers() actions.Action {
 	return &addnumbers{}
 }
 
@@ -18,8 +19,8 @@ func CreateAddNumbers() Action {
 // The Property structure includes two fields: Name and Type, both of which are strings.
 // These property structures are created for two inputs, 'a' and 'b', of 'number' type.
 // It then returns these properties.
-func (action *addnumbers) Inputs() []Property {
-	return []Property{
+func (action *addnumbers) Inputs() []actions.Property {
+	return []actions.Property{
 		{
 			Name: "a",
 			Type: "number",
@@ -33,8 +34,8 @@ func (action *addnumbers) Inputs() []Property {
 
 // Outputs The Outputs() method returns a slice of Property structure.
 // It creates a property structure for an output, 'c', of 'number' type and returns it.
-func (action *addnumbers) Outputs() []Property {
-	return []Property{
+func (action *addnumbers) Outputs() []actions.Property {
+	return []actions.Property{
 		{
 			Name: "c",
 			Type: "number",
