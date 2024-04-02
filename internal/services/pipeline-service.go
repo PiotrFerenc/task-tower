@@ -119,6 +119,7 @@ type OnFinishFunc func(process *types.Pipeline, queue queues.MessageQueue, servi
 
 func CreateOnSuccessFunc() OnSuccessFunc {
 	return func(process *types.Pipeline, queue queues.MessageQueue, service ProcessService) error {
+		service.StageFinished(process)
 		index := process.CurrentStep.Sequence
 		if index < len(process.Steps) {
 			current := process.Steps[index]
@@ -127,7 +128,7 @@ func CreateOnSuccessFunc() OnSuccessFunc {
 			if err != nil {
 				return err
 			}
-			service.MarkAsDone(process)
+			service.StageFinished(process)
 		} else {
 			err := queue.AddStageAsFinished(*process)
 			if err != nil {

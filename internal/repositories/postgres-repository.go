@@ -37,10 +37,12 @@ func (r *repository) UpdateStatus(pipeline types.Pipeline) {
 	p := ProcessEntity{
 		ID: pipeline.Id,
 	}
-	r.Database.Model(&p).Update("Status", pipeline.Status)
+	r.Database.Model(&p).Updates(map[string]interface{}{
+		"Status": pipeline.Status,
+		"Error":  pipeline.Error,
+	})
 	s := StepEntity{
-		ID:        pipeline.CurrentStep.Id,
-		ProcessId: p.ID,
+		ID: pipeline.CurrentStep.Id,
 	}
 	r.Database.Model(&s).Update("Status", pipeline.CurrentStep.Status)
 }
@@ -64,6 +66,7 @@ func (r *repository) Save(pipeline types.Pipeline) {
 type ProcessEntity struct {
 	ID     uuid.UUID `gorm:"primaryKey"`
 	Status int
+	Error  string
 }
 type StepEntity struct {
 	ID        uuid.UUID `gorm:"primaryKey"`
