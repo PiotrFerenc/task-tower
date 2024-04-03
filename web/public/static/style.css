@@ -1,33 +1,83 @@
 body {
-    background-color: #343a40; /* Tło strony */
-    color: #f8f9fa; /* Kolor tekstu */
+    background-color: #F2F2F2;
+    font-family: Arial, sans-serif;
 }
-
-.pipeline-container {
+.workflow-step {
+    background-color: #FFFFFF;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+.workflow-step:last-child {
+    margin-bottom: 0;
+}
+.workflow-icon {
+    color: #5B9BD5;
+    margin-right: 10px;
+}
+.workflow-title {
+    font-size: 16px;
+    color: #5B9BD5;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: start;
 }
-
-.pipeline-arrow {
+.workflow-content {
+    border-left: 2px solid #CCCCCC;
+    padding-left: 20px;
+    margin-top: 10px;
+    position: relative;
+}
+.workflow-content:before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -2px;
+    width: 24px;
+    height: 2px;
+    background-color: #CCCCCC;
+}
+.workflow-content:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: -2px;
+    width: 24px;
+    height: 2px;
+    background-color: #CCCCCC;
+}
+.workflow-arrow {
     font-size: 24px;
-    color: #f8f9fa; /* Kolor strzałek */
+    color: #CCCCCC;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
 }
-
-.card {
-    background-color: #495057; /* Tło kart */
+.btn-new-step {
+    background-color: #E7E7E7;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #5B9BD5;
+    margin-top: 20px;
 }
-
-.card-body {
-    color: #f8f9fa; /* Kolor tekstu w kartach */
+.accordion-button {
+    font-size: 16px;
+    color: #5B9BD5;
+    text-align: left;
+    background-color: #FFFFFF;
+    border: none;
+    box-shadow: none;
+    padding: 20px;
 }
-
-.fly-button {
-    transition: transform 0.3s ease;
+.accordion-button:focus {
+    box-shadow: none;
 }
-
-.fly-button:hover {
-    transform: translateY(-5px); /* Efekt "unosi się" */
-    cursor: pointer;
+.accordion-button:not(.collapsed) {
+    color: #5B9BD5;
+    background-color: #FFFFFF;
+    box-shadow: none;
+}
+.accordion-body {
+    font-size: 14px;
+    color: #333333;
+    padding: 20px;
 }

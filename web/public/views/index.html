@@ -7,45 +7,7 @@
     {{template "styles" .}}
 </head>
 <body>
-<p class="text-xxl-end m-5 fly-button">
-    <button type="button" class="btn btn-secondary  ">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play"
-             viewBox="0 0 16 16">
-            <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
-        </svg>
-    </button>
-</p>
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-3">
-            <div class="row">
-                {{template "actions-box" .}}
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="row">
-                {{template "pipeline-container" .}}
-            </div>
-        </div>
-    </div>
-
-
-</div>
+{{template "pipeline-container" .}}
 {{template "scripts" .}}
-<script>
-    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
-        content: function () {
-            const contentId = popoverTriggerEl.attributes['content'].value;
-            return document.getElementById(contentId).innerHTML;
-        },
-        html: true,
-        trigger: 'focus'
-    }))
-
-</script>
-
 </body>
 </html>

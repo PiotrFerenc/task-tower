@@ -6,6 +6,7 @@ import (
 	"github.com/PiotrFerenc/mash2/internal/executor"
 	"github.com/PiotrFerenc/mash2/web/persistence"
 	"github.com/PiotrFerenc/mash2/web/repositories"
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"html/template"
 	"io"
@@ -17,6 +18,7 @@ var (
 	database           = persistence.CreatePostgresDatabase(&config.Database)
 	connection         = database.Connect()
 	pipelineRepository = repositories.CreatePipelineRepository(connection)
+	stepsRepository    = repositories.CreateStepsRepository(connection)
 )
 
 func main() {
@@ -59,9 +61,30 @@ func main() {
 		return c.Render(http.StatusOK, "pipelines.html", data)
 	})
 	e.GET("/pipeline/:id", func(c echo.Context) error {
+		idParam := c.Param("id")
+		id, err := uuid.Parse(idParam)
+		if err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+		pipeline, err := pipelineRepository.GetById(id)
+		if err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+		steps, err := stepsRepository.GetSteps(pipeline.ID)
+		if err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
 		data := map[string]interface{}{
-			"Title":   "Strona główna",
-			"actions": mapItems(executor.CreateActionMap(&configuration.Config{})),
+			"Title":    "Strona główna",
+			"actions":  mapItems(executor.CreateActionMap(&configuration.Config{})),
+			"pipeline": pipeline,
+			"steps":    steps,
 		}
 		return c.Render(http.StatusOK, "index.html", data)
 	})

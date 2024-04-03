@@ -1,55 +1,26 @@
 {{define "pipeline-container"}}
-<div class="pipeline-container">
-    <div class="pipeline-step">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Krok 1</h5>
-                <p class="card-text">Opis działania pierwszego kroku w pipeline.</p>
-                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100"
-                     aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar" style="width: 100%"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="pipeline-arrow">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down"
-             viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
-        </svg>
-    </div>
-    <div class="pipeline-step">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Krok 2</h5>
-                <p class="card-text">Opis działania drugiego kroku w pipeline.</p>
-                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100"
-                     aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar" style="width: 100%"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="pipeline-arrow">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down"
-             viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
-        </svg>
-    </div>
-    <div class="pipeline-step">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Krok 3</h5>
-                <p class="card-text">Opis działania trzeciego kroku w pipeline.</p>
-                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50"
-                     aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar" style="width: 50%"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container mt-5">
+    <div class="accordion" id="workflowAccordion">
+{{range .steps}}
+        <div class="accordion-item workflow-step">
+            <h2 class="accordion-header" id="heading-{{.ID}}">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{.ID}}" aria-expanded="true" aria-controls="collapse-{{.ID}}">
+                    <i class="fas fa-sync-alt workflow-icon"></i>
+                   {{.Name}} ({{.Action}})
 
+                </button>
+            </h2>
+            <div id="collapse-{{.ID}}" class="accordion-collapse collapse " aria-labelledby="heading-{{.ID}}" data-bs-parent="#workflowAccordion">
+                <div class="accordion-body">
+                    {{.ID}}                   {{.Name}} ({{.Action}})
+                </div>
+            </div>
+        </div>
+{{end}}
+    </div>
+    <button class="btn-new-step">
+        + New step
+    </button>
 </div>
+
 {{end}}
