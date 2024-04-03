@@ -10,10 +10,10 @@ type Pipeline struct {
 }
 
 type Parameters struct {
-	ID         uuid.UUID `gorm:"primaryKey"`
-	Key        string
-	Value      string
-	PipelineID uuid.UUID
+	ID     uuid.UUID `gorm:"primaryKey"`
+	Key    string
+	Value  string
+	StepID uuid.UUID
 }
 
 type Step struct {

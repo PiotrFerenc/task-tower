@@ -1,0 +1,10 @@
+<form>
+    {{range .form}}
+
+    <div class="mb-3">
+        <label for="{{.Id}}" class="form-label">{{.Name}}</label>
+        <input type="{{.Type}}" name="{{.Name}}" class="input-group-text" id="{{.Id}}"/>
+    </div>
+    {{end}}
+
+</form>
