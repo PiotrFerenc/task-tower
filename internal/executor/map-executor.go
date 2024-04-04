@@ -89,5 +89,6 @@ func CreateActionMap(config *configuration.Config) map[string]actions.Action {
 		"git-clone":   git.CreateGitClone(config),
 		"file-create": file.CreateContentToFile(config),
 		"docker-run":  docker.CreateDockerRun(),
+		"file-delete": file.CreateDeleteFileAction(config),
 	}
 }
