@@ -90,5 +90,6 @@ func CreateActionMap(config *configuration.Config) map[string]actions.Action {
 		"file-create": file.CreateContentToFile(config),
 		"docker-run":  docker.CreateDockerRun(),
 		"file-delete": file.CreateDeleteFileAction(config),
+		"file-append": file.CreateAppendContentToFile(config),
 	}
 }
