@@ -1,11 +1,17 @@
 <form>
-    {{range .form}}
+    <p>Input</p>
+    {{range .inputs}}
 
     <div class="mb-3">
         <label for="{{.Id}}" class="form-label">{{.Name}}</label>
-        <input type="{{.Type}}" value="{{.Value}}" name="{{.Name}}" class="form-control" id="{{.Id}}" aria-describedby="help-box-{{.Id}}"/>
+        <input type="{{.Type}}" value="{{.Value}}" name="form[{{.Id}}]" class="form-control" id="{{.Id}}" aria-describedby="help-box-{{.Id}}"/>
         <div id="help-box-{{.Id}}" class="form-text">{{.Description}}</div>
     </div>
+    {{end}}
+<hr>
+    <p>Output</p>
+    {{range .outputs}}
+    <p>{{.Name}}- {{.Description}}</p>
     {{end}}
 
 </form>

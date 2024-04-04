@@ -87,10 +87,11 @@ func main() {
 			})
 		}
 
-		form := mapPropertiesToInputs(params.Inputs(), values)
-
+		inputs := mapPropertiesToInputs(params.Inputs(), values)
+		output := mapPropertiesToOutputs(params.Outputs())
 		data := map[string]interface{}{
-			"form": form,
+			"inputs":  inputs,
+			"outputs": output,
 		}
 		return c.Render(http.StatusOK, "action-form.html", data)
 	})
@@ -150,7 +151,19 @@ func mapPropertiesToInputs(properties []actions.Property, values []types.Paramet
 	}
 	return inputs
 }
-
+func mapPropertiesToOutputs(properties []actions.Property) []Input {
+	var inputs []Input
+	for _, property := range properties {
+		input := Input{
+			Name:        property.Name,
+			Type:        property.Type,
+			Description: property.Description,
+			Validation:  property.Validation,
+		}
+		inputs = append(inputs, input)
+	}
+	return inputs
+}
 func getParameterValue(values []types.Parameters, name string) types.Parameters {
 	for _, value := range values {
 		if value.Key == name {
