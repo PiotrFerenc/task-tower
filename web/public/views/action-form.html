@@ -3,7 +3,8 @@
 
     <div class="mb-3">
         <label for="{{.Id}}" class="form-label">{{.Name}}</label>
-        <input type="{{.Type}}" name="{{.Name}}" class="input-group-text" id="{{.Id}}"/>
+        <input type="{{.Type}}" value="{{.Value}}" name="{{.Name}}" class="form-control" id="{{.Id}}" aria-describedby="help-box-{{.Id}}"/>
+        <div id="help-box-{{.Id}}" class="form-text">{{.Description}}</div>
     </div>
     {{end}}
 

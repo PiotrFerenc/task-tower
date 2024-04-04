@@ -4,14 +4,14 @@
 {{range .steps}}
         <div class="accordion-item workflow-step">
             <h2 class="accordion-header" id="heading-{{.ID}}">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{.ID}}" aria-expanded="true" aria-controls="collapse-{{.ID}}">
-                    <i class="fas fa-sync-alt workflow-icon"></i>
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{.ID}}" aria-expanded="true" aria-controls="collapse-{{.ID}}" hx-get="/parameters/{{.Action}}/{{.ID}}" hx-target="#accordion-body-{{.ID}}" hx-swap="innerHTML">
+                    <i class="fas fa-sync-alt workflow-icon"  ></i>
                    {{.Name}} ({{.Action}})
 
                 </button>
             </h2>
             <div id="collapse-{{.ID}}" class="accordion-collapse collapse " aria-labelledby="heading-{{.ID}}" data-bs-parent="#workflowAccordion">
-                <div class="accordion-body">
+                <div class="accordion-body" id="accordion-body-{{.ID}}">
                     {{.ID}}                   {{.Name}} ({{.Action}})
                 </div>
             </div>
