@@ -14,7 +14,7 @@
 
 ![100 - commitów](https://img.shields.io/badge/100-commitów-2ea44f?logo=go)
 
-# DWAS
+# DWAS- Build your own automation
 
 
 **D**istributed **W**ork **A**utomation **S**ystem is a system designed to automate and streamline processes in
@@ -46,53 +46,10 @@ make docker-rebuild
 ## Usage 
 
 
-This is a cURL command which sends a POST request to the URL "http://localhost:5000/execute". It sends a payload of JSON
-data where it sets a series of parameters and stages. The parameters and actions in the stages seem to indicate a
-sequence of operations to be performed.
-
-```shell
-curl -X POST --location "http://localhost:5000/execute" \
-    -d '{
-    "Parameters": {
-        "numbers.a" : "1",
-        "numbers.b": "2",
-        "wynik.text": "{{numbers.a}} + {{numbers.b}} = {{numbers.c}}"
-    },
-    "Steps": [
-        {
-            "Sequence": 1,
-            "Name": "numbers",
-            "Action": "add-numbers"
-        },{
-            "Sequence": 2,
-            "Name": "wynik",
-            "Action": "console"
-        }
-    ]
-}'
-```
-
-`Parameters`- In the "Parameters" section, we can declare variables that will be used in the "Steps" section.
-
-`numbers.a`- `numbers`- proper name of action, `a`- name of input
-argument [link](https://github.com/PiotrFerenc/mash2/blob/main/cmd/worker/actions/add-numbers.go#L24)
-
-`Steps`- In the "Steps" section, we define the next steps.
-
-`Sequence`- means the sequence of performing actions
-
-`Name`- the proper name of the action
-
-`Action` - the name of the action
 
 ## Actions
 
-- [ ] create file
-    - arguments `fileName`, `content`
-    - return `createdFilePath`
-```shell
-sudo chmod 666 /var/run/docker.sock
-```
+
 
 ## Todo
 
