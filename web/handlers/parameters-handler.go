@@ -43,6 +43,25 @@ func CreateParametersHandler(parametersRepository repositories.ParametersReposit
 	}
 }
 
+func CreateUpdateParameter(parametersRepository repositories.ParametersRepository, parameters map[string]actions.Action) func(c echo.Context) error {
+	return func(c echo.Context) error {
+		data := map[string]interface{}{}
+		if err := c.Bind(&data); err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+		err := parametersRepository.UpdateParameters(data)
+		if err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+
+		return nil
+	}
+}
+
 func mapPropertiesToInputs(properties []actions.Property, values []types.Parameters) []types.Input {
 	var inputs []types.Input
 	for _, property := range properties {

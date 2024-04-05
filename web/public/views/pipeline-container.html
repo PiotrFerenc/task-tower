@@ -11,9 +11,12 @@
                 </button>
             </h2>
             <div id="collapse-{{.ID}}" class="accordion-collapse collapse " aria-labelledby="heading-{{.ID}}" data-bs-parent="#workflowAccordion">
+
+                <form  hx-post="/parameters" hx-trigger="focusout" hx-swap="none">
                 <div class="accordion-body" id="accordion-body-{{.ID}}">
-                    {{.ID}}                   {{.Name}} ({{.Action}})
+
                 </div>
+                </form>
             </div>
         </div>
 {{end}}
