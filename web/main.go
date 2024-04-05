@@ -31,12 +31,11 @@ func main() {
 	e := echo.New()
 	e.Renderer = t
 	e.Static("/assets", "web/public/static")
-	e.POST("/pipeline", handlers.CreatePipelinesHandler(pipelineRepository))
 	e.GET("/", handlers.CreateHomeHandler(pipelineRepository))
-	e.GET("/parameters/:action/:id", handlers.CreateParametersHandler(parametersRepository, parameters))
+	e.POST("/pipeline", handlers.CreatePipelinesHandler(pipelineRepository))
 	e.GET("/pipeline/:id", handlers.CreatePipelineHandler(pipelineRepository, stepsRepository, parameters))
+	e.GET("/parameters/:action/:id", handlers.CreateParametersHandler(parametersRepository, parameters))
 	e.Logger.Fatal(e.Start(":4999"))
-
 }
 
 type Template struct {
