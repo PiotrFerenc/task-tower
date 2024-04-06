@@ -40,6 +40,9 @@ func CreateGitCommit(config *configuration.Config) actions.Action {
 	}
 }
 
+func (action *gitCommit) GetCategoryName() string {
+	return "git"
+}
 func (action *gitCommit) Inputs() []actions.Property {
 	return []actions.Property{
 		action.path,

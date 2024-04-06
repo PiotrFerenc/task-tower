@@ -25,6 +25,9 @@ func CreateDeleteFileAction(config *configuration.Config) actions.Action {
 	}
 }
 
+func (action *deleteFile) GetCategoryName() string {
+	return "file"
+}
 func (action *deleteFile) Inputs() []actions.Property {
 	return []actions.Property{
 		action.fileName,

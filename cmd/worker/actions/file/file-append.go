@@ -38,6 +38,9 @@ func CreateAppendContentToFile(config *configuration.Config) actions.Action {
 	}
 }
 
+func (action *appendContentToFile) GetCategoryName() string {
+	return "file"
+}
 func (action *appendContentToFile) Inputs() []actions.Property {
 	return []actions.Property{
 		action.fileName, action.content,

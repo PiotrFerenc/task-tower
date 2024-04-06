@@ -32,6 +32,9 @@ func CreateGitClone(config *configuration.Config) actions.Action {
 	}
 }
 
+func (action *gitClone) GetCategoryName() string {
+	return "git"
+}
 func (action *gitClone) Inputs() []actions.Property {
 	return []actions.Property{
 		action.url,

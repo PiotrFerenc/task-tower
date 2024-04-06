@@ -37,6 +37,10 @@ func CreateAddNumbers() actions.Action {
 	}
 }
 
+func (action *addnumbers) GetCategoryName() string {
+	return "math"
+}
+
 // Inputs The Inputs() method returns a slice of Property structure.
 // The Property structure includes two fields: Name and Type, both of which are strings.
 // These property structures are created for two inputs, 'a' and 'b', of 'number' type.

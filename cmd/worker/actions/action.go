@@ -12,6 +12,7 @@ import (
 type Action interface {
 	Inputs() []Property
 	Outputs() []Property
+	GetCategoryName() string
 	Execute(process types.Pipeline) (types.Pipeline, error)
 }
 

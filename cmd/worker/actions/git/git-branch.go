@@ -32,6 +32,9 @@ func CreateGitCreateBranch(config *configuration.Config) actions.Action {
 	}
 }
 
+func (action *gitCreateBranch) GetCategoryName() string {
+	return "git"
+}
 func (action *gitCreateBranch) Inputs() []actions.Property {
 	return []actions.Property{
 		action.repoPath,

@@ -21,6 +21,9 @@ func CreateConsoleAction() actions.Action {
 	}
 }
 
+func (action *console) GetCategoryName() string {
+	return "console"
+}
 func (action *console) Inputs() []actions.Property {
 	return []actions.Property{
 		action.text,

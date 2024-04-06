@@ -39,6 +39,9 @@ func CreateContentToFile(config *configuration.Config) actions.Action {
 	}
 }
 
+func (action *contentToFile) GetCategoryName() string {
+	return "file"
+}
 func (action *contentToFile) Inputs() []actions.Property {
 	return []actions.Property{
 		action.fileName, action.content,

@@ -40,29 +40,33 @@ type dockerContainer struct {
 	containerId actions.Property
 }
 
-func (c *dockerContainer) Inputs() []actions.Property {
+func (d *dockerContainer) GetCategoryName() string {
+	return "docker"
+}
+
+func (d *dockerContainer) Inputs() []actions.Property {
 	return []actions.Property{
-		c.imageName, c.ports,
+		d.imageName, d.ports,
 	}
 }
-func (c *dockerContainer) Outputs() []actions.Property {
+func (d *dockerContainer) Outputs() []actions.Property {
 	return []actions.Property{
-		c.containerId,
+		d.containerId,
 	}
 }
 
-func (c *dockerContainer) Execute(process types.Pipeline) (types.Pipeline, error) {
+func (d *dockerContainer) Execute(process types.Pipeline) (types.Pipeline, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return process, err
 	}
-	imageName, err := c.imageName.GetStringFrom(&process)
+	imageName, err := d.imageName.GetStringFrom(&process)
 
 	if err != nil {
 		return process, err
 	}
-	ports, err := c.ports.GetStringFrom(&process)
+	ports, err := d.ports.GetStringFrom(&process)
 	if err != nil {
 		return process, err
 	}
@@ -86,7 +90,7 @@ func (c *dockerContainer) Execute(process types.Pipeline) (types.Pipeline, error
 		return process, err
 	}
 
-	process.SetString(c.containerId.Name, resp.ID)
+	process.SetString(d.containerId.Name, resp.ID)
 	return process, nil
 }
 
