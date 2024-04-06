@@ -41,8 +41,10 @@ func (repo *repository) GetAll() ([]types.Pipeline, error) {
 
 func (repo *repository) Save(name string) (types.Pipeline, error) {
 
-	var pipeline types.Pipeline
-	pipeline.Name = name
+	pipeline := types.Pipeline{
+		ID:   uuid.New(),
+		Name: name,
+	}
 
 	if err := repo.Database.Create(&pipeline); err != nil {
 		return pipeline, err.Error

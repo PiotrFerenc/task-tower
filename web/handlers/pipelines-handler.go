@@ -8,19 +8,31 @@ import (
 
 func CreatePipelinesHandler(pipelineRepository repositories.PipelineRepository) func(ctx echo.Context) error {
 	return func(c echo.Context) error {
-		pipelines, err := pipelineRepository.GetAll()
+		data := map[string]interface{}{}
+		if err := c.Bind(&data); err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+		name, ok := data["pipeline-name"]
+		if !ok {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": "pipeline-name is required",
+			})
+		}
+		pipelineName := name.(string)
+		pipeline, err := pipelineRepository.Save(pipelineName)
 		if err != nil {
 			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
 				"error": err.Error(),
 			})
 		}
-
-		data := map[string]interface{}{
-			"Title":     "Strona główna",
-			"pipelines": pipelines,
+		tmp := map[string]interface{}{
+			"ID":   pipeline.ID,
+			"Name": pipeline.Name,
 		}
 
-		return c.Render(http.StatusOK, "pipeline-list.html", data)
+		return c.Render(http.StatusOK, "pipeline-list.html", tmp)
 
 	}
 
