@@ -29,12 +29,38 @@ func CreatePipelineHandler(pipelineRepository repositories.PipelineRepository, s
 				"error": err.Error(),
 			})
 		}
+		actions := make(map[string][]Action)
+		for name, action := range parameters {
+			input := Action{
+				Outputs:  action.Outputs(),
+				Inputs:   action.Inputs(),
+				Category: action.GetCategoryName(),
+				Name:     name,
+			}
+			actions[input.Category] = append(actions[input.Category], input)
+		}
+
 		data := map[string]interface{}{
 			"Title":    "Strona główna",
-			"actions":  parameters,
+			"actions":  actions,
 			"pipeline": pipeline,
 			"steps":    steps,
 		}
 		return c.Render(http.StatusOK, "index.html", data)
 	}
+}
+func categoryExist(c []string, name string) bool {
+	for _, v := range c {
+		if v == name {
+			return true
+		}
+	}
+	return false
+}
+
+type Action struct {
+	Outputs  []actions.Property
+	Inputs   []actions.Property
+	Category string
+	Name     string
 }
