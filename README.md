@@ -17,9 +17,7 @@
 # DWAS- Build your own automation
 
 
-**D**istributed **W**ork **A**utomation **S**ystem is a system designed to automate and streamline processes in
-distributed
-work environments, integrating various tools and platforms to coordinate tasks across multiple locations.
+**D**istributed **W**ork **A**utomation **S**ystem. No-code platform for building automations.
 </div>
 
 ## Installation
