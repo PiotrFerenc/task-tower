@@ -1,20 +1,13 @@
 {{define "actions-box"}}
 
+<ul class="nav flex-column">
 
-{{range $category, $actions := .actions}}
-<p>
-    {{$category}}
-
-
-    {{range $actions}}
-<p>
--    {{.Name}}
-</p>
+    {{range $category, $actions := .actions}}
+    <li class="nav-item">
+        <a class="nav-link" href="#">{{$category}}</a>
+    </li>
     {{end}}
-</p>
-{{end}}
-
+</ul>
 
 {{end}}
-
 
