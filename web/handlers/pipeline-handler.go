@@ -29,7 +29,7 @@ func CreatePipelineHandler(pipelineRepository repositories.PipelineRepository, s
 				"error": err.Error(),
 			})
 		}
-		actions := make(map[string][]Action)
+		actionList := make(map[string][]Action)
 		for name, action := range parameters {
 			input := Action{
 				Outputs:  action.Outputs(),
@@ -37,14 +37,14 @@ func CreatePipelineHandler(pipelineRepository repositories.PipelineRepository, s
 				Category: action.GetCategoryName(),
 				Name:     name,
 			}
-			actions[input.Category] = append(actions[input.Category], input)
+			actionList[input.Category] = append(actionList[input.Category], input)
 		}
 
 		data := map[string]interface{}{
-			"Title":    "Strona główna",
-			"actions":  actions,
-			"pipeline": pipeline,
-			"steps":    steps,
+			"Title":      "Strona główna",
+			"categories": actionList,
+			"pipeline":   pipeline,
+			"steps":      steps,
 		}
 		return c.Render(http.StatusOK, "index.html", data)
 	}
