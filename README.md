@@ -18,6 +18,9 @@
 
 
 **D**istributed **W**ork **A**utomation **S**ystem. No-code platform for building automations.
+
+![Screenshot from 2024-04-07 13-11-14](https://github.com/PiotrFerenc/mash2/assets/30370747/4fea3e63-0eb6-47b3-bb7f-83e92bfa7f42)
+
 </div>
 
 ## Installation
