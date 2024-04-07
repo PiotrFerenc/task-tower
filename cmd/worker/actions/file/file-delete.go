@@ -19,7 +19,8 @@ func CreateDeleteFileAction(config *configuration.Config) actions.Action {
 		fileName: actions.Property{
 			Name:        "fileName",
 			Type:        actions.Text,
-			Description: "",
+			Description: "Name of the file to be deleted",
+			DisplayName: "File Name",
 			Validation:  "required",
 		},
 	}

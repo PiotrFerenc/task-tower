@@ -20,13 +20,15 @@ func CreateGitClone(config *configuration.Config) actions.Action {
 		url: actions.Property{
 			Name:        "url",
 			Type:        actions.Text,
-			Description: "",
+			Description: "URL of the git repository to clone.",
+			DisplayName: "Git Repository URL",
 			Validation:  "required",
 		},
 		path: actions.Property{
 			Name:        "path",
 			Type:        actions.Text,
-			Description: "",
+			Description: "Local path where the repository will be cloned to.",
+			DisplayName: "Destination Path",
 			Validation:  "required",
 		},
 	}

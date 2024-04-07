@@ -19,19 +19,22 @@ func CreateAddNumbers() actions.Action {
 		actions.Property{
 			Name:        "a",
 			Type:        actions.Number,
-			Description: "a",
+			Description: "First number to be added",
+			DisplayName: "Number A",
 			Validation:  "required,number",
 		},
 		actions.Property{
 			Name:        "b",
 			Type:        actions.Number,
-			Description: "b",
+			Description: "Second number to be added",
+			DisplayName: "Number B",
 			Validation:  "required,number",
 		},
 		actions.Property{
 			Name:        "c",
 			Type:        actions.Number,
-			Description: "c",
+			Description: "The result of addition",
+			DisplayName: "Sum",
 			Validation:  "",
 		},
 	}

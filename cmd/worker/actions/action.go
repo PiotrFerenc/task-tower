@@ -20,6 +20,7 @@ type Property struct {
 	Name        string
 	Type        string
 	Description string
+	DisplayName string
 	Validation  string
 }
 

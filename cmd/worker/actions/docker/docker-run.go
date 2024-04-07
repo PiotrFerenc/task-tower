@@ -16,19 +16,22 @@ func CreateDockerRun() actions.Action {
 		imageName: actions.Property{
 			Name:        "image",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The name of the Docker image to use",
+			DisplayName: "Image Name",
 			Validation:  "required",
 		},
 		ports: actions.Property{
 			Name:        "ports",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The ports to expose from the Docker container",
+			DisplayName: "Exposed Ports",
 			Validation:  "required",
 		},
 		containerId: actions.Property{
 			Name:        "id",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The unique identifier for the Docker container",
+			DisplayName: "Container ID",
 			Validation:  "",
 		},
 	}

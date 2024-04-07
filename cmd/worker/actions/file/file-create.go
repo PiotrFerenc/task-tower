@@ -21,19 +21,22 @@ func CreateContentToFile(config *configuration.Config) actions.Action {
 		fileName: actions.Property{
 			Name:        "fileName",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The name of the file",
+			DisplayName: "File Name",
 			Validation:  "required",
 		},
 		content: actions.Property{
 			Name:        "content",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The content to be written to the file",
+			DisplayName: "File Content",
 			Validation:  "required",
 		},
 		createdFilePath: actions.Property{
 			Name:        "createdFilePath",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The path where the new file was created",
+			DisplayName: "Created File Path",
 			Validation:  "",
 		},
 	}

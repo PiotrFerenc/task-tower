@@ -67,12 +67,13 @@ func mapPropertiesToInputs(properties []actions.Property, values []types.Paramet
 	for _, property := range properties {
 		value := getParameterValue(values, property.Name)
 		input := types.Input{
+			Id:          value.ID,
 			Name:        property.Name,
+			DisplayName: property.DisplayName,
 			Type:        property.Type,
 			Description: property.Description,
 			Validation:  property.Validation,
 			Value:       value.Value,
-			Id:          value.ID,
 		}
 		inputs = append(inputs, input)
 	}
@@ -83,9 +84,11 @@ func mapPropertiesToOutputs(properties []actions.Property) []types.Input {
 	for _, property := range properties {
 		input := types.Input{
 			Name:        property.Name,
+			DisplayName: property.DisplayName,
 			Type:        property.Type,
 			Description: property.Description,
 			Validation:  property.Validation,
+			Value:       "",
 		}
 		inputs = append(inputs, input)
 	}

@@ -20,13 +20,15 @@ func CreateGitCreateBranch(config *configuration.Config) actions.Action {
 		repoPath: actions.Property{
 			Name:        "repoPath",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The path to the local Git repository where the new branch will be created.",
+			DisplayName: "Repository Path",
 			Validation:  "required",
 		},
 		branchName: actions.Property{
 			Name:        "branchName",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The name of the new branch to create in the Git repository.",
+			DisplayName: "Branch Name",
 			Validation:  "required",
 		},
 	}

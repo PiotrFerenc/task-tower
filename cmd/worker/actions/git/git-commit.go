@@ -22,19 +22,22 @@ func CreateGitCommit(config *configuration.Config) actions.Action {
 		path: actions.Property{
 			Name:        "path",
 			Type:        actions.Text,
-			Description: "",
+			Description: "Path to the Git repository",
+			DisplayName: "Repository Path",
 			Validation:  "required",
 		},
 		message: actions.Property{
 			Name:        "message",
 			Type:        actions.Text,
-			Description: "",
+			Description: "Message for the Git commit",
+			DisplayName: "Commit Message",
 			Validation:  "required",
 		},
 		id: actions.Property{
 			Name:        "id",
 			Type:        actions.Text,
-			Description: "",
+			Description: "ID of the Git commit",
+			DisplayName: "Commit ID",
 			Validation:  "required",
 		},
 	}

@@ -21,19 +21,23 @@ func CreateAppendContentToFile(config *configuration.Config) actions.Action {
 		fileName: actions.Property{
 			Name:        "fileName",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The name of the file to which content is being appended",
+			DisplayName: "File Name",
 			Validation:  "required",
 		},
 		content: actions.Property{
 			Name:        "content",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The content to be appended to the file",
+			DisplayName: "Content",
 			Validation:  "required",
 		},
 		appendFilePath: actions.Property{
 			Name:        "appendFilePath",
 			Type:        actions.Text,
-			Description: "",
+			Description: "The path of the file to which the content will be appended",
+			DisplayName: "Append File Path",
+			Validation:  "",
 		},
 	}
 }
