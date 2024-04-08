@@ -40,5 +40,5 @@ func (repo *stepRepository) Save(actionName string, pipelineId uuid.UUID) (uuid.
 	}
 	repo.Database.Create(step)
 
-	return nil
+	return step.ID, nil
 }
