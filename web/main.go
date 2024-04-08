@@ -37,7 +37,7 @@ func main() {
 	e.GET("/parameters/:action/:id", handlers.CreateParametersHandler(parametersRepository, parameters))
 	e.POST("/parameters", handlers.CreateUpdateParameter(parametersRepository, parameters))
 	e.GET("/action/:name", handlers.CreateActionHandler(parameters))
-	e.POST("/action/:name/:pipelineId", handlers.AddActionHandler(parameters, stepsRepository))
+	e.POST("/action/:name/:pipelineId", handlers.AddActionHandler(parameters, stepsRepository, parametersRepository))
 	e.Logger.Fatal(e.Start(":4999"))
 }
 
