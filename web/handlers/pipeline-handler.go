@@ -49,14 +49,6 @@ func CreatePipelineHandler(pipelineRepository repositories.PipelineRepository, s
 		return c.Render(http.StatusOK, "index.html", data)
 	}
 }
-func categoryExist(c []string, name string) bool {
-	for _, v := range c {
-		if v == name {
-			return true
-		}
-	}
-	return false
-}
 
 type Action struct {
 	Outputs  []actions.Property

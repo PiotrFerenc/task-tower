@@ -18,7 +18,7 @@ type Parameters struct {
 
 type Step struct {
 	ID         uuid.UUID `gorm:"primaryKey"`
-	Sequence   int
+	Sequence   int64
 	Action     string
 	Name       string
 	PipelineID uuid.UUID

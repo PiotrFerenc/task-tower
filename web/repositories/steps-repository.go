@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"github.com/PiotrFerenc/mash2/web/types"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -8,6 +9,7 @@ import (
 
 type StepsRepository interface {
 	GetSteps(processId uuid.UUID) ([]types.Step, error)
+	Save(actionName string, pipelineId uuid.UUID) error
 }
 type stepRepository struct {
 	Database *gorm.DB
@@ -22,4 +24,21 @@ func (repo *stepRepository) GetSteps(processId uuid.UUID) ([]types.Step, error) 
 		return result, err.Error
 	}
 	return result, nil
+}
+func (repo *stepRepository) Save(actionName string, pipelineId uuid.UUID) error {
+	var maxSequence int64
+	repo.Database.Model(&types.Step{}).Where("value > ?", 10).Count(&maxSequence)
+	action := actionName
+	name := fmt.Sprintf("%s_%d", actionName, maxSequence)
+
+	step := &types.Step{
+		ID:         uuid.New(),
+		Sequence:   maxSequence + 1,
+		Action:     action,
+		Name:       name,
+		PipelineID: pipelineId,
+	}
+	repo.Database.Create(step)
+
+	return nil
 }
