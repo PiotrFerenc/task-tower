@@ -2,8 +2,7 @@ package main
 
 import (
 	"github.com/PiotrFerenc/mash2/internal/configuration"
-	"github.com/PiotrFerenc/mash2/internal/executor"
-	"github.com/PiotrFerenc/mash2/web/handlers"
+	"github.com/PiotrFerenc/mash2/web/modules"
 	"github.com/PiotrFerenc/mash2/web/persistence"
 	"github.com/PiotrFerenc/mash2/web/repositories"
 	"github.com/labstack/echo/v4"
@@ -23,21 +22,17 @@ var (
 func main() {
 
 	database.RunMigration()
-
 	t := &Template{
 		templates: template.Must(template.ParseGlob("web/public/views/*.html")),
 	}
-	parameters := executor.CreateActionMap(&configuration.Config{})
+	//	parameters := executor.CreateActionMap(&configuration.Config{})
 	e := echo.New()
 	e.Renderer = t
+
 	e.Static("/assets", "web/public/static")
-	e.GET("/", handlers.CreateHomeHandler(pipelineRepository))
-	e.POST("/pipeline", handlers.CreatePipelinesHandler(pipelineRepository))
-	e.GET("/pipeline/:id", handlers.CreatePipelineHandler(pipelineRepository, stepsRepository, parameters))
-	e.GET("/parameters/:action/:id", handlers.CreateParametersHandler(parametersRepository, parameters))
-	e.POST("/parameters", handlers.CreateUpdateParameter(parametersRepository, parameters))
-	e.GET("/action/:name", handlers.CreateActionHandler(parameters))
-	e.POST("/action/:name/:pipelineId", handlers.AddActionHandler(parameters, stepsRepository, parametersRepository))
+
+	modules.RegisterDashboardModule(e, pipelineRepository)
+	modules.RegisterEditor(e, pipelineRepository)
 	e.Logger.Fatal(e.Start(":4999"))
 }
 

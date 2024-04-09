@@ -11,10 +11,10 @@
                 {{end}}
             </div>
         </div>
+
         <div class="col-9">
             <div class="tab-content" id="v-pills-tabContent">
                 {{range $category ,$actions := .categories}}
-
                 <div class="tab-pane fade " id="v-{{$category}}" role="tabpanel" aria-labelledby="v-{{$category}}-tab">
                     <div class="container">
                         <div class="row">
@@ -37,7 +37,7 @@
 
                                     <div class="tab-pane fade " id="v-{{.Name}}" role="tabpanel"
                                          aria-labelledby="v-{{.Name}}-tab">
-                                        <form /action/:name/:pipelineId>
+                                        <form hx-post="/action/{{.Name}}/" >
 
 
                                             {{range .Inputs}}

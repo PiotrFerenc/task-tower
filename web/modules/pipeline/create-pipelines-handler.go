@@ -1,4 +1,4 @@
-package handlers
+package pipeline
 
 import (
 	"github.com/PiotrFerenc/mash2/web/repositories"

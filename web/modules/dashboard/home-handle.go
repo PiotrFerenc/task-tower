@@ -1,4 +1,4 @@
-package handlers
+package dashboard
 
 import (
 	"github.com/PiotrFerenc/mash2/web/repositories"
