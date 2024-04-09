@@ -22,9 +22,10 @@ var (
 func main() {
 
 	database.RunMigration()
-	t := &Template{
-		templates: template.Must(template.ParseGlob("web/public/views/*.html")),
-	}
+	t := LoadTemplates([]string{
+		"web/public/views/*.html",
+		"web/public/views/dashboard/*.html",
+	})
 	//	parameters := executor.CreateActionMap(&configuration.Config{})
 	e := echo.New()
 	e.Renderer = t
@@ -42,4 +43,16 @@ type Template struct {
 
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
 	return t.templates.ExecuteTemplate(w, name, data)
+}
+func LoadTemplates(patterns []string) *Template {
+	var tmpl *template.Template
+
+	for _, pattern := range patterns {
+		if tmpl == nil {
+			tmpl = template.Must(template.ParseGlob(pattern))
+		} else {
+			tmpl = template.Must(tmpl.ParseGlob(pattern))
+		}
+	}
+	return &Template{templates: tmpl}
 }

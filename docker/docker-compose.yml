@@ -40,7 +40,7 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - "./temp:/home/appuser/temp"
+      - "./temp:/dashboard/appuser/temp"
       - "/var/run/docker.sock:/var/run/docker.sock"
   dwas_worker_2:
     container_name: "worker-dwas-2"
@@ -48,7 +48,7 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - "./temp:/home/appuser/temp"
+      - "./temp:/dashboard/appuser/temp"
       - "/var/run/docker.sock:/var/run/docker.sock"
   dwas_worker_3:
     container_name: "worker-dwas-3"
@@ -56,5 +56,5 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - "./temp:/home/appuser/temp"
+      - "./temp:/dashboard/appuser/temp"
       - "/var/run/docker.sock:/var/run/docker.sock"
