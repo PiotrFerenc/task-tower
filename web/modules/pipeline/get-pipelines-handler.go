@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func PipelinesHandler(pipelineRepository repositories.PipelineRepository) func(c echo.Context) error {
+func GetPipelinesHandler(pipelineRepository repositories.PipelineRepository) func(c echo.Context) error {
 	return func(c echo.Context) error {
 		pipelines, err := pipelineRepository.GetAll()
 		if err != nil {

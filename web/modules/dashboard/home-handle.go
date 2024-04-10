@@ -10,7 +10,8 @@ func CreateHomeHandler(pipelineRepository repositories.PipelineRepository) func(
 	return func(c echo.Context) error {
 
 		data := map[string]interface{}{
-			"Title": "Strona główna",
+			"Title":       "Strona główna",
+			"pipelineurl": "/pipeline",
 		}
 		return c.Render(http.StatusOK, "home.html", data)
 	}

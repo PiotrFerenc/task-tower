@@ -1,58 +1,39 @@
 package pipeline
 
 import (
-	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/web/repositories"
-	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
-func CreatePipelineHandler(pipelineRepository repositories.PipelineRepository, stepsRepository repositories.StepsRepository, parameters map[string]actions.Action) func(c echo.Context) error {
+func CreatePipelinesHandler(pipelineRepository repositories.PipelineRepository) func(ctx echo.Context) error {
 	return func(c echo.Context) error {
-		idParam := c.Param("id")
-		id, err := uuid.Parse(idParam)
+		data := map[string]interface{}{}
+		if err := c.Bind(&data); err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+		name, ok := data["pipeline-name"]
+		if !ok {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": "pipeline-name is required",
+			})
+		}
+		pipelineName := name.(string)
+		pipeline, err := pipelineRepository.Save(pipelineName)
 		if err != nil {
 			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
 				"error": err.Error(),
 			})
 		}
-		pipeline, err := pipelineRepository.GetById(id)
-		if err != nil {
-			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
-				"error": err.Error(),
-			})
-		}
-		steps, err := stepsRepository.GetSteps(pipeline.ID)
-		if err != nil {
-			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
-				"error": err.Error(),
-			})
-		}
-		actionList := make(map[string][]Action)
-		for name, action := range parameters {
-			input := Action{
-				Outputs:  action.Outputs(),
-				Inputs:   action.Inputs(),
-				Category: action.GetCategoryName(),
-				Name:     name,
-			}
-			actionList[input.Category] = append(actionList[input.Category], input)
+		tmp := map[string]interface{}{
+			"ID":   pipeline.ID,
+			"Name": pipeline.Name,
 		}
 
-		data := map[string]interface{}{
-			"Title":      "Strona główna",
-			"categories": actionList,
-			"pipeline":   pipeline,
-			"steps":      steps,
-		}
-		return c.Render(http.StatusOK, "index.html", data)
+		return c.Render(http.StatusOK, "pipeline-list.html", tmp)
+
 	}
-}
 
-type Action struct {
-	Outputs  []actions.Property
-	Inputs   []actions.Property
-	Category string
-	Name     string
 }

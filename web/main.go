@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/PiotrFerenc/mash2/internal/configuration"
+	"github.com/PiotrFerenc/mash2/internal/executor"
 	"github.com/PiotrFerenc/mash2/web/modules"
 	"github.com/PiotrFerenc/mash2/web/persistence"
 	"github.com/PiotrFerenc/mash2/web/repositories"
@@ -26,14 +27,14 @@ func main() {
 		"web/public/views/*.html",
 		"web/public/views/dashboard/*.html",
 	})
-	//	parameters := executor.CreateActionMap(&configuration.Config{})
+	parameters := executor.CreateActionMap(&configuration.Config{})
 	e := echo.New()
 	e.Renderer = t
 
 	e.Static("/assets", "web/public/static")
 
 	modules.RegisterDashboardModule(e, pipelineRepository)
-	modules.RegisterEditor(e, pipelineRepository)
+	modules.RegisterEditor(e, pipelineRepository, stepsRepository, parameters, parametersRepository)
 	e.Logger.Fatal(e.Start(":4999"))
 }
 

@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func CreateParametersHandler(parametersRepository repositories.ParametersRepository, parameters map[string]actions.Action) func(c echo.Context) error {
+func GetParametersHandler(parametersRepository repositories.ParametersRepository, parameters map[string]actions.Action) func(c echo.Context) error {
 	return func(c echo.Context) error {
 		idParam := c.Param("id")
 		actionName := c.Param("action")
@@ -43,7 +43,7 @@ func CreateParametersHandler(parametersRepository repositories.ParametersReposit
 	}
 }
 
-func CreateUpdateParameter(parametersRepository repositories.ParametersRepository, parameters map[string]actions.Action) func(c echo.Context) error {
+func UpdateParameter(parametersRepository repositories.ParametersRepository, parameters map[string]actions.Action) func(c echo.Context) error {
 	return func(c echo.Context) error {
 		data := map[string]interface{}{}
 		if err := c.Bind(&data); err != nil {
