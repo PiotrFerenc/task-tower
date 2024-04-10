@@ -16,6 +16,6 @@ func GetCategoriesHandler(parameters map[string]actions.Action) func(c echo.Cont
 		data := map[string]interface{}{
 			"categories": categories,
 		}
-		return c.Render(http.StatusOK, "action-new-form.html", data)
+		return c.Render(http.StatusOK, "actions-category.html", data)
 	}
 }

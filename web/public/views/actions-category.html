@@ -1,0 +1,5 @@
+{{range .actions}}
+<button class="nav-link " id="v-{{.}}-tab" data-bs-toggle="pill"
+        type="button" role="tab" aria-controls="v-{{.}}" aria-selected="true" hx-get="/actions/{{.}}/parameters"
+        hx-target="#v-parameters-tab" hx-swap="innerHTML">{{.}}
+</button> {{end}}

@@ -1,0 +1,18 @@
+{{range .actions}}
+
+        {{range .Inputs}}
+
+        <div class="mb-3">
+            <label for="{{.Name}}" class="form-label">{{.DisplayName}}</label>
+            <input type="{{.Type}}" name="{{.Name}}" class="form-control"
+                   id="{{.Name}}"
+                   aria-describedby="help-box-{{.Name}}"/>
+            <div id="help-box-{{.Name}}" class="form-text">{{.Description}}</div>
+        </div>
+        {{end}}
+    <hr>
+    <p>Output</p>
+    {{range .Outputs}}
+    <p>{{.Name}}- {{.Description}}</p>
+    {{end}}
+{{end}}

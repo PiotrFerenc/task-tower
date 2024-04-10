@@ -17,8 +17,7 @@ func GetActionParametersHandler(parameters map[string]actions.Action) func(c ech
 		}
 		actionList := new([]pipeline.Action)
 		for name, action := range parameters {
-			categoryName := action.GetCategoryName()
-			if actionName == categoryName {
+			if actionName == name {
 				input := pipeline.Action{
 					Outputs:  action.Outputs(),
 					Inputs:   action.Inputs(),
@@ -31,6 +30,6 @@ func GetActionParametersHandler(parameters map[string]actions.Action) func(c ech
 		data := map[string]interface{}{
 			"actions": actionList,
 		}
-		return c.Render(http.StatusOK, "action-new-form.html", data)
+		return c.Render(http.StatusOK, "action-parameters.html", data)
 	}
 }

@@ -25,6 +25,6 @@ func GetActionsHandler(parameters map[string]actions.Action) func(c echo.Context
 		data := map[string]interface{}{
 			"actions": actionList,
 		}
-		return c.Render(http.StatusOK, "action-new-form.html", data)
+		return c.Render(http.StatusOK, "actions-category.html", data)
 	}
 }
