@@ -19,11 +19,12 @@ type Pipeline struct {
 }
 
 type Step struct {
-	Id       uuid.UUID
-	Sequence int
-	Action   string
-	Name     string
-	Status   StepStatus
+	Id          uuid.UUID
+	Sequence    int
+	Action      string
+	Name        string
+	Status      StepStatus
+	SubPipeline *Pipeline
 }
 
 type StepStatus int
@@ -53,6 +54,13 @@ func (message *Pipeline) SetString(name, value string) {
 	message.Parameters[message.GetInternalName(name)] = value
 }
 func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
+	process := mapToPipeline(pipeline)
+
+	return process
+}
+
+func mapToPipeline(pipeline *apitypes.Pipeline) *Pipeline {
+
 	process := &Pipeline{
 		Id:         uuid.New(),
 		Parameters: pipeline.Parameters,
@@ -72,12 +80,14 @@ func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 			Name:     stage.Name,
 			Status:   Waiting,
 		}
+		//if stage.SubPipeline != nil {
+		process.Steps[i].SubPipeline = mapToPipeline(&stage.SubPipeline)
+		//}
 	}
 
 	if len(process.Steps) > 0 {
 		process.CurrentStep = process.Steps[0]
 		process.CurrentStep.Status = Processing
 	}
-
 	return process
 }

@@ -55,6 +55,8 @@ func (property *Property) GetStringFrom(message *types.Pipeline) (string, error)
 }
 
 const (
-	Text   = "text"
-	Number = "number"
+	Text     = "text"
+	Number   = "number"
+	Loop     = "loop"
+	Pipeline = "pipeline"
 )
