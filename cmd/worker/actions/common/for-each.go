@@ -32,7 +32,7 @@ type forEachLoop struct {
 }
 
 func (d *forEachLoop) GetCategoryName() string {
-	return "docker"
+	return "for-each"
 }
 
 func (d *forEachLoop) Inputs() []actions.Property {
@@ -45,7 +45,6 @@ func (d *forEachLoop) Outputs() []actions.Property {
 }
 
 func (d *forEachLoop) Execute(process types.Pipeline) (types.Pipeline, error) {
-
 	payload, err := d.collection.GetStringFrom(&process)
 	if err != nil {
 		return process, err
@@ -62,7 +61,21 @@ func (d *forEachLoop) Execute(process types.Pipeline) (types.Pipeline, error) {
 	if err != nil {
 		return process, err
 	}
-	//
+
+	forEachBody := process.CurrentStep.SubPipeline
+	currentIndex := process.CurrentStep.Sequence
+
+	for i, s := range process.Steps {
+		if s.Sequence > currentIndex {
+			s.Sequence = currentIndex + i
+		}
+	}
+	for i, s := range forEachBody.Steps {
+		s.Sequence = currentIndex + i
+		process.Steps = append(process.Steps, s)
+	}
+	process.CurrentStep = forEachBody.Steps[0]
+
 	for key, child := range items {
 		// fmt.Printf("key: %v, value: %v\n", key, child.Path("123").String())
 		// do akcji

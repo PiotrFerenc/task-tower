@@ -36,7 +36,8 @@ POST localhost:5000/execute
       "numbers.a":"1",
       "numbers.b":"2",
       "wynik.text":"{{numbers.a}} + {{numbers.b}} = {{numbers.c}}",
-      "petla.collection":"[{a : 1},{a : 2},{a : 3}]"
+      "petla.collection":"[{a : 1},{a : 2},{a : 3}]",
+      "petla.collectionKeyNam":"a"
    },
    "Stages":[
       {
