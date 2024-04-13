@@ -2,6 +2,10 @@ package types
 
 import "github.com/go-playground/validator/v10"
 
+type ForeachBody struct {
+	Stages     []ForeachStage         `json:"stages" validate:"required"`
+	Parameters map[string]interface{} `json:"parameters" validate:"required"`
+}
 type Pipeline struct {
 	Stages     []Stage                `json:"stages" validate:"required"`
 	Parameters map[string]interface{} `json:"parameters" validate:"required"`
