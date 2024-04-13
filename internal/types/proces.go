@@ -80,9 +80,9 @@ func mapToPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 			Name:     stage.Name,
 			Status:   Waiting,
 		}
-		//if stage.SubPipeline != nil {
-		process.Steps[i].SubPipeline = mapToPipeline(&stage.SubPipeline)
-		//}
+		if stage.SubPipeline != nil {
+			process.Steps[i].SubPipeline = mapToPipeline(stage.SubPipeline)
+		}
 	}
 
 	if len(process.Steps) > 0 {

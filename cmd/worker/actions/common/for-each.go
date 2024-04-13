@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"github.com/Jeffail/gabs"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/types"
@@ -68,6 +69,7 @@ func (d *forEachLoop) Execute(process types.Pipeline) (types.Pipeline, error) {
 		// dopasowanie parametrow
 		// aktualizacja w procesie
 		// aktualizacja aktualnego kroku
+		fmt.Sprintf("%s %s", key, child.Data())
 	}
 	return process, nil
 }

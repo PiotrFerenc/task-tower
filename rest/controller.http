@@ -32,22 +32,41 @@ POST localhost:5000/execute
 POST localhost:5000/execute
 
 {
-    "Parameters": {
-        "numbers.a" : "1",
-        "numbers.b": "2",
-        "wynik.text": "{{numbers.a}} + {{numbers.b}} = {{numbers.c}}"
-    },
-    "Stages": [
-        {
-            "Sequence": 1,
-            "Name": "numbers",
-            "Action": "add-numbers"
-        },{
-            "Sequence": 2,
-            "Name": "wynik",
-            "Action": "console"
-        }
-    ]
+   "Parameters":{
+      "numbers.a":"1",
+      "numbers.b":"2",
+      "wynik.text":"{{numbers.a}} + {{numbers.b}} = {{numbers.c}}",
+      "petla.collection":"[{a : 1},{a : 2},{a : 3}]"
+   },
+   "Stages":[
+      {
+         "Sequence":1,
+         "Name":"numbers",
+         "Action":"add-numbers"
+      },
+      {
+         "Sequence":2,
+         "Name":"wynik",
+         "Action":"console"
+      },
+      {
+         "Sequence":3,
+         "Name":"petla",
+         "Action":"for-each",
+         "SubPipeline":{
+            "Parameters":{
+               "for-wynik.text":"petla.a"
+            },
+            "Stages":[
+               {
+                  "Sequence":1,
+                  "Name":"for-wynik",
+                  "Action":"console"
+               }
+            ]
+         }
+      }
+   ]
 }
 
 ###

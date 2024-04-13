@@ -7,10 +7,9 @@ type Pipeline struct {
 	Parameters map[string]interface{} `json:"parameters" validate:"required"`
 }
 
-var ()
-
 func (p *Pipeline) Validate() error {
 	validate := validator.New()
+	validate.RegisterStructValidation(StageStructLevelValidation, Stage{})
 
 	if err := validate.Struct(p); err != nil {
 		return err
@@ -22,4 +21,11 @@ func (p *Pipeline) Validate() error {
 		}
 	}
 	return nil
+}
+func StageStructLevelValidation(sl validator.StructLevel) {
+	stage := sl.Current().Interface().(Stage)
+
+	if stage.Action == "for-each" && stage.SubPipeline == nil {
+		sl.ReportError(stage.SubPipeline, "SubPipeline", "SubPipeline", "required", "")
+	}
 }
