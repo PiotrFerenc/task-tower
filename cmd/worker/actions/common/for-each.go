@@ -66,18 +66,20 @@ func (d *forEachLoop) Execute(process types.Pipeline) (types.Pipeline, error) {
 	currentIndex := process.CurrentStep.Sequence
 
 	for key, child := range items {
-
-		for i, s := range process.Steps {
-			if s.Sequence > currentIndex {
-				s.Sequence = currentIndex + i
-			}
-		}
 		for i, s := range forEachBody.Steps {
 			s.Sequence = currentIndex + i
-			process.Steps = append(process.Steps, s)
+			st := types.MapToStep(s)
+			process.Steps = append(process.Steps, *st)
 		}
-		process.CurrentStep = forEachBody.CurrentStep[0]
+
 		log.Printf("%s %s", key, child.Data())
 	}
+	for i, s := range process.Steps {
+		if s.Sequence > currentIndex {
+			s.Sequence = currentIndex + i
+		}
+	}
+
+	process.CurrentStep = *types.MapToStep(forEachBody.Steps[0])
 	return process, nil
 }

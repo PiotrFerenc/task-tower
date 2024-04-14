@@ -9,23 +9,6 @@ import (
 	"strconv"
 )
 
-type ForeachBody struct {
-	Id          uuid.UUID
-	Steps       []ForeachStep
-	Error       string
-	CurrentStep ForeachStep
-	Parameters  map[string]interface{}
-	Status      StepStatus
-}
-
-type ForeachStep struct {
-	Id       uuid.UUID
-	Sequence int
-	Action   string
-	Name     string
-	Status   StepStatus
-}
-
 type Pipeline struct {
 	Id          uuid.UUID
 	Steps       []Step
@@ -92,7 +75,7 @@ func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 			Status:   Waiting,
 		}
 		if stage.SubPipeline != nil {
-			process.Steps[i].ForeachBody = mapToPipeline(stage.SubPipeline)
+			process.Steps[i].ForeachBody = MapForeachBody(stage.SubPipeline)
 		}
 	}
 
@@ -100,18 +83,5 @@ func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 		process.CurrentStep = process.Steps[0]
 		process.CurrentStep.Status = Processing
 	}
-	return process
-}
-
-func mapToPipeline(body *apitypes.ForeachBody) *ForeachBody {
-	process := &ForeachBody{
-		Id:          uuid.New(),
-		Steps:       make([]ForeachStep, 0),
-		Error:       "",
-		CurrentStep: ForeachStep{},
-		Parameters:  body.Parameters,
-		Status:      Waiting,
-	}
-
 	return process
 }
