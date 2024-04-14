@@ -36,8 +36,8 @@ POST localhost:5000/execute
       "numbers.a":"1",
       "numbers.b":"2",
       "wynik.text":"{{numbers.a}} + {{numbers.b}} = {{numbers.c}}",
-      "petla.collection":"[{a : 1},{a : 2},{a : 3}]",
-      "petla.collectionKeyNam":"a"
+      "petla.collection":"{\"items\":[{\"a\" : 1},{\"a\" : 2},{\"a\" : 3}]}",
+      "petla.collectionKeyName":"items"
    },
    "Stages":[
       {
@@ -54,7 +54,7 @@ POST localhost:5000/execute
          "Sequence":3,
          "Name":"petla",
          "Action":"for-each",
-         "SubPipeline":{
+         "body":{
             "Parameters":{
                "for-wynik.text":"petla.a"
             },

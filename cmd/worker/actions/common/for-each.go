@@ -14,13 +14,13 @@ func CreateForEachLoop() actions.Action {
 			Type:        actions.Loop,
 			Description: "The collection to loop through",
 			DisplayName: "Collection",
-			Validation:  "Must be a valid collection",
+			Validation:  "required",
 		}, collectionKeyName: actions.Property{
 			Name:        "collectionKeyName",
 			Type:        actions.Loop,
 			Description: "The key name of the collection to loop through",
 			DisplayName: "Collection Key Name",
-			Validation:  "Must be a valid collection key name",
+			Validation:  "required",
 		},
 	}
 
@@ -57,7 +57,8 @@ func (d *forEachLoop) Execute(process types.Pipeline) (types.Pipeline, error) {
 	if err != nil {
 		return process, err
 	}
-	items, err := jsonParsed.S(key).ChildrenMap()
+
+	items, err := jsonParsed.S(key).Children()
 	if err != nil {
 		return process, err
 	}
@@ -66,10 +67,14 @@ func (d *forEachLoop) Execute(process types.Pipeline) (types.Pipeline, error) {
 	currentIndex := process.CurrentStep.Sequence
 
 	for key, child := range items {
-		for i, s := range forEachBody.Steps {
-			s.Sequence = currentIndex + i
+		for _, s := range forEachBody.Steps {
+			currentIndex = currentIndex + 1
+			s.Sequence = currentIndex
 			st := types.MapToStep(s)
 			process.Steps = append(process.Steps, *st)
+			if currentIndex == process.CurrentStep.Sequence+1 {
+				process.CurrentStep = *st
+			}
 		}
 
 		log.Printf("%s %s", key, child.Data())
@@ -80,6 +85,5 @@ func (d *forEachLoop) Execute(process types.Pipeline) (types.Pipeline, error) {
 		}
 	}
 
-	process.CurrentStep = *types.MapToStep(forEachBody.Steps[0])
 	return process, nil
 }

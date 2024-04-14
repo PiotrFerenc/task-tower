@@ -24,7 +24,7 @@ type Step struct {
 	Action      string
 	Name        string
 	Status      StepStatus
-	ForeachBody *ForeachBody
+	ForeachBody ForeachBody
 }
 
 type StepStatus int
@@ -75,7 +75,7 @@ func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 			Status:   Waiting,
 		}
 		if stage.SubPipeline != nil {
-			process.Steps[i].ForeachBody = MapForeachBody(stage.SubPipeline)
+			process.Steps[i].ForeachBody = MapForeachBody(*stage.SubPipeline)
 		}
 	}
 

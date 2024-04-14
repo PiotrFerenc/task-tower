@@ -5,10 +5,10 @@ import (
 	"github.com/google/uuid"
 )
 
-func MapForeachBody(body *apitypes.ForeachBody) *ForeachBody {
-	process := &ForeachBody{
+func MapForeachBody(body apitypes.ForeachBody) ForeachBody {
+	process := ForeachBody{
 		Id:          uuid.New(),
-		Steps:       make([]ForeachStep, 0),
+		Steps:       MapToForeachSteps(body.Stages),
 		Error:       "",
 		CurrentStep: ForeachStep{},
 		Parameters:  body.Parameters,
@@ -16,6 +16,23 @@ func MapForeachBody(body *apitypes.ForeachBody) *ForeachBody {
 	}
 
 	return process
+}
+func MapToForeachSteps(steps []apitypes.ForeachStage) []ForeachStep {
+	foreachSteps := make([]ForeachStep, len(steps))
+	for i, step := range steps {
+		foreachSteps[i] = MapToForeachStep(step)
+	}
+	return foreachSteps
+
+}
+func MapToForeachStep(step apitypes.ForeachStage) ForeachStep {
+	return ForeachStep{
+		Id:       uuid.New(),
+		Sequence: step.Sequence,
+		Action:   step.Action,
+		Name:     step.Name,
+		Status:   Waiting,
+	}
 }
 
 func MapToStep(forEachStep ForeachStep) *Step {
