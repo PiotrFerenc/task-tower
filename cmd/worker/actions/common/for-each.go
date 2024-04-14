@@ -1,10 +1,10 @@
 package common
 
 import (
-	"fmt"
 	"github.com/Jeffail/gabs"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/types"
+	"log"
 )
 
 func CreateForEachLoop() actions.Action {
@@ -62,27 +62,22 @@ func (d *forEachLoop) Execute(process types.Pipeline) (types.Pipeline, error) {
 		return process, err
 	}
 
-	forEachBody := process.CurrentStep.SubPipeline
+	forEachBody := process.CurrentStep.ForeachBody
 	currentIndex := process.CurrentStep.Sequence
 
-	for i, s := range process.Steps {
-		if s.Sequence > currentIndex {
-			s.Sequence = currentIndex + i
-		}
-	}
-	for i, s := range forEachBody.Steps {
-		s.Sequence = currentIndex + i
-		process.Steps = append(process.Steps, s)
-	}
-	process.CurrentStep = forEachBody.Steps[0]
-
 	for key, child := range items {
-		// fmt.Printf("key: %v, value: %v\n", key, child.Path("123").String())
-		// do akcji
-		// dopasowanie parametrow
-		// aktualizacja w procesie
-		// aktualizacja aktualnego kroku
-		fmt.Sprintf("%s %s", key, child.Data())
+
+		for i, s := range process.Steps {
+			if s.Sequence > currentIndex {
+				s.Sequence = currentIndex + i
+			}
+		}
+		for i, s := range forEachBody.Steps {
+			s.Sequence = currentIndex + i
+			process.Steps = append(process.Steps, s)
+		}
+		process.CurrentStep = forEachBody.CurrentStep[0]
+		log.Printf("%s %s", key, child.Data())
 	}
 	return process, nil
 }
