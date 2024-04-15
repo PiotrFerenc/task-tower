@@ -17,3 +17,5 @@ docker-rebuild:
 	$(MAKE) docker-down
 	$(MAKE) docker-build
 	$(MAKE) docker-up
+test:
+	go test tests/main_test.go
