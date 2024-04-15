@@ -7,7 +7,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o dwas-worker cmd/worker/main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o task-tower-worker cmd/worker/main.go
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
@@ -18,7 +18,7 @@ USER appuser
 
 WORKDIR /home/appuser
 
-COPY --from=builder /app/dwas-worker .
+COPY --from=builder /app/task-tower-worker .
 COPY --from=builder /app/config/release-config.yml ./config/config.yml
 ENV GIN_MODE=release
-CMD ["./dwas-worker"]
+CMD ["./task-tower-worker"]

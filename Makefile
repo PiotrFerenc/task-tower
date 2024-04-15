@@ -11,8 +11,8 @@ docker-clean:
 	docker stop $(docker ps -aq)
 	docker rm $(docker ps -aq)
 docker-build:
-	docker build -t dwas/controller -f docker/Dockerfile-controller .
-	docker build -t dwas/worker -f docker/Dockerfile-worker .
+	docker build -t task-tower/controller -f docker/Dockerfile-controller .
+	docker build -t task-tower/worker -f docker/Dockerfile-worker .
 docker-rebuild:
 	$(MAKE) docker-down
 	$(MAKE) docker-build
