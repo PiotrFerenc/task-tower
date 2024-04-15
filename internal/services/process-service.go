@@ -21,7 +21,6 @@ func CreateProcessService(repository repositories.ProcessRepository) ProcessServ
 	}
 }
 
-// dodac err do tabeli i dodać aktualizację statusu step
 func (process *processService) MarkAsStarted(pipeline *types.Pipeline) {
 	process.repository.Save(*pipeline)
 }

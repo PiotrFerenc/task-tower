@@ -81,6 +81,7 @@ func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 
 	if len(process.Steps) > 0 {
 		process.CurrentStep = process.Steps[0]
+		process.Steps = process.Steps[1:]
 		process.CurrentStep.Status = Processing
 	}
 	return process

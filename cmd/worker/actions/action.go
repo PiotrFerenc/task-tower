@@ -50,7 +50,7 @@ func (property *Property) GetStringFrom(message *types.Pipeline) (string, error)
 	}
 	template := fasttemplate.New(value, "{{", "}}")
 	value = template.ExecuteString(message.Parameters)
-
+	message.Parameters[internalName] = value
 	return value, nil
 }
 

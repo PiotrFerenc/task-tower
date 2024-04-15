@@ -3,25 +3,25 @@ POST localhost:5000/execute
 {
     "Parameters": {
         "moje_imie" : "Jan",
-        "czesc.name": "Piotr",
-        "cze.name": "Marian i {{czesc.name}}",
-        "czes.name": "{{czesc.name}} i {{cze.name}} oraz sw {{moje_imie}}"
+        "czesc.text": "Piotr",
+        "cze.text": "Marian i {{czesc.text}}",
+        "czes.text": "{{czesc.text}} i {{cze.text}} oraz sw {{moje_imie}}"
     },
     "Stages": [
         {
             "Sequence": 1,
             "Name": "czesc",
-            "Action": "hallo"
+            "Action": "console"
         },
         {
             "Sequence": 2,
             "Name": "cze",
-            "Action": "hallo"
+            "Action": "console"
         },
         {
             "Sequence": 3,
             "Name": "czes",
-            "Action": "hallo"
+            "Action": "console"
         }
     ]
 }
