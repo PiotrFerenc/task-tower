@@ -25,34 +25,30 @@ func CreateRabbitMqMessageQueue(configuration *configuration.QueueConfig) Messag
 	q := &queue{
 		configuration: configuration,
 	}
-
 	err := q.Connect()
-
 	if err != nil {
 		panic(err)
 	}
-
-	err = q.CreateQueue(configuration.QueueRunPipe)
+	err = createQueues(q, configuration)
 	if err != nil {
 		panic(err)
 	}
-
-	err = q.CreateQueue(configuration.QueueTasksucceed)
-	if err != nil {
-		panic(err)
-	}
-
-	err = q.CreateQueue(configuration.QueueTaskFailed)
-	if err != nil {
-		panic(err)
-	}
-
-	err = q.CreateQueue(configuration.QueueTaskFinished)
-	if err != nil {
-		panic(err)
-	}
-
 	return q
+}
+
+func createQueues(q *queue, configuration *configuration.QueueConfig) error {
+	queues := []string{
+		configuration.QueueRunPipe,
+		configuration.QueueTasksucceed,
+		configuration.QueueTaskFailed,
+		configuration.QueueTaskFinished,
+	}
+	for _, queueName := range queues {
+		if err := q.CreateQueue(queueName); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (queue *queue) CreateQueue(name string) error {
