@@ -25,7 +25,7 @@ func (config *configuration) LoadConfiguration() *Config {
 	return &Config{
 		Queue: QueueConfig{
 			QueueRunPipe:      viper.GetString(cfg.QueueRunPipe),
-			QueueTasksucceed:  viper.GetString(cfg.QueueTasksucceed),
+			QueueTaskSucceed:  viper.GetString(cfg.QueueTasksucceed),
 			QueueTaskFailed:   viper.GetString(cfg.QueueTaskFailed),
 			QueueHost:         viper.GetString(cfg.QueueHost),
 			QueueVhost:        viper.GetString(cfg.QueueVhost),

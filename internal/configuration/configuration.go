@@ -2,7 +2,7 @@ package configuration
 
 type QueueConfig struct {
 	QueueRunPipe      string
-	QueueTasksucceed  string
+	QueueTaskSucceed  string
 	QueueTaskFailed   string
 	QueueTaskFinished string
 	QueueHost         string
