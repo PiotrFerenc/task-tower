@@ -3,12 +3,12 @@ version: '3'
 services:
   rabbitmq:
     image: "rabbitmq:3-management"
-    container_name: "rabbitmq-dwas"
+    container_name: "rabbitmq-task-tower"
     environment:
       RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
-      RABBITMQ_DEFAULT_USER: "dwas"
+      RABBITMQ_DEFAULT_USER: "task-tower"
       RABBITMQ_DEFAULT_PASS: "RNeP2RpNDyY3s"
-      RABBITMQ_DEFAULT_VHOST: "/dwas"
+      RABBITMQ_DEFAULT_VHOST: "/task-tower"
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -17,42 +17,42 @@ services:
     restart: always
   postgres:
     image: postgres:latest
-    container_name: "postgres-dwas"
+    container_name: "postgres-task-tower"
     environment:
-      POSTGRES_USER: "dwasuser"
+      POSTGRES_USER: "task-toweruser"
       POSTGRES_PASSWORD: "j37w47TbG0je5HI"
-      POSTGRES_DB: "dwas"
+      POSTGRES_DB: "task-tower"
     ports:
       - "5432:5432"
     volumes:
       - "./data/postgres:/var/lib/postgresql/data"
     restart: always
-  dwas_controller:
-    container_name: "controller-dwas"
-    image: "dwas/controller"
+  task-tower_controller:
+    container_name: "controller-task-tower"
+    image: "task-tower/controller"
     ports:
       - "5000:5000"
     depends_on:
       - rabbitmq
-  dwas_worker_1:
-    container_name: "worker-dwas-1"
-    image: "dwas/worker"
+  task-tower_worker_1:
+    container_name: "worker-task-tower-1"
+    image: "task-tower/worker"
     depends_on:
       - rabbitmq
     volumes:
       - "./temp:/dashboard/appuser/temp"
       - "/var/run/docker.sock:/var/run/docker.sock"
-  dwas_worker_2:
-    container_name: "worker-dwas-2"
-    image: "dwas/worker"
+  task-tower_worker_2:
+    container_name: "worker-task-tower-2"
+    image: "task-tower/worker"
     depends_on:
       - rabbitmq
     volumes:
       - "./temp:/dashboard/appuser/temp"
       - "/var/run/docker.sock:/var/run/docker.sock"
-  dwas_worker_3:
-    container_name: "worker-dwas-3"
-    image: "dwas/worker"
+  task-tower_worker_3:
+    container_name: "worker-task-tower-3"
+    image: "task-tower/worker"
     depends_on:
       - rabbitmq
     volumes:

@@ -14,7 +14,7 @@
 
 ![100 - commitów](https://img.shields.io/badge/100-commitów-2ea44f?logo=go)
 
-# DWAS- Build your own automation
+# task-tower- Build your own automation
 
 
 **D**istributed **W**ork **A**utomation **S**ystem. 
@@ -77,7 +77,7 @@ make docker-rebuild
 
 MIT License
 
-Copyright (c) 2024 DWAS
+Copyright (c) 2024 task-tower
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
