@@ -87,6 +87,7 @@ func unmarshal(d amqp.Delivery) (types.Process, error) {
 	return message, err
 }
 
+// CreateActionMap takes a pointer to a Config struct as input parameter. It creates and returns a map of actions. The keys of the map are the names of the actions, and the values are instances of the corresponding actions. The map is created using the specified configuration.
 func CreateActionMap(config *configuration.Config) map[string]actions.Action {
 	return map[string]actions.Action{
 		"console":     others.CreateConsoleAction(),
