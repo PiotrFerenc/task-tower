@@ -28,28 +28,28 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 }
 
 func watchForMessages(queue queues.MessageQueue, onSuccess func(*types.Pipeline, queues.MessageQueue, ProcessService) error, onFail func(*types.Pipeline, queues.MessageQueue, ProcessService), onFinish func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) {
-	successStages, _ := queue.WaitingForSucceedStage()
-	failedStages, _ := queue.WaitingForFailedStage()
-	finishedStages, _ := queue.WaitingForFinishedStage()
+	successTasks, _ := queue.WaitingForSucceedTask()
+	failedTasks, _ := queue.WaitingForFailedTask()
+	finishedTasks, _ := queue.WaitingForFinishedTask()
 
 	var forever chan struct{}
 
 	go func() {
-		err := processFinishStages(finishedStages, queue, onFinish, processService)
+		err := processFinishTasks(finishedTasks, queue, onFinish, processService)
 		if err != nil {
 			panic(err)
 		}
 	}()
 
 	go func() {
-		err := processSuccessStages(successStages, queue, onSuccess, processService)
+		err := processSuccessTasks(successTasks, queue, onSuccess, processService)
 		if err != nil {
 			panic(err)
 		}
 	}()
 
 	go func() {
-		err := processFailStages(failedStages, queue, onFail, processService)
+		err := processFailTasks(failedTasks, queue, onFail, processService)
 		if err != nil {
 			panic(err)
 		}
@@ -58,8 +58,8 @@ func watchForMessages(queue queues.MessageQueue, onSuccess func(*types.Pipeline,
 	<-forever
 }
 
-func processSuccessStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Pipeline, queues.MessageQueue, ProcessService) error, processService ProcessService) error {
-	for d := range stages {
+func processSuccessTasks(Tasks <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Pipeline, queues.MessageQueue, ProcessService) error, processService ProcessService) error {
+	for d := range Tasks {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
 			return err
@@ -71,8 +71,8 @@ func processSuccessStages(stages <-chan amqp.Delivery, queue queues.MessageQueue
 	}
 	return nil
 }
-func processFinishStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) error {
-	for d := range stages {
+func processFinishTasks(Tasks <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) error {
+	for d := range Tasks {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
 			return err
@@ -81,8 +81,8 @@ func processFinishStages(stages <-chan amqp.Delivery, queue queues.MessageQueue,
 	}
 	return nil
 }
-func processFailStages(stages <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) error {
-	for d := range stages {
+func processFailTasks(Tasks <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Pipeline, queues.MessageQueue, ProcessService), processService ProcessService) error {
+	for d := range Tasks {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
 			return err
@@ -105,7 +105,7 @@ func (p *pipelineService) Run(pipeline *apitypes.Pipeline) error {
 	process := types.NewProcessFromPipeline(pipeline)
 	p.processService.MarkAsStarted(process)
 
-	err := p.queue.AddStageToQueue(*process)
+	err := p.queue.AddTaskToQueue(*process)
 	if err != nil {
 		return err
 	}
@@ -120,7 +120,7 @@ type OnFinishFunc func(process *types.Pipeline, queue queues.MessageQueue, servi
 func CreateOnSuccessFunc() OnSuccessFunc {
 	return func(process *types.Pipeline, queue queues.MessageQueue, service ProcessService) error {
 		if len(process.Steps) == 0 {
-			err := queue.AddStageAsFinished(*process)
+			err := queue.AddTaskAsFinished(*process)
 			if err != nil {
 				return err
 			}
@@ -128,11 +128,11 @@ func CreateOnSuccessFunc() OnSuccessFunc {
 			currentStep := process.Steps[0]
 			process.CurrentStep = currentStep
 			process.Steps = process.Steps[1:]
-			err := queue.AddStageToQueue(*process)
+			err := queue.AddTaskToQueue(*process)
 			if err != nil {
 				return err
 			}
-			service.StageFinished(process)
+			service.TaskFinished(process)
 		}
 
 		return nil

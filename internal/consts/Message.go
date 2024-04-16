@@ -1,5 +1,5 @@
 package ConfigurationConsts
 
 const (
-	EmptyStageList = "Empty stage list."
+	EmptyTaskList = "Empty Task list."
 )

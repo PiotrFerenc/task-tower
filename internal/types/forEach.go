@@ -8,7 +8,7 @@ import (
 func MapForeachBody(body apitypes.ForeachBody) ForeachBody {
 	process := ForeachBody{
 		Id:          uuid.New(),
-		Steps:       MapToForeachSteps(body.Stages),
+		Steps:       MapToForeachSteps(body.Tasks),
 		Error:       "",
 		CurrentStep: ForeachStep{},
 		Parameters:  body.Parameters,
@@ -17,7 +17,7 @@ func MapForeachBody(body apitypes.ForeachBody) ForeachBody {
 
 	return process
 }
-func MapToForeachSteps(steps []apitypes.ForeachStage) []ForeachStep {
+func MapToForeachSteps(steps []apitypes.ForeachTask) []ForeachStep {
 	foreachSteps := make([]ForeachStep, len(steps))
 	for i, step := range steps {
 		foreachSteps[i] = MapToForeachStep(step)
@@ -25,7 +25,7 @@ func MapToForeachSteps(steps []apitypes.ForeachStage) []ForeachStep {
 	return foreachSteps
 
 }
-func MapToForeachStep(step apitypes.ForeachStage) ForeachStep {
+func MapToForeachStep(step apitypes.ForeachTask) ForeachStep {
 	return ForeachStep{
 		Id:       uuid.New(),
 		Sequence: step.Sequence,

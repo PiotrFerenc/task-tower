@@ -7,13 +7,13 @@ import (
 
 type MessageQueue interface {
 	Connect() error
-	AddStageToQueue(message types.Pipeline) error
-	AddStageAsFailed(error error, message types.Pipeline) error
-	AddStageAsSuccess(message types.Pipeline) error
-	AddStageAsFinished(message types.Pipeline) error
-	WaitingForFailedStage() (<-chan amqp.Delivery, error)
-	WaitingForSucceedStage() (<-chan amqp.Delivery, error)
-	WaitingForFinishedStage() (<-chan amqp.Delivery, error)
-	WaitingForStage() (<-chan amqp.Delivery, error)
+	AddTaskToQueue(message types.Pipeline) error
+	AddTaskAsFailed(error error, message types.Pipeline) error
+	AddTaskAsSuccess(message types.Pipeline) error
+	AddTaskAsFinished(message types.Pipeline) error
+	WaitingForFailedTask() (<-chan amqp.Delivery, error)
+	WaitingForSucceedTask() (<-chan amqp.Delivery, error)
+	WaitingForFinishedTask() (<-chan amqp.Delivery, error)
+	WaitingForTask() (<-chan amqp.Delivery, error)
 	CreateQueue(name string) error
 }

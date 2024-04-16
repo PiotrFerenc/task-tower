@@ -58,24 +58,24 @@ func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
 	process := &Pipeline{
 		Id:         uuid.New(),
 		Parameters: pipeline.Parameters,
-		Steps:      make([]Step, len(pipeline.Stages)),
+		Steps:      make([]Step, len(pipeline.Tasks)),
 		Status:     Processing,
 	}
 
-	sort.SliceStable(pipeline.Stages, func(i, j int) bool {
-		return pipeline.Stages[i].Sequence < pipeline.Stages[j].Sequence
+	sort.SliceStable(pipeline.Tasks, func(i, j int) bool {
+		return pipeline.Tasks[i].Sequence < pipeline.Tasks[j].Sequence
 	})
 
-	for i, stage := range pipeline.Stages {
+	for i, Task := range pipeline.Tasks {
 		process.Steps[i] = Step{
 			Id:       uuid.New(),
-			Sequence: stage.Sequence,
-			Action:   stage.Action,
-			Name:     stage.Name,
+			Sequence: Task.Sequence,
+			Action:   Task.Action,
+			Name:     Task.Name,
 			Status:   Waiting,
 		}
-		if stage.SubPipeline != nil {
-			process.Steps[i].ForeachBody = MapForeachBody(*stage.SubPipeline)
+		if Task.SubPipeline != nil {
+			process.Steps[i].ForeachBody = MapForeachBody(*Task.SubPipeline)
 		}
 	}
 

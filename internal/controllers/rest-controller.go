@@ -33,8 +33,8 @@ func (controller *controller) Run(address, port string) error {
 			return
 		}
 
-		if len(pipe.Stages) == 0 {
-			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": Message.EmptyStageList})
+		if len(pipe.Tasks) == 0 {
+			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": Message.EmptyTaskList})
 			return
 		}
 

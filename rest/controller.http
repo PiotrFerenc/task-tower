@@ -7,7 +7,7 @@ POST localhost:5000/execute
         "cze.text": "Marian i {{czesc.text}}",
         "czes.text": "{{czesc.text}} i {{cze.text}} oraz sw {{moje_imie}}"
     },
-    "Stages": [
+    "Tasks": [
         {
             "Sequence": 1,
             "Name": "czesc",
@@ -39,7 +39,7 @@ POST localhost:5000/execute
       "petla.collection":"{\"items\":[{\"a\" : 1},{\"a\" : 2},{\"a\" : 3}]}",
       "petla.collectionKeyName":"items"
    },
-   "Stages":[
+   "Tasks":[
       {
          "Sequence":1,
          "Name":"numbers",
@@ -58,7 +58,7 @@ POST localhost:5000/execute
             "Parameters":{
                "for-wynik.text":"petla.a"
             },
-            "Stages":[
+            "Tasks":[
                {
                   "Sequence":1,
                   "Name":"for-wynik",
@@ -79,7 +79,7 @@ POST localhost:5000/execute
         "clone.url" : "https://github.com/PiotrFerenc/mash2",
         "console.text":"repo znajduje się w {{clone.path}}"
     },
-    "Stages": [
+    "Tasks": [
         {
             "Sequence": 1,
             "Name": "clone",

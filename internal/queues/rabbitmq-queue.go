@@ -37,17 +37,17 @@ func CreateRabbitMqMessageQueue(configuration *configuration.QueueConfig) Messag
 		panic(err)
 	}
 
-	err = q.CreateQueue(configuration.QueueStageSucceed)
+	err = q.CreateQueue(configuration.QueueTasksucceed)
 	if err != nil {
 		panic(err)
 	}
 
-	err = q.CreateQueue(configuration.QueueStageFailed)
+	err = q.CreateQueue(configuration.QueueTaskFailed)
 	if err != nil {
 		panic(err)
 	}
 
-	err = q.CreateQueue(configuration.QueueStageFinished)
+	err = q.CreateQueue(configuration.QueueTaskFinished)
 	if err != nil {
 		panic(err)
 	}
@@ -81,10 +81,10 @@ func (queue *queue) Connect() error {
 
 	return nil
 }
-func (queue *queue) WaitingForFailedStage() (<-chan amqp.Delivery, error) {
+func (queue *queue) WaitingForFailedTask() (<-chan amqp.Delivery, error) {
 
 	return queue.client.ch.Consume(
-		queue.configuration.QueueStageFailed,
+		queue.configuration.QueueTaskFailed,
 		"",
 		true,
 		false,
@@ -94,10 +94,10 @@ func (queue *queue) WaitingForFailedStage() (<-chan amqp.Delivery, error) {
 	)
 
 }
-func (queue *queue) WaitingForSucceedStage() (<-chan amqp.Delivery, error) {
+func (queue *queue) WaitingForSucceedTask() (<-chan amqp.Delivery, error) {
 
 	return queue.client.ch.Consume(
-		queue.configuration.QueueStageSucceed,
+		queue.configuration.QueueTasksucceed,
 		"",
 		true,
 		false,
@@ -107,7 +107,7 @@ func (queue *queue) WaitingForSucceedStage() (<-chan amqp.Delivery, error) {
 	)
 
 }
-func (queue *queue) WaitingForStage() (<-chan amqp.Delivery, error) {
+func (queue *queue) WaitingForTask() (<-chan amqp.Delivery, error) {
 
 	return queue.client.ch.Consume(
 		queue.configuration.QueueRunPipe,
@@ -120,10 +120,10 @@ func (queue *queue) WaitingForStage() (<-chan amqp.Delivery, error) {
 	)
 
 }
-func (queue *queue) WaitingForFinishedStage() (<-chan amqp.Delivery, error) {
+func (queue *queue) WaitingForFinishedTask() (<-chan amqp.Delivery, error) {
 
 	return queue.client.ch.Consume(
-		queue.configuration.QueueStageFinished,
+		queue.configuration.QueueTaskFinished,
 		"",
 		true,
 		false,
@@ -133,7 +133,7 @@ func (queue *queue) WaitingForFinishedStage() (<-chan amqp.Delivery, error) {
 	)
 
 }
-func (queue *queue) AddStageToQueue(message types.Pipeline) error {
+func (queue *queue) AddTaskToQueue(message types.Pipeline) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -155,7 +155,27 @@ func (queue *queue) AddStageToQueue(message types.Pipeline) error {
 			Body:          bytes,
 		})
 }
-func (queue *queue) AddStageAsSuccess(message types.Pipeline) error {
+func (queue *queue) AddTaskAsSuccess(message types.Pipeline) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	bytes, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	return queue.client.ch.PublishWithContext(ctx,
+		"",                                   // exchange
+		queue.configuration.QueueTasksucceed, // routing key
+		false,                                // mandatory
+		false,                                // immediate
+		amqp.Publishing{
+			ContentType:   ContentType,
+			CorrelationId: uuid.NewString(),
+			ReplyTo:       queue.configuration.QueueTasksucceed,
+			Body:          bytes,
+		})
+}
+func (queue *queue) AddTaskAsFinished(message types.Pipeline) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -165,38 +185,18 @@ func (queue *queue) AddStageAsSuccess(message types.Pipeline) error {
 	}
 	return queue.client.ch.PublishWithContext(ctx,
 		"",                                    // exchange
-		queue.configuration.QueueStageSucceed, // routing key
+		queue.configuration.QueueTaskFinished, // routing key
 		false,                                 // mandatory
 		false,                                 // immediate
 		amqp.Publishing{
 			ContentType:   ContentType,
 			CorrelationId: uuid.NewString(),
-			ReplyTo:       queue.configuration.QueueStageSucceed,
-			Body:          bytes,
-		})
-}
-func (queue *queue) AddStageAsFinished(message types.Pipeline) error {
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	bytes, err := json.Marshal(message)
-	if err != nil {
-		return err
-	}
-	return queue.client.ch.PublishWithContext(ctx,
-		"",                                     // exchange
-		queue.configuration.QueueStageFinished, // routing key
-		false,                                  // mandatory
-		false,                                  // immediate
-		amqp.Publishing{
-			ContentType:   ContentType,
-			CorrelationId: uuid.NewString(),
-			ReplyTo:       queue.configuration.QueueStageFinished,
+			ReplyTo:       queue.configuration.QueueTaskFinished,
 			Body:          bytes,
 		})
 
 }
-func (queue *queue) AddStageAsFailed(error error, message types.Pipeline) error {
+func (queue *queue) AddTaskAsFailed(error error, message types.Pipeline) error {
 	message.Error = error.Error()
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -206,13 +206,13 @@ func (queue *queue) AddStageAsFailed(error error, message types.Pipeline) error 
 	}
 	return queue.client.ch.PublishWithContext(ctx,
 		"",
-		queue.configuration.QueueStageFailed,
+		queue.configuration.QueueTaskFailed,
 		false,
 		false,
 		amqp.Publishing{
 			ContentType:   ContentType,
 			CorrelationId: uuid.NewString(),
-			ReplyTo:       queue.configuration.QueueStageFailed,
+			ReplyTo:       queue.configuration.QueueTaskFailed,
 			Body:          bytes,
 		})
 }

@@ -29,14 +29,14 @@ func CreateMapExecutor(queue queues.MessageQueue, actions map[string]actions.Act
 	a := actions
 
 	go func() {
-		stage, err := queue.WaitingForStage()
+		Task, err := queue.WaitingForTask()
 		if err != nil {
 			log.Fatal(err)
 		}
 		var forever chan struct{}
 
 		go func() {
-			for d := range stage {
+			for d := range Task {
 				message, err := unmarshal(d)
 
 				action, ok := a[message.CurrentStep.Action]
@@ -61,13 +61,13 @@ func CreateMapExecutor(queue queues.MessageQueue, actions map[string]actions.Act
 
 func addToQueue(err error, queue queues.MessageQueue, message types.Pipeline) {
 	if err != nil {
-		err = queue.AddStageAsFailed(err, message)
+		err = queue.AddTaskAsFailed(err, message)
 		if err != nil {
 			log.Fatal(err)
 		}
 		return
 	}
-	err = queue.AddStageAsSuccess(message)
+	err = queue.AddTaskAsSuccess(message)
 	if err != nil {
 		log.Fatal(err)
 	}

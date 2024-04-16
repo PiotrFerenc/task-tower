@@ -7,7 +7,7 @@ import (
 
 type ProcessService interface {
 	MarkAsStarted(types *types.Pipeline)
-	StageFinished(types *types.Pipeline)
+	TaskFinished(types *types.Pipeline)
 	MarkAsDone(types *types.Pipeline)
 	MarkAsFailed(types *types.Pipeline, err string)
 }
@@ -24,7 +24,7 @@ func CreateProcessService(repository repositories.ProcessRepository) ProcessServ
 func (process *processService) MarkAsStarted(pipeline *types.Pipeline) {
 	process.repository.Save(*pipeline)
 }
-func (process *processService) StageFinished(pipeline *types.Pipeline) {
+func (process *processService) TaskFinished(pipeline *types.Pipeline) {
 	pipeline.Status = types.Processing
 	pipeline.CurrentStep.Status = types.Done
 	process.repository.UpdateStatus(*pipeline)

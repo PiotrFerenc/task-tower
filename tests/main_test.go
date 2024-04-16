@@ -30,7 +30,7 @@ func TestSomething(t *testing.T) {
         "moje_imie" : "Jan",
         "czesc.text": "Piotr"
     },
-    "Stages": [
+    "Tasks": [
         {
             "Sequence": 1,
             "Name": "czesc",

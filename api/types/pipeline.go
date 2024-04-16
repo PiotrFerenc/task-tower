@@ -3,7 +3,7 @@ package types
 import "github.com/go-playground/validator/v10"
 
 type Pipeline struct {
-	Stages     []Stage                `json:"stages" validate:"required"`
+	Tasks      []Task                 `json:"Tasks" validate:"required"`
 	Parameters map[string]interface{} `json:"parameters" validate:"required"`
 }
 
@@ -14,8 +14,8 @@ func (p *Pipeline) Validate() error {
 		return err
 	}
 
-	for _, stage := range p.Stages {
-		if err := validate.Struct(stage); err != nil {
+	for _, Task := range p.Tasks {
+		if err := validate.Struct(Task); err != nil {
 			return err
 		}
 	}
