@@ -59,29 +59,29 @@ func (action *gitCommit) Outputs() []actions.Property {
 	}
 }
 
-func (action *gitCommit) Execute(message types.Pipeline) (types.Pipeline, error) {
+func (action *gitCommit) Execute(message types.Process) (types.Process, error) {
 	repoPath, err := action.path.GetStringFrom(&message)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 	commitMessage, err := action.message.GetStringFrom(&message)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 
 	repo, err := git.PlainOpen(repoPath)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 
 	worktree, err := repo.Worktree()
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 
 	_, err = worktree.Add(".")
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 
 	_, _ = worktree.Commit(commitMessage, &git.CommitOptions{
@@ -93,13 +93,13 @@ func (action *gitCommit) Execute(message types.Pipeline) (types.Pipeline, error)
 	})
 
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 
 	//	object, err := repo.CommitObject(plumbing.Hash{commit})
 
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 
 	return message, nil

@@ -13,7 +13,7 @@ type Action interface {
 	Inputs() []Property
 	Outputs() []Property
 	GetCategoryName() string
-	Execute(process types.Pipeline) (types.Pipeline, error)
+	Execute(process types.Process) (types.Process, error)
 }
 
 type Property struct {
@@ -28,14 +28,14 @@ var (
 	validate = validator.New()
 )
 
-func (property *Property) GetIntFrom(message *types.Pipeline) (int, error) {
+func (property *Property) GetIntFrom(message *types.Process) (int, error) {
 	value, err := property.GetStringFrom(message)
 	if err != nil {
 		return 0, err
 	}
 	return strconv.Atoi(value)
 }
-func (property *Property) GetStringFrom(message *types.Pipeline) (string, error) {
+func (property *Property) GetStringFrom(message *types.Process) (string, error) {
 	internalName := message.GetInternalName(property.Name)
 	parameter, ok := message.Parameters[internalName]
 	if !ok {

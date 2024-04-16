@@ -44,7 +44,7 @@ func (d *forEachLoop) Outputs() []actions.Property {
 	return []actions.Property{}
 }
 
-func (d *forEachLoop) Execute(process types.Pipeline) (types.Pipeline, error) {
+func (d *forEachLoop) Execute(process types.Process) (types.Process, error) {
 	payload, err := d.collection.GetStringFrom(&process)
 	if err != nil {
 		return process, err

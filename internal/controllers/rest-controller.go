@@ -38,12 +38,11 @@ func (controller *controller) Run(address, port string) error {
 			return
 		}
 
-		go func() {
-			err := controller.pipelineService.Run(&pipe)
-			if err != nil {
-				context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
-			}
-		}()
+		processId, err := controller.pipelineService.Run(&pipe)
+		if err != nil {
+			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
+		}
+		context.JSON(http.StatusOK, gin.H{"processId": processId})
 	})
 
 	err := server.Run(fmt.Sprintf(`%s:%s`, address, port))

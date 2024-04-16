@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-type Pipeline struct {
+type Process struct {
 	Id          uuid.UUID
 	Steps       []Step
 	Error       string
@@ -36,26 +36,26 @@ const (
 	Fail
 )
 
-func (message *Pipeline) GetInternalName(propertyName string) string {
+func (message *Process) GetInternalName(propertyName string) string {
 	str := stringy.New(message.CurrentStep.Name)
 	internalName := str.CamelCase("?", "")
 	internalName = stringy.New(internalName).ToLower()
 	return fmt.Sprintf("%s.%s", internalName, propertyName)
 }
 
-func (message *Pipeline) NewFolder(path string) string {
+func (message *Process) NewFolder(path string) string {
 	return fmt.Sprintf("%s/%s", path, uuid.NewString())
 }
 
-func (message *Pipeline) SetInt(name string, value int) {
+func (message *Process) SetInt(name string, value int) {
 	message.Parameters[message.GetInternalName(name)] = strconv.Itoa(value)
 }
-func (message *Pipeline) SetString(name, value string) {
+func (message *Process) SetString(name, value string) {
 	message.Parameters[message.GetInternalName(name)] = value
 }
-func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Pipeline {
+func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Process {
 
-	process := &Pipeline{
+	process := &Process{
 		Id:         uuid.New(),
 		Parameters: pipeline.Parameters,
 		Steps:      make([]Step, len(pipeline.Tasks)),

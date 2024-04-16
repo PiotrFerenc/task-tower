@@ -57,25 +57,25 @@ func (action *appendContentToFile) Outputs() []actions.Property {
 	}
 }
 
-func (action *appendContentToFile) Execute(message types.Pipeline) (types.Pipeline, error) {
+func (action *appendContentToFile) Execute(message types.Process) (types.Process, error) {
 	fileName, err := action.fileName.GetStringFrom(&message)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 	content, err := action.content.GetStringFrom(&message)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 	filePath := filepath.Join(action.config.Folder.TmpFolder, fileName)
 	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 	defer file.Close()
 
 	_, err = file.WriteString(content)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 	message.SetString(action.appendFilePath.Name, filePath)
 	return message, nil

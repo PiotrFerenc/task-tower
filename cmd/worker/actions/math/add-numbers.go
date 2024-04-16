@@ -62,7 +62,7 @@ func (action *addnumbers) Outputs() []actions.Property {
 }
 
 // Execute The Execute() method receives a parameter of types.Message type and returns (types.Message, error).
-func (action *addnumbers) Execute(pipeline types.Pipeline) (types.Pipeline, error) {
+func (action *addnumbers) Execute(pipeline types.Process) (types.Process, error) {
 
 	// In this Execute() method, first, it retrieves the integer values 'a' and 'b' from the pipeline.
 	a, err := action.a.GetIntFrom(&pipeline)

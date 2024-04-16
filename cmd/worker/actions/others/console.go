@@ -34,10 +34,10 @@ func (action *console) Outputs() []actions.Property {
 	return []actions.Property{}
 }
 
-func (action *console) Execute(pipeline types.Pipeline) (types.Pipeline, error) {
+func (action *console) Execute(pipeline types.Process) (types.Process, error) {
 	text, err := action.text.GetStringFrom(&pipeline)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 	log.Print(text)
 

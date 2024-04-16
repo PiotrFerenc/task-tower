@@ -58,7 +58,7 @@ func (d *dockerContainer) Outputs() []actions.Property {
 	}
 }
 
-func (d *dockerContainer) Execute(process types.Pipeline) (types.Pipeline, error) {
+func (d *dockerContainer) Execute(process types.Process) (types.Process, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {

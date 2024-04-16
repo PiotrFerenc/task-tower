@@ -6,10 +6,10 @@ import (
 )
 
 type ProcessService interface {
-	MarkAsStarted(types *types.Pipeline)
-	TaskFinished(types *types.Pipeline)
-	MarkAsDone(types *types.Pipeline)
-	MarkAsFailed(types *types.Pipeline, err string)
+	MarkAsStarted(types *types.Process)
+	TaskFinished(types *types.Process)
+	MarkAsDone(types *types.Process)
+	MarkAsFailed(types *types.Process, err string)
 }
 type processService struct {
 	repository repositories.ProcessRepository
@@ -21,21 +21,21 @@ func CreateProcessService(repository repositories.ProcessRepository) ProcessServ
 	}
 }
 
-func (process *processService) MarkAsStarted(pipeline *types.Pipeline) {
+func (process *processService) MarkAsStarted(pipeline *types.Process) {
 	process.repository.Save(*pipeline)
 }
-func (process *processService) TaskFinished(pipeline *types.Pipeline) {
+func (process *processService) TaskFinished(pipeline *types.Process) {
 	pipeline.Status = types.Processing
 	pipeline.CurrentStep.Status = types.Done
 	process.repository.UpdateStatus(*pipeline)
 }
 
-func (process *processService) MarkAsDone(pipeline *types.Pipeline) {
+func (process *processService) MarkAsDone(pipeline *types.Process) {
 	pipeline.Status = types.Done
 	pipeline.CurrentStep.Status = types.Done
 	process.repository.UpdateStatus(*pipeline)
 }
-func (process *processService) MarkAsFailed(pipeline *types.Pipeline, err string) {
+func (process *processService) MarkAsFailed(pipeline *types.Process, err string) {
 	pipeline.Status = types.Fail
 	pipeline.Error = err
 	pipeline.CurrentStep.Status = types.Fail

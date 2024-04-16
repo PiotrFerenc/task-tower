@@ -48,10 +48,10 @@ func (action *gitClone) Outputs() []actions.Property {
 		action.path,
 	}
 }
-func (action *gitClone) Execute(message types.Pipeline) (types.Pipeline, error) {
+func (action *gitClone) Execute(message types.Process) (types.Process, error) {
 	repositoryUrl, err := action.url.GetStringFrom(&message)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 
 	path := message.NewFolder(action.config.Folder.TmpFolder)
@@ -62,7 +62,7 @@ func (action *gitClone) Execute(message types.Pipeline) (types.Pipeline, error) 
 	})
 
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 	message.SetString(action.path.Name, path)
 	return message, nil

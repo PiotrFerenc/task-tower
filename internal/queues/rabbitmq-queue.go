@@ -133,7 +133,7 @@ func (queue *queue) WaitingForFinishedTask() (<-chan amqp.Delivery, error) {
 	)
 
 }
-func (queue *queue) AddTaskToQueue(message types.Pipeline) error {
+func (queue *queue) AddTaskToQueue(message types.Process) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -155,7 +155,7 @@ func (queue *queue) AddTaskToQueue(message types.Pipeline) error {
 			Body:          bytes,
 		})
 }
-func (queue *queue) AddTaskAsSuccess(message types.Pipeline) error {
+func (queue *queue) AddTaskAsSuccess(message types.Process) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -175,7 +175,7 @@ func (queue *queue) AddTaskAsSuccess(message types.Pipeline) error {
 			Body:          bytes,
 		})
 }
-func (queue *queue) AddTaskAsFinished(message types.Pipeline) error {
+func (queue *queue) AddTaskAsFinished(message types.Process) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -196,7 +196,7 @@ func (queue *queue) AddTaskAsFinished(message types.Pipeline) error {
 		})
 
 }
-func (queue *queue) AddTaskAsFailed(error error, message types.Pipeline) error {
+func (queue *queue) AddTaskAsFailed(error error, message types.Process) error {
 	message.Error = error.Error()
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

@@ -48,12 +48,12 @@ func (action *gitCreateBranch) Outputs() []actions.Property {
 	return []actions.Property{}
 }
 
-func (action *gitCreateBranch) Execute(message types.Pipeline) (types.Pipeline, error) {
+func (action *gitCreateBranch) Execute(message types.Process) (types.Process, error) {
 	repoPath, _ := action.repoPath.GetStringFrom(&message)
 	branchName, _ := action.branchName.GetStringFrom(&message)
 	r, err := git.PlainOpen(repoPath)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 
 	err = r.CreateBranch(&config.Branch{

@@ -59,7 +59,7 @@ func CreateMapExecutor(queue queues.MessageQueue, actions map[string]actions.Act
 	}
 }
 
-func addToQueue(err error, queue queues.MessageQueue, message types.Pipeline) {
+func addToQueue(err error, queue queues.MessageQueue, message types.Process) {
 	if err != nil {
 		err = queue.AddTaskAsFailed(err, message)
 		if err != nil {
@@ -73,8 +73,8 @@ func addToQueue(err error, queue queues.MessageQueue, message types.Pipeline) {
 	}
 }
 
-func unmarshal(d amqp.Delivery) (types.Pipeline, error) {
-	var message types.Pipeline
+func unmarshal(d amqp.Delivery) (types.Process, error) {
+	var message types.Process
 	err := json.Unmarshal(d.Body, &message)
 	if err != nil {
 

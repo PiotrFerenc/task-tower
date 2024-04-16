@@ -39,10 +39,10 @@ func (action *deleteFile) Outputs() []actions.Property {
 	return []actions.Property{}
 }
 
-func (action *deleteFile) Execute(message types.Pipeline) (types.Pipeline, error) {
+func (action *deleteFile) Execute(message types.Process) (types.Process, error) {
 	fileName, err := action.fileName.GetStringFrom(&message)
 	if err != nil {
-		return types.Pipeline{}, err
+		return types.Process{}, err
 	}
 	filePath := filepath.Join(action.config.Folder.TmpFolder, fileName)
 	err = os.Remove(filePath)

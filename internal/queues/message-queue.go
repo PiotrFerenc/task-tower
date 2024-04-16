@@ -7,10 +7,10 @@ import (
 
 type MessageQueue interface {
 	Connect() error
-	AddTaskToQueue(message types.Pipeline) error
-	AddTaskAsFailed(error error, message types.Pipeline) error
-	AddTaskAsSuccess(message types.Pipeline) error
-	AddTaskAsFinished(message types.Pipeline) error
+	AddTaskToQueue(message types.Process) error
+	AddTaskAsFailed(error error, message types.Process) error
+	AddTaskAsSuccess(message types.Process) error
+	AddTaskAsFinished(message types.Process) error
 	WaitingForFailedTask() (<-chan amqp.Delivery, error)
 	WaitingForSucceedTask() (<-chan amqp.Delivery, error)
 	WaitingForFinishedTask() (<-chan amqp.Delivery, error)

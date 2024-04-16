@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	processes []*types.Pipeline
+	processes []*types.Process
 )
 
 type repository struct {
@@ -33,7 +33,7 @@ func CreatePostgresRepository(config *configuration.DatabaseConfig) ProcessRepos
 	return &repository{Database: db}
 }
 
-func (r *repository) UpdateStatus(pipeline types.Pipeline) {
+func (r *repository) UpdateStatus(pipeline types.Process) {
 	p := ProcessEntity{
 		ID: pipeline.Id,
 	}
@@ -46,7 +46,7 @@ func (r *repository) UpdateStatus(pipeline types.Pipeline) {
 	}
 	r.Database.Model(&s).Update("Status", pipeline.CurrentStep.Status)
 }
-func (r *repository) Save(pipeline types.Pipeline) {
+func (r *repository) Save(pipeline types.Process) {
 	p := ProcessEntity{
 		ID:     pipeline.Id,
 		Status: int(pipeline.Status),
