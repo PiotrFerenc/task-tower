@@ -19,7 +19,7 @@ type pipelineService struct {
 	processService ProcessService
 }
 
-func CreatePipelineService(queue queues.MessageQueue, processService ProcessService, onSuccess OnSuccessFunc, onFail OnFailFunc, onFinish OnFinishFunc) PipelineService {
+func CreatePipelineService(queue queues.MessageQueue, processService ProcessService, onSuccess OnMessageReceivedFunc, onFail OnMessageReceivedFunc, onFinish OnMessageReceivedFunc) PipelineService {
 	go watchForMessages(queue, onSuccess, onFail, onFinish, processService)
 
 	return &pipelineService{
@@ -27,68 +27,42 @@ func CreatePipelineService(queue queues.MessageQueue, processService ProcessServ
 		processService: processService,
 	}
 }
+func (p *pipelineService) Run(pipeline *apitypes.Pipeline) (uuid.UUID, error) {
+	process := types.NewProcessFromPipeline(pipeline)
+	p.processService.MarkAsStarted(process)
 
-func watchForMessages(queue queues.MessageQueue, onSuccess func(*types.Process, queues.MessageQueue, ProcessService) error, onFail func(*types.Process, queues.MessageQueue, ProcessService), onFinish func(*types.Process, queues.MessageQueue, ProcessService), processService ProcessService) {
-	successTasks, _ := queue.WaitingForSucceedTask()
-	failedTasks, _ := queue.WaitingForFailedTask()
-	finishedTasks, _ := queue.WaitingForFinishedTask()
+	err := p.queue.AddTaskToQueue(*process)
+	if err != nil {
+		return uuid.Nil, err
+	}
 
-	var forever chan struct{}
-
-	go func() {
-		err := processFinishTasks(finishedTasks, queue, onFinish, processService)
-		if err != nil {
-			panic(err)
-		}
-	}()
-
-	go func() {
-		err := processSuccessTasks(successTasks, queue, onSuccess, processService)
-		if err != nil {
-			panic(err)
-		}
-	}()
-
-	go func() {
-		err := processFailTasks(failedTasks, queue, onFail, processService)
-		if err != nil {
-			panic(err)
-		}
-	}()
-
+	return process.Id, nil
+}
+func watchForMessages(queue queues.MessageQueue, onSuccess OnMessageReceivedFunc, onFail OnMessageReceivedFunc, onFinish OnMessageReceivedFunc, processService ProcessService) {
+	forever := make(chan struct{})
+	go ProcessTasks(queue, onSuccess, processService, queue.WaitingForSucceedTask)
+	go ProcessTasks(queue, onFail, processService, queue.WaitingForFailedTask)
+	go ProcessTasks(queue, onFinish, processService, queue.WaitingForFinishedTask)
 	<-forever
 }
 
-func processSuccessTasks(Tasks <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Process, queues.MessageQueue, ProcessService) error, processService ProcessService) error {
-	for d := range Tasks {
-		message, err := unmarshalMessage(d.Body)
-		if err != nil {
-			return err
-		}
-		err = onFunc(message, queue, processService)
-		if err != nil {
-			return err
-		}
+func ProcessTasks(queue queues.MessageQueue, taskFunc OnMessageReceivedFunc, processService ProcessService, getTasksFunc getTasksFunc) {
+	tasks, _ := getTasksFunc()
+	err := processTasks(tasks, queue, taskFunc, processService)
+	if err != nil {
+		panic(err)
 	}
-	return nil
 }
-func processFinishTasks(Tasks <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Process, queues.MessageQueue, ProcessService), processService ProcessService) error {
-	for d := range Tasks {
+
+type getTasksFunc func() (<-chan amqp.Delivery, error)
+
+func processTasks(tasks <-chan amqp.Delivery, queue queues.MessageQueue, taskFunc OnMessageReceivedFunc, processService ProcessService) error {
+	for d := range tasks {
 		message, err := unmarshalMessage(d.Body)
 		if err != nil {
 			return err
 		}
-		onFunc(message, queue, processService)
-	}
-	return nil
-}
-func processFailTasks(Tasks <-chan amqp.Delivery, queue queues.MessageQueue, onFunc func(*types.Process, queues.MessageQueue, ProcessService), processService ProcessService) error {
-	for d := range Tasks {
-		message, err := unmarshalMessage(d.Body)
-		if err != nil {
-			return err
-		}
-		onFunc(message, queue, processService)
+		taskFunc(message, queue, processService)
 	}
 	return nil
 }
@@ -102,28 +76,14 @@ func unmarshalMessage(body []byte) (*types.Process, error) {
 	return &message, nil
 }
 
-func (p *pipelineService) Run(pipeline *apitypes.Pipeline) (uuid.UUID, error) {
-	process := types.NewProcessFromPipeline(pipeline)
-	p.processService.MarkAsStarted(process)
+type OnMessageReceivedFunc func(process *types.Process, queue queues.MessageQueue, service ProcessService)
 
-	err := p.queue.AddTaskToQueue(*process)
-	if err != nil {
-		return uuid.Nil, err
-	}
-
-	return process.Id, nil
-}
-
-type OnSuccessFunc func(process *types.Process, queue queues.MessageQueue, service ProcessService) error
-type OnFailFunc func(process *types.Process, queue queues.MessageQueue, service ProcessService)
-type OnFinishFunc func(process *types.Process, queue queues.MessageQueue, service ProcessService)
-
-func CreateOnSuccessFunc() OnSuccessFunc {
-	return func(process *types.Process, queue queues.MessageQueue, service ProcessService) error {
+func CreateOnSuccessFunc() OnMessageReceivedFunc {
+	return func(process *types.Process, queue queues.MessageQueue, service ProcessService) {
 		if len(process.Steps) == 0 {
 			err := queue.AddTaskAsFinished(*process)
 			if err != nil {
-				return err
+				panic(err)
 			}
 		} else {
 			currentStep := process.Steps[0]
@@ -131,24 +91,22 @@ func CreateOnSuccessFunc() OnSuccessFunc {
 			process.Steps = process.Steps[1:]
 			err := queue.AddTaskToQueue(*process)
 			if err != nil {
-				return err
+				panic(err)
 			}
 			service.TaskFinished(process)
 		}
-
-		return nil
 	}
 
 }
 
-func CreateOnFailFunc() OnFailFunc {
+func CreateOnFailFunc() OnMessageReceivedFunc {
 	return func(process *types.Process, queue queues.MessageQueue, service ProcessService) {
 		log.Printf("Fail %s => %+v\\n", process.CurrentStep.Name, process.Error)
 		service.MarkAsFailed(process, process.Error)
 	}
 }
 
-func CreateOnFinishFunc() OnFinishFunc {
+func CreateOnFinishFunc() OnMessageReceivedFunc {
 	return func(process *types.Process, queue queues.MessageQueue, service ProcessService) {
 		log.Printf("Done %s ", process.Id)
 		service.MarkAsDone(process)
