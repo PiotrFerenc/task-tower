@@ -25,6 +25,10 @@ type executor struct {
 	queue queues.MessageQueue
 }
 
+// CreateMapExecutor creates and starts an executor that consumes tasks from the given message queue and executes them.
+// It takes a MessageQueue and a map of Actions as input parameters.
+// The Actions map should contain the available actions indexed by their names.
+// The function returns an Executor instance.
 func CreateMapExecutor(queue queues.MessageQueue, actions map[string]actions.Action) Executor {
 	a := actions
 
