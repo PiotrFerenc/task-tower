@@ -4,23 +4,41 @@ import (
 	"fmt"
 	"github.com/PiotrFerenc/mash2/api/types"
 	Message "github.com/PiotrFerenc/mash2/internal/consts"
+	"github.com/PiotrFerenc/mash2/internal/repositories"
 	"github.com/PiotrFerenc/mash2/internal/services"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"net/http"
 )
 
 type controller struct {
-	pipelineService services.PipelineService
+	pipelineService   services.PipelineService
+	processRepository repositories.ProcessRepository
 }
 
-func CreateRestController(pipelineService services.PipelineService) Controller {
+func CreateRestController(pipelineService services.PipelineService, repository repositories.ProcessRepository) Controller {
 	return &controller{
-		pipelineService: pipelineService,
+		pipelineService:   pipelineService,
+		processRepository: repository,
 	}
 }
 
 func (controller *controller) Run(address, port string) error {
 	server := gin.Default()
+	server.GET("/process/:id", func(c *gin.Context) {
+		parameterId := c.Param("id")
+		id, err := uuid.Parse(parameterId)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+			return
+		}
+		process, err := controller.processRepository.GetById(id)
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Process not found"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"status": process.Status})
+	})
 	server.POST("/execute", func(context *gin.Context) {
 		var pipe types.Pipeline
 

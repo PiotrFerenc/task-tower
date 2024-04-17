@@ -15,7 +15,7 @@ var (
 	processRepository = repositories.CreatePostgresRepository(&config.Database)
 	processService    = services.CreateProcessService(processRepository)
 	pipeLineService   = services.CreatePipelineService(messageQueue, processService, services.CreateOnSuccessFunc(), services.CreateOnFailFunc(), services.CreateOnFinishFunc())
-	controller        = controllers.CreateRestController(pipeLineService)
+	controller        = controllers.CreateRestController(pipeLineService, processRepository)
 )
 
 func main() {

@@ -25,7 +25,8 @@ POST localhost:5000/execute
         }
     ]
 }
-
+###
+GET http://localhost:5000/process/cbff06d2-24a2-40e5-9b3e-bcd9aaaabd7f
 
 ###
 

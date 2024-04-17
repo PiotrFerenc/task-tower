@@ -3,6 +3,8 @@ package tests
 import (
 	"bytes"
 	"context"
+	"fmt"
+	"io"
 	"net/http"
 	"testing"
 	"time"
@@ -11,7 +13,7 @@ import (
 	tc "github.com/testcontainers/testcontainers-go/modules/compose"
 )
 
-func TestSomething(t *testing.T) {
+func TestProcess(t *testing.T) {
 	compose, err := tc.NewDockerCompose("../docker/docker-compose.yml")
 	require.NoError(t, err, "NewDockerComposeAPI()")
 
@@ -49,5 +51,8 @@ func TestSomething(t *testing.T) {
 	}
 	defer resp.Body.Close()
 	require.Equal(t, http.StatusOK, resp.StatusCode)
+
+	body, err := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
 
 }

@@ -32,6 +32,11 @@ func CreatePostgresRepository(config *configuration.DatabaseConfig) ProcessRepos
 	}
 	return &repository{Database: db}
 }
+func (r *repository) GetById(processId uuid.UUID) (ProcessEntity, error) {
+	processes := ProcessEntity{}
+	r.Database.Find(&processes, processId)
+	return processes, nil
+}
 
 func (r *repository) UpdateStatus(pipeline types.Process) {
 	p := ProcessEntity{
