@@ -36,25 +36,53 @@ const (
 	Fail
 )
 
-func (message *Process) GetInternalName(propertyName string) string {
+// getInternalName returns the internal name of a property by concatenating the camelCase version of the current step's name
+// with the provided propertyName, separated by a dot.
+//
+// Parameters:
+//
+//	propertyName: The name of the property for which to retrieve the internal name.
+//
+// Returns:
+//
+//	string: The internal name of the property.
+func (message *Process) getInternalName(propertyName string) string {
 	str := stringy.New(message.CurrentStep.Name)
 	internalName := str.CamelCase("?", "")
 	internalName = stringy.New(internalName).ToLower()
 	return fmt.Sprintf("%s.%s", internalName, propertyName)
 }
 
-func (message *Process) NewFolder(path string) string {
-	return fmt.Sprintf("%s/%s", path, uuid.NewString())
-}
-
+// SetInt sets the value of an integer property in the Parameters map of the Process object.
+//
+// Parameters:
+//
+//	name: The name of the property to be set.
+//	value: The value to set for the property.
 func (message *Process) SetInt(name string, value int) {
-	message.Parameters[message.GetInternalName(name)] = strconv.Itoa(value)
+	message.Parameters[message.getInternalName(name)] = strconv.Itoa(value)
 }
-func (message *Process) SetString(name, value string) {
-	message.Parameters[message.GetInternalName(name)] = value
-}
-func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Process {
 
+// SetString sets the value of a string property in the Parameters map of the Process object.
+//
+// Parameters:
+//
+//	name: The name of the property to be set.
+//	value: The value to set for the property.
+func (message *Process) SetString(name, value string) {
+	message.Parameters[message.getInternalName(name)] = value
+}
+
+// NewProcessFromPipeline creates a new Process object from the given Pipeline object.
+//
+// Parameters:
+//
+//	pipeline: The Pipeline object used to create the Process.
+//
+// Returns:
+//
+//	*Process: The newly created Process object.
+func NewProcessFromPipeline(pipeline *apitypes.Pipeline) *Process {
 	process := &Process{
 		Id:         uuid.New(),
 		Parameters: pipeline.Parameters,
