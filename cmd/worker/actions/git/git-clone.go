@@ -48,6 +48,19 @@ func (action *gitClone) Outputs() []actions.Property {
 		action.path,
 	}
 }
+
+// Execute performs the execution of the gitClone action. It clones a Git repository from the provided URL
+// using the git.PlainClone function. The cloned repository is saved in a temporary folder specified in the configuration.
+// The path of the cloned repository is stored in the action.path property of the message.
+//
+// Parameters:
+//
+//	message: The current process message containing the input and output properties.
+//
+// Returns:
+//
+//	types.Process: The updated process message after executing the action.
+//	error: Any error that occurred during the execution of the action.
 func (action *gitClone) Execute(message types.Process) (types.Process, error) {
 	repositoryUrl, err := action.url.GetStringFrom(&message)
 	if err != nil {

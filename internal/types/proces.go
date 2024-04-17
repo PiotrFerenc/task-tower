@@ -53,6 +53,19 @@ func (message *Process) GetInternalName(propertyName string) string {
 	return fmt.Sprintf("%s.%s", internalName, propertyName)
 }
 
+// NewFolder returns the concatenated path and a new UUID string, separated by a slash.
+//
+// Parameters:
+//
+//	path: The base path to concatenate with the UUID string.
+//
+// Returns:
+//
+//	string: The new folder path.
+func (message *Process) NewFolder(path string) string {
+	return fmt.Sprintf("%s/%s", path, uuid.NewString())
+}
+
 // SetInt sets the value of an integer property in the Parameters map of the Process object.
 //
 // Parameters:

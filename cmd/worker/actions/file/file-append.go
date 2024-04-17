@@ -57,6 +57,16 @@ func (action *appendContentToFile) Outputs() []actions.Property {
 	}
 }
 
+// Execute performs the execution of the appendContentToFile action. It appends content to a file specified by the fileName property.
+//
+// Parameters:
+//
+//	message: The types.Process object containing the necessary data for execution.
+//
+// Returns:
+//
+//	types.Process: The updated types.Process object after the execution.
+//	error: If an error occurs during execution, it is returned.
 func (action *appendContentToFile) Execute(message types.Process) (types.Process, error) {
 	fileName, err := action.fileName.GetStringFrom(&message)
 	if err != nil {

@@ -44,6 +44,10 @@ func (action *gitCreateBranch) Inputs() []actions.Property {
 	}
 }
 
+// Outputs method returns an empty list of actions.Property.
+// It is a method of gitCreateBranch struct, which is a implementation of the Action interface.
+// The function is used to specify the output properties after executing the action.
+// It returns an empty slice of actions.Property.
 func (action *gitCreateBranch) Outputs() []actions.Property {
 	return []actions.Property{}
 }

@@ -58,6 +58,16 @@ func (d *dockerContainer) Outputs() []actions.Property {
 	}
 }
 
+// Execute executes a Docker container.
+//
+// Parameters:
+//
+//	process: The process that contains the required parameters for executing the container.
+//
+// Returns:
+//
+//	types.Process: The updated process with the container ID set.
+//	error: An error if the container execution fails.
 func (d *dockerContainer) Execute(process types.Process) (types.Process, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())

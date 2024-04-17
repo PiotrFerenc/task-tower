@@ -39,6 +39,14 @@ func (action *deleteFile) Outputs() []actions.Property {
 	return []actions.Property{}
 }
 
+// Execute executes the deleteFile action by deleting the specified file.
+//
+// Parameters:
+//   - message: The input process message.
+//
+// Returns:
+//   - types.Process: The output process message.
+//   - error: The error if any occurred during execution.
 func (action *deleteFile) Execute(message types.Process) (types.Process, error) {
 	fileName, err := action.fileName.GetStringFrom(&message)
 	if err != nil {

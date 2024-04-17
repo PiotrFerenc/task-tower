@@ -59,6 +59,9 @@ func (action *gitCommit) Outputs() []actions.Property {
 	}
 }
 
+// Execute receives a message of type types.Process and performs a Git commit operation.
+// It retrieves the repository path and commit message from the message, opens the repository, adds all files, and commits the changes with the provided commit options.
+// It returns the modified message or an error if any operation fails.
 func (action *gitCommit) Execute(message types.Process) (types.Process, error) {
 	repoPath, err := action.path.GetStringFrom(&message)
 	if err != nil {

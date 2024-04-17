@@ -57,6 +57,18 @@ func (action *contentToFile) Outputs() []actions.Property {
 	}
 }
 
+// Execute executes the contentToFile action by writing the content to a file with the provided file name.
+// The file is created in the TmpFolder specified in the configuration.
+// The file path is stored in the createdFilePath property of the message.
+//
+// Parameters:
+//
+//	message: The process message containing the necessary data for the action to execute.
+//
+// Returns:
+//
+//	types.Process: The updated process message after executing the action.
+//	error: An error if the action encounters any issues during execution.
 func (action *contentToFile) Execute(message types.Process) (types.Process, error) {
 	fileName, err := action.fileName.GetStringFrom(&message)
 	if err != nil {
