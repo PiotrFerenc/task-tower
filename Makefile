@@ -17,5 +17,10 @@ docker-rebuild:
 	$(MAKE) docker-down
 	$(MAKE) docker-build
 	$(MAKE) docker-up
+test-build:
+	sudo rm -rf ./docker/data
+	$(MAKE) docker-build
+	$(MAKE) docker-down
+	$(MAKE) test
 test:
 	go test tests/main_test.go
