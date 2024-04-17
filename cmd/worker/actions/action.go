@@ -36,7 +36,7 @@ func (property *Property) GetIntFrom(message *types.Process) (int, error) {
 	return strconv.Atoi(value)
 }
 func (property *Property) GetStringFrom(message *types.Process) (string, error) {
-	internalName := message.getInternalName(property.Name)
+	internalName := message.GetInternalName(property.Name)
 	parameter, ok := message.Parameters[internalName]
 	if !ok {
 		msg := fmt.Sprintf("Key %s not found in %s configuration.", internalName, message.CurrentStep.Name)
