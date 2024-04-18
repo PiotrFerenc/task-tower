@@ -4,7 +4,8 @@
 **Opis**
 
 <p align="center">
-  <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/0d288f65-cb91-4770-88bc-2329fd9d52bb" alt="logo" width="200"/>
+  <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/27230488-59c6-48e5-8def-8f345c0ac38e" alt="logo" width="400"/>
+  
 </p>
 <div style="text-align: justify;">
 
@@ -14,15 +15,20 @@
 
 ![100 - commitów](https://img.shields.io/badge/100-commitów-2ea44f?logo=go)
 
-# task-tower- Build your own automation
+# Task tower
 
-
-**D**istributed **W**ork **A**utomation **S**ystem. 
-Docker Workflow as a Service (DWaaS)
-
-![Screenshot from 2024-04-07 13-11-14](https://github.com/PiotrFerenc/mash2/assets/30370747/4fea3e63-0eb6-47b3-bb7f-83e92bfa7f42)
-
+Task Tower is a tool for automating distributed tasks, utilizing pipelines with isolated processing steps in Docker containers, which allows users to easily scale and modify processes without impacting the entire infrastructure.
+ 
 </div>
+
+## Benefits
+
+- Flexibility in task management
+- Process isolation
+- Increased operational efficiency
+- Ease of integration and collaboration
+
+## How it works
 
 ## Installation
 
@@ -75,24 +81,3 @@ make docker-rebuild
 
 ## License
 
-MIT License
-
-Copyright (c) 2024 task-tower
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
