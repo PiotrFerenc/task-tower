@@ -2,12 +2,9 @@ package docker
 
 import (
 	"context"
-	"errors"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
+	"github.com/PiotrFerenc/mash2/internal/Container"
 	"github.com/PiotrFerenc/mash2/internal/types"
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/client"
-	"github.com/docker/go-connections/nat"
 	"strings"
 )
 
@@ -20,11 +17,18 @@ func CreateDockerRun() actions.Action {
 			DisplayName: "Image Name",
 			Validation:  "required",
 		},
-		ports: actions.Property{
-			Name:        "ports",
+		env: actions.Property{
+			Name:        "e",
 			Type:        actions.Text,
-			Description: "The ports to expose from the Docker container",
-			DisplayName: "Exposed Ports",
+			Description: "The environment variables for the Docker container",
+			DisplayName: "Environment Variables",
+			Validation:  "required",
+		},
+		vol: actions.Property{
+			Name:        "v",
+			Type:        actions.Text,
+			Description: "Volume",
+			DisplayName: "Environment Variables",
 			Validation:  "required",
 		},
 		containerId: actions.Property{
@@ -39,8 +43,9 @@ func CreateDockerRun() actions.Action {
 
 type dockerContainer struct {
 	imageName   actions.Property
-	ports       actions.Property
 	containerId actions.Property
+	env         actions.Property
+	vol         actions.Property
 }
 
 func (d *dockerContainer) GetCategoryName() string {
@@ -49,7 +54,7 @@ func (d *dockerContainer) GetCategoryName() string {
 
 func (d *dockerContainer) Inputs() []actions.Property {
 	return []actions.Property{
-		d.imageName, d.ports,
+		d.imageName, d.env, d.vol,
 	}
 }
 func (d *dockerContainer) Outputs() []actions.Property {
@@ -70,63 +75,22 @@ func (d *dockerContainer) Outputs() []actions.Property {
 //	error: An error if the container execution fails.
 func (d *dockerContainer) Execute(process types.Process) (types.Process, error) {
 	ctx := context.Background()
-	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	if err != nil {
-		return process, err
-	}
 	imageName, err := d.imageName.GetStringFrom(&process)
-
 	if err != nil {
 		return process, err
 	}
-	ports, err := d.ports.GetStringFrom(&process)
-	if err != nil {
-		return process, err
-	}
-
-	portMap, portSet, err := mapPorts(ports)
+	vol, err := d.vol.GetStringFrom(&process)
 	if err != nil {
 		return process, err
 	}
 
-	resp, err := cli.ContainerCreate(ctx, &container.Config{
-		Image:        imageName,
-		ExposedPorts: portSet,
-	}, &container.HostConfig{
-		PortBindings: portMap,
-	}, nil, nil, "")
+	envParameters, err := d.env.GetStringFrom(&process)
 	if err != nil {
 		return process, err
 	}
+	env := strings.Split(envParameters, ",")
+	containerId, err := Container.StartContainer(imageName, env, []string{vol}, ctx)
 
-	if err := cli.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
-		return process, err
-	}
-
-	process.SetString(d.containerId.Name, resp.ID)
+	process.SetString(d.containerId.Name, containerId)
 	return process, nil
-}
-
-func mapPorts(ports string) (nat.PortMap, nat.PortSet, error) {
-	portPairs := strings.Split(ports, ", ")
-	portMap := nat.PortMap{}
-	portSet := nat.PortSet{}
-	for _, portPair := range portPairs {
-		portPair = strings.TrimSpace(portPair)
-		if !strings.Contains(portPair, ":") {
-			return nil, nil, errors.New("Invalid ports")
-		}
-		portParts := strings.Split(portPair, ":")
-		containerPort := portParts[0]
-		hostPort := portParts[1]
-		portMap[nat.Port(containerPort)] = []nat.PortBinding{
-			{
-				HostIP:   "0.0.0.0",
-				HostPort: hostPort,
-			},
-		}
-		portSet[nat.Port(containerPort)] = struct{}{}
-	}
-
-	return portMap, portSet, nil
 }

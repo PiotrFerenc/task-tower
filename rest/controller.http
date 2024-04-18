@@ -93,3 +93,27 @@ POST localhost:5000/execute
         }
     ]
 }
+###
+
+POST localhost:5000/execute
+
+{
+    "Parameters": {
+        "docker.image" : "dotnet-classlib",
+        "docker.e" : "PROJECT_NAME=MyCustomProject2",
+        "docker.v" : "\"$(pwd)/hostFolder:/data\"",
+        "console.text":"container id: {{docker.id}}"
+    },
+    "Tasks": [
+        {
+            "Sequence": 1,
+            "Name": "docker",
+            "Action": "docker-run"
+        }
+         ,{
+            "Sequence": 2,
+            "Name": "console",
+            "Action": "console"
+        }
+    ]
+}
