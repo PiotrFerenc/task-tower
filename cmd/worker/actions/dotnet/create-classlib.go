@@ -8,13 +8,13 @@ import (
 	"github.com/PiotrFerenc/mash2/internal/types"
 )
 
-type classlib struct {
+type classLib struct {
 	ProjectName actions.Property
-	Containerid actions.Property
+	ContainerId actions.Property
 }
 
 func CreateDotnetClassLibAction() actions.Action {
-	return &classlib{
+	return &classLib{
 		ProjectName: actions.Property{
 			Name:        "ProjectName",
 			Type:        "string",
@@ -22,7 +22,7 @@ func CreateDotnetClassLibAction() actions.Action {
 			DisplayName: "Project Name",
 			Validation:  "Required",
 		},
-		Containerid: actions.Property{
+		ContainerId: actions.Property{
 			Name:        "ContainerId",
 			Type:        "string",
 			Description: "Unique identifier of the container.",
@@ -32,19 +32,19 @@ func CreateDotnetClassLibAction() actions.Action {
 	}
 }
 
-func (cl *classlib) Inputs() []actions.Property {
+func (cl *classLib) Inputs() []actions.Property {
 	return []actions.Property{
 		cl.ProjectName,
 	}
 }
-func (cl *classlib) Outputs() []actions.Property {
-	return []actions.Property{}
+func (cl *classLib) Outputs() []actions.Property {
+	return []actions.Property{cl.ContainerId}
 }
-func (cl *classlib) GetCategoryName() string {
+func (cl *classLib) GetCategoryName() string {
 	return "dotnet"
 }
 
-// Execute executes a classlib process by starting a container with the specified image and environment variables.
+// Execute executes a classLib process by starting a container with the specified image and environment variables.
 //
 // Parameters:
 //
@@ -54,17 +54,17 @@ func (cl *classlib) GetCategoryName() string {
 //
 //	types.Process: The modified process object.
 //	error: An error if any occurred during the execution.
-func (cl *classlib) Execute(process types.Process) (types.Process, error) {
+func (cl *classLib) Execute(process types.Process) (types.Process, error) {
 	ctx := context.Background()
 	projectName, err := cl.ProjectName.GetStringFrom(&process)
 	if err != nil {
 		return process, err
 	}
 	env := fmt.Sprintf("PROJECT_NAME=%s", projectName)
-	imageName := "dotnet-classlib"
+	imageName := "dotnet-classLib"
 	vol := fmt.Sprintf("/dashboard/appuser/%s:/data", projectName)
 	containerId, err := Container.StartContainer(imageName, []string{env}, []string{vol}, ctx)
 
-	process.SetString(cl.Containerid.Name, containerId)
+	process.SetString(cl.ContainerId.Name, containerId)
 	return process, nil
 }
