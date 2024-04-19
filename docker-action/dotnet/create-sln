@@ -1,0 +1,4 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0
+WORKDIR /app
+ENV SOLUTION_NAME=test
+CMD dotnet new sln -n ${SOLUTION_NAME} -o /data
