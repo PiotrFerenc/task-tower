@@ -1,0 +1,7 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0
+
+WORKDIR /app
+
+ENV PROJECT_NAME=test
+
+CMD dotnet new classlib -n ${PROJECT_NAME} -o /data
