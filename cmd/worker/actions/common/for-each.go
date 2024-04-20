@@ -1,10 +1,11 @@
 package common
 
 import (
+	"fmt"
 	"github.com/Jeffail/gabs"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
 	"github.com/PiotrFerenc/mash2/internal/types"
-	"log"
+	"strings"
 )
 
 func CreateForEachLoop() actions.Action {
@@ -66,24 +67,30 @@ func (d *forEachLoop) Execute(process types.Process) (types.Process, error) {
 	forEachBody := process.CurrentStep.ForeachBody
 	currentIndex := process.CurrentStep.Sequence
 
-	for key, child := range items {
+	for _, _ = range items {
 		for _, s := range forEachBody.Steps {
 			currentIndex = currentIndex + 1
 			s.Sequence = currentIndex
 			st := types.MapToStep(s)
-			process.Steps = append(process.Steps, *st)
-			if currentIndex == process.CurrentStep.Sequence+1 {
-				process.CurrentStep = *st
+			for key, value := range forEachBody.Parameters {
+				if strings.Contains(key, st.Name) {
+					newName := fmt.Sprintf("%s%d", st.Name, st.Sequence)
+					keyName := strings.Replace(key, st.Name, newName, 1)
+					st.Name = newName
+					process.Parameters[keyName] = value
+				}
 			}
+			process.Steps = append(process.Steps, *st)
 		}
 
-		log.Printf("%s %s", key, child.Data())
 	}
 	for i, s := range process.Steps {
 		if s.Sequence > currentIndex {
 			s.Sequence = currentIndex + i
 		}
 	}
+
+	process.CurrentStep = process.Steps[0]
 
 	return process, nil
 }
