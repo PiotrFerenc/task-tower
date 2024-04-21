@@ -1,0 +1,5 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0
+WORKDIR /app
+ENV PROJECT_PATH=test
+ENV NUGET_NAME=test
+CMD dotnet add ${PROJECT_PATH} package ${NUGET_NAME}
