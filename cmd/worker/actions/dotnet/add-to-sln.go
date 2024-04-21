@@ -55,7 +55,9 @@ func (a addToSln) Inputs() []actions.Property {
 }
 
 func (a addToSln) Outputs() []actions.Property {
-	return make([]actions.Property, 0)
+	return []actions.Property{
+		a.containerId,
+	}
 }
 
 func (a addToSln) GetCategoryName() string {
@@ -79,7 +81,7 @@ func (a addToSln) Execute(process types.Process) (types.Process, error) {
 
 	envSolutionPath := fmt.Sprintf("SOLUTION_PATH=%s", solutionPath)
 	envProjectPath := fmt.Sprintf("PROJECT_PATH=%s", projectPath)
-	imageName := "dotnet-solutionFile"
+	imageName := "add-to-sln"
 	vol := fmt.Sprintf("/dashboard/appuser/%s:/data", projectName)
 	containerId, err := Container.StartContainer(imageName, []string{envSolutionPath, envProjectPath}, []string{vol}, ctx)
 
