@@ -13,8 +13,8 @@ func AddProjectToSolution() actions.Action {
 		projectName: actions.Property{
 			Name:        "projectName",
 			Type:        actions.Text,
-			Description: "The path to the project that needs to be added to the solution",
-			DisplayName: "Project Path",
+			Description: "The name of the project that needs to be added to the solution",
+			DisplayName: "Project Name",
 			Validation:  "required",
 		},
 		projectPath: actions.Property{
