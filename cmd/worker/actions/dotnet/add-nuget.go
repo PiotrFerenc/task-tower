@@ -56,6 +56,17 @@ func (a addToProject) GetCategoryName() string {
 	return "docker"
 }
 
+// Execute executes the addToProject action by starting a Docker container with the specified image name, environment variables,
+// volume bindings, and context. It sets the container ID in the process Parameters map under the containerId property.
+//
+// Parameters:
+//
+// process: The process on which to execute the addToProject action.
+//
+// Returns:
+//
+// types.Process: The modified process after execution.
+// error: An error if the addToProject action failed to execute.
 func (a addToProject) Execute(process types.Process) (types.Process, error) {
 	ctx := context.Background()
 

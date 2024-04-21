@@ -64,6 +64,18 @@ func (a addToSln) GetCategoryName() string {
 	return "dotnet"
 }
 
+// Execute executes the addToSln action by starting a Docker container with the specified image name,
+// environment variables, volume bindings, and context. It also sets the container ID in the process
+// object for later use.
+//
+// Parameters:
+//
+//	process: The process object containing the necessary properties and parameters.
+//
+// Returns:
+//
+//	types.Process: The updated process object after executing the action.
+//	error: An error if the action fails to execute.
 func (a addToSln) Execute(process types.Process) (types.Process, error) {
 	ctx := context.Background()
 	projectPath, err := a.projectPath.GetStringFrom(&process)
