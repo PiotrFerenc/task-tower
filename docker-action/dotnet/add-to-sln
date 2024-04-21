@@ -1,0 +1,8 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0
+
+WORKDIR /app
+
+ENV PROJECT_PATH=path
+ENV SOLUTION_PATH=path
+
+CMD dotnet sln ${PROJECT_PATH} add ${PROJECT_PATH}
