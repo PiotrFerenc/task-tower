@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monaco Editor with Echo</title>
+    <script src="/assets/monaco/vs/loader.js"></script>
+</head>
+<body>
+<div id="container" style="height:600px;"></div>
+<script>
+    require.config({ paths: { 'vs': '/assets/monaco/vs' }});
+
+    require(['vs/editor/editor.main'], function() {
+        monaco.editor.create(document.getElementById('container'), {
+            value: '{' +
+                '' +
+                '}',
+            language: 'json'
+        });
+        monaco.languages.registerCompletionItemProvider('json', {
+            provideCompletionItems: function(model, position) {
+                const word = model.getWordUntilPosition(position);
+                const range = {
+                    startLineNumber: position.lineNumber,
+                    endLineNumber: position.lineNumber,
+                    startColumn: word.startColumn,
+                    endColumn: word.endColumn
+                };
+
+                const suggestions = [
+                    {
+                        label: 'myKeyword1',
+                        kind: monaco.languages.CompletionItemKind.Keyword,
+                        insertText: '"myKeyword1"',
+                        range: range
+                    },
+                    {
+                        label: 'myKeyword2',
+                        kind: monaco.languages.CompletionItemKind.Keyword,
+                        insertText: '"myKeyword2"',
+                        range: range
+                    }
+                ];
+                return { suggestions: suggestions };
+            }
+        });
+    });
+</script>
+</body>
+</html>
