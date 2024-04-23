@@ -117,3 +117,19 @@ POST localhost:5000/execute
         }
     ]
 }
+###
+
+POST localhost:5000/execute
+
+{
+    "Parameters": {
+       "console.text":"hallo word"
+    },
+    "Tasks": [
+        {
+            "Sequence": 1,
+            "Name": "log",
+            "Action": "console"
+        }
+    ]
+}
