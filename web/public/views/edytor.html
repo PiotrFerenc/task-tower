@@ -3,7 +3,6 @@
 <head>
     <title>Monaco Editor with Echo</title>
     <script src="/assets/monaco/vs/loader.js"></script>
-    <script src="/assets/leader-line/leader-line.min.js"></script>
     {{template "styles" .}}
 </head>
 <body>
@@ -21,6 +20,13 @@
             <div id="container" style="height:600px;"></div>
         </div>
         <div class="col-6">
+<pre class="mermaid">
+            graph TD
+            asd[Client qwe] -->|tcp_123| B
+            B(Load Balancer)
+            B --> C[Server1]
+            B -->|tcp_456| D[Server2]
+    </pre>
 
         </div>
     </div>
@@ -29,11 +35,6 @@
     require.config({paths: {'vs': '/assets/monaco/vs'}});
 
     require(['vs/editor/editor.main'], function () {
-        monaco.editor.create(document.getElementById('container'), {
-            value: '' +
-                '{\n    "Parameters": {\n       "console.text":"hallo word"\n    },\n    "Tasks": [\n        {\n            "Sequence": 1,\n            "Name": "log",\n            "Action": "console"\n        }\n    ]\n}',
-            language: 'json'
-        });
         monaco.languages.registerCompletionItemProvider('json', {
             provideCompletionItems: function (model, position) {
                 const word = model.getWordUntilPosition(position);
@@ -61,8 +62,20 @@
                 return {suggestions: suggestions};
             }
         });
+
+        monaco.editor.create(document.getElementById('container'), {
+            value: '' +
+                '{\n    "Parameters": {\n       "console.text":"hallo word"\n    },\n    "Tasks": [\n        {\n            "Sequence": 1,\n            "Name": "log",\n            "Action": "console"\n        }\n    ]\n}',
+            language: 'json'
+        });
+
     });
 </script>
 {{template "scripts" .}}
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({startOnLoad: true});
+</script>
 </body>
 </html>
