@@ -6,7 +6,6 @@
 
 <p align="center">
   <img src="https://github.com/PiotrFerenc/mash2/assets/30370747/27230488-59c6-48e5-8def-8f345c0ac38e" alt="logo" width="400"/>
-  
 </p>
 <div style="text-align: justify;">
 
