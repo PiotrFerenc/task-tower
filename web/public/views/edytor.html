@@ -20,7 +20,7 @@
             <div id="container" style="height:600px;"></div>
         </div>
         <div class="col-6">
-<pre class="mermaid">
+<pre id="mermaid">
             graph TD
             asd[Client qwe] -->|tcp_123| B
             B(Load Balancer)
@@ -32,6 +32,8 @@
     </div>
 </div>
 <script>
+    const initialPipeline = '{{.InitCommand}}'
+
     require.config({paths: {'vs': '/assets/monaco/vs'}});
 
     require(['vs/editor/editor.main'], function () {
@@ -64,18 +66,13 @@
         });
 
         monaco.editor.create(document.getElementById('container'), {
-            value: '' +
-                '{\n    "Parameters": {\n       "console.text":"hallo word"\n    },\n    "Tasks": [\n        {\n            "Sequence": 1,\n            "Name": "log",\n            "Action": "console"\n        }\n    ]\n}',
+            value: initialPipeline,
             language: 'json'
         });
 
     });
 </script>
 {{template "scripts" .}}
-<script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
-    mermaid.initialize({startOnLoad: true});
-</script>
 </body>
 </html>

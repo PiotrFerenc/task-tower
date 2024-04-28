@@ -4,7 +4,7 @@ import "github.com/go-playground/validator/v10"
 
 type Pipeline struct {
 	Tasks      []Task                 `json:"Tasks" validate:"required"`
-	Parameters map[string]interface{} `json:"parameters" validate:"required"`
+	Parameters map[string]interface{} `json:"Parameters" validate:"required"`
 }
 
 func (p *Pipeline) Validate() error {
