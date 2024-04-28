@@ -21,16 +21,24 @@
         </div>
         <div class="col-6">
 <pre id="mermaid">
-            graph TD
-            asd[Client qwe] -->|tcp_123| B
-            B(Load Balancer)
-            B --> C[Server1]
-            B -->|tcp_456| D[Server2]
+
     </pre>
 
         </div>
     </div>
 </div>
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({startOnLoad: false});
+    window.drawDiagram = async function () {
+        let element = document.querySelector('#mermaid');
+        const graphDefinition = 'graph TB\na-->b';
+        const {svg} = await mermaid.render('graphDiv', graphDefinition);
+        element.innerHTML = svg;
+    };
+
+</script>
 <script>
     const initialPipeline = '{{.InitCommand}}'
 
@@ -47,32 +55,43 @@
                     endColumn: word.endColumn
                 };
 
-                const suggestions = [
+                const suggestions = [];
+
+                {{range $action, $json := .Actions}}
+                suggestions.push(
                     {
-                        label: 'myKeyword1',
+                        label: '{{$action}}',
                         kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: '"myKeyword1"',
-                        range: range
-                    },
-                    {
-                        label: 'myKeyword2',
-                        kind: monaco.languages.CompletionItemKind.Keyword,
-                        insertText: '"myKeyword2"',
+                        insertText: '{{$json}}',
                         range: range
                     }
-                ];
+                )
+                {{end}}
+
                 return {suggestions: suggestions};
             }
         });
 
-        monaco.editor.create(document.getElementById('container'), {
+        let editor = monaco.editor.create(document.getElementById('container'), {
             value: initialPipeline,
             language: 'json'
+        });
+
+        (async () => {
+            await drawDiagram();
+        })();
+
+        editor.onDidChangeModelContent(function (e) {
+            (async () => {
+                await drawDiagram();
+            })();
+            let code = editor.getValue();
+            let js = JSON.parse(code)
+            console.log(js.Tasks)
         });
 
     });
 </script>
 {{template "scripts" .}}
-
 </body>
 </html>
