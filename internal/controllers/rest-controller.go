@@ -112,6 +112,10 @@ func executeHandler(c *controller) func(context *gin.Context) {
 		if err != nil {
 			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
 		}
-		context.JSON(http.StatusOK, gin.H{"processId": processId})
+		context.JSON(http.StatusOK, ProcessResponse{ProcessId: processId})
 	}
+}
+
+type ProcessResponse struct {
+	ProcessId uuid.UUID `json:"processId"`
 }

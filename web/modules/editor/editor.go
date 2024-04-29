@@ -28,6 +28,11 @@ func CreateEditorHandler() func(c echo.Context) error {
 		return c.Render(http.StatusOK, "edytor.html", data)
 	}
 }
+func ExecutePipelineHandler() func(c echo.Context) error {
+	return func(c echo.Context) error {
+
+	}
+}
 func initActions() (map[string]string, error) {
 	actions := executor.CreateActionMap(&configuration.Config{})
 	result := make(map[string]string, len(actions))
