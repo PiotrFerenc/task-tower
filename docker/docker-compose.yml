@@ -15,17 +15,16 @@ services:
     volumes:
       - "./data/rabbitmq:/var/lib/rabbitmq"
     restart: always
-  postgres:
-    image: postgres:latest
-    container_name: "postgres-task-tower"
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb-task-tower"
     environment:
-      POSTGRES_USER: "task-toweruser"
-      POSTGRES_PASSWORD: "j37w47TbG0je5HI"
-      POSTGRES_DB: "task-tower"
+      MONGO_INITDB_ROOT_USERNAME: "task-toweruser"
+      MONGO_INITDB_ROOT_PASSWORD: "j37w47TbG0je5HI"
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - "./data/postgres:/var/lib/postgresql/data"
+      - "./data/mongodb:/data/db"
     restart: always
   task-tower_controller:
     container_name: "controller-task-tower"
