@@ -12,7 +12,7 @@ import (
 var (
 	config            = configuration.CreateYmlConfiguration().LoadConfiguration()
 	messageQueue      = queues.CreateRabbitMqMessageQueue(&config.Queue)
-	processRepository = repositories.CreatePostgresRepository(&config.Database)
+	processRepository = repositories.CreateMongoDbRepository(&config.Database)
 	processService    = services.CreateProcessService(processRepository)
 	pipeLineService   = services.CreatePipelineService(messageQueue, processService, services.CreateOnSuccessFunc(), services.CreateOnFailFunc(), services.CreateOnFinishFunc())
 	controller        = controllers.CreateRestController(pipeLineService, processRepository)
