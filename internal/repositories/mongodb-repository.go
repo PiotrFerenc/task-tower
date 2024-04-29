@@ -16,11 +16,11 @@ type mongoDbRepository struct {
 	collection *mongo.Collection
 }
 
-const collectionName = "pipelines"
+const collectionName = "process"
 
 // CreateMongoDbRepository initializes a new MongoDB repository for process entities.
 func CreateMongoDbRepository(config *configuration.DatabaseConfig) ProcessRepository {
-	connectionString := fmt.Sprintf("mongodb://%s:%s", config.DbHost, config.DbPort)
+	connectionString := fmt.Sprintf("mongodb://%s:%s@%s:%s", config.DbUser, config.DbPassword, config.DbHost, config.DbPort)
 	clientOptions := options.Client().ApplyURI(connectionString)
 	ctx := context.Background()
 	client, err := mongo.Connect(ctx, clientOptions)
