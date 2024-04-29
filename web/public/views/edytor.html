@@ -8,35 +8,35 @@
 <body>
 
 <div class="col">
-    <div class="row">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username"
-                   aria-describedby="button-addon2">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar bg-body-tertiary">
+                    <form class="container-fluid justify-content-start">
+                        <button class="btn btn-primary">
+                            <i class="bi bi-play-fill"></i> ▶
+                        </button>
+                    </form>
+                </nav>
+            </div>
         </div>
-    </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-12">
             <div id="container" style="height:600px;"></div>
         </div>
-        <div class="col-6">
-<pre id="mermaid">
-
-    </pre>
-
-        </div>
+    </div>
     </div>
 </div>
 <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    //import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
-    mermaid.initialize({startOnLoad: false});
-    window.drawDiagram = async function () {
-        let element = document.querySelector('#mermaid');
-        const graphDefinition = 'graph TB\na-->b';
-        const {svg} = await mermaid.render('graphDiv', graphDefinition);
-        element.innerHTML = svg;
-    };
+    //mermaid.initialize({startOnLoad: false});
+    //window.drawDiagram = async function () {
+    //    let element = document.querySelector('#mermaid');
+    //    const graphDefinition = 'graph TB\na-->b';
+    //    const {svg} = await mermaid.render('graphDiv', graphDefinition);
+    //    element.innerHTML = svg;
+    //};
 
 </script>
 <script>
@@ -77,18 +77,18 @@
             language: 'json'
         });
 
-        (async () => {
-            await drawDiagram();
-        })();
+        //(async () => {
+        //    await drawDiagram();
+        //})();
 
-        editor.onDidChangeModelContent(function (e) {
-            (async () => {
-                await drawDiagram();
-            })();
-            let code = editor.getValue();
-            let js = JSON.parse(code)
-            console.log(js.Tasks)
-        });
+        //editor.onDidChangeModelContent(function (e) {
+        //    (async () => {
+        //        await drawDiagram();
+        //    })();
+        //    let code = editor.getValue();
+        //    let js = JSON.parse(code)
+        //    console.log(js.Tasks)
+        //});
 
     });
 </script>
