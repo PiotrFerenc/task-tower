@@ -33,7 +33,7 @@ func (c *client) Execute(pipeline types.Pipeline) (uuid.UUID, error) {
 	if err != nil {
 		return uuid.Nil, err
 	}
-	url := fmt.Sprintf("%s:%s", c.config.Host, c.config.Post)
+	url := fmt.Sprintf("%s:%s/execute", c.config.Host, c.config.Post)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	if err != nil {
 		return uuid.Nil, err
