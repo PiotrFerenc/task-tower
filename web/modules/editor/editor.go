@@ -33,9 +33,9 @@ func CreateEditorHandler() func(c echo.Context) error {
 func ExecutePipelineHandler(client controllers.ControllerClient) func(c echo.Context) error {
 	return func(c echo.Context) error {
 
-		var pipe types.Pipeline
+		pipe := new(types.Pipeline)
 
-		if err := c.Bind(&pipe); err != nil {
+		if err := c.Bind(pipe); err != nil {
 			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
 				"error": err.Error(),
 			})
@@ -52,7 +52,7 @@ func ExecutePipelineHandler(client controllers.ControllerClient) func(c echo.Con
 			})
 		}
 
-		result, err := client.Execute(pipe)
+		result, err := client.Execute(*pipe)
 		if err != nil {
 			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
 				"error": err,
@@ -85,13 +85,13 @@ func initActions() (map[string]string, error) {
 func initCommand() ([]byte, error) {
 	initCommand := types.Pipeline{
 		Parameters: map[string]interface{}{
-			"my-console.text": "hallo word",
+			"myconsole.text": "hallo word",
 		},
 		Tasks: []types.Task{
 			types.Task{
 				Sequence: 1,
 				Action:   "console",
-				Name:     "my-console",
+				Name:     "myconsole",
 			},
 		},
 	}
