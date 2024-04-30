@@ -2,6 +2,7 @@ package modules
 
 import (
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
+	"github.com/PiotrFerenc/mash2/internal/controllers"
 	"github.com/PiotrFerenc/mash2/web/modules/actions/handlers"
 	"github.com/PiotrFerenc/mash2/web/modules/editor"
 	"github.com/PiotrFerenc/mash2/web/modules/parameters"
@@ -19,8 +20,9 @@ func RegisterActionModule(e *echo.Echo, actions map[string]actions.Action, steps
 	return api
 }
 
-func RegisterDashboardModule(e *echo.Echo, pipelineRepository repositories.PipelineRepository) {
+func RegisterDashboardModule(e *echo.Echo, client controllers.ControllerClient) {
 	e.GET("/", editor.CreateEditorHandler())
+	e.POST("/execute", editor.ExecutePipelineHandler(client))
 }
 
 func RegisterParametersModule(e *echo.Echo, parametersRepository repositories.ParametersRepository, actions map[string]actions.Action) (g *echo.Group) {

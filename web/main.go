@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/PiotrFerenc/mash2/internal/configuration"
+	"github.com/PiotrFerenc/mash2/internal/controllers"
 	"github.com/PiotrFerenc/mash2/internal/executor"
 	"github.com/PiotrFerenc/mash2/web/modules"
 	"github.com/PiotrFerenc/mash2/web/persistence"
@@ -18,6 +19,7 @@ var (
 	pipelineRepository   = repositories.CreatePipelineRepository(connection)
 	stepsRepository      = repositories.CreateStepsRepository(connection)
 	parametersRepository = repositories.CreateParametersRepository(connection)
+	controllerClient     = controllers.CreateControllerClient(config.Controller)
 )
 
 func main() {
@@ -33,7 +35,7 @@ func main() {
 
 	e.Static("/assets", "web/public/static")
 
-	modules.RegisterDashboardModule(e, pipelineRepository)
+	modules.RegisterDashboardModule(e, controllerClient)
 	modules.RegisterEditor(e, pipelineRepository, stepsRepository, parameters, parametersRepository)
 	e.Logger.Fatal(e.Start(":4999"))
 }
