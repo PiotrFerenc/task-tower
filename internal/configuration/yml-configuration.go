@@ -70,5 +70,9 @@ func (config *configuration) LoadConfiguration() *Config {
 			DbPort:     viper.GetString(cfg.DbPort),
 			DbName:     viper.GetString(cfg.DbName),
 		},
+		Controller: ControllerConfig{
+			Host: viper.GetString(cfg.ControllerHost),
+			Post: viper.GetString(cfg.ControllerPort),
+		},
 	}
 }

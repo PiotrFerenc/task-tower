@@ -16,9 +16,10 @@ type FolderConfig struct {
 }
 
 type Config struct {
-	Queue    QueueConfig
-	Folder   FolderConfig
-	Database DatabaseConfig
+	Queue      QueueConfig
+	Folder     FolderConfig
+	Database   DatabaseConfig
+	Controller ControllerConfig
 }
 type DatabaseConfig struct {
 	DbHost     string
@@ -26,6 +27,10 @@ type DatabaseConfig struct {
 	DbPassword string
 	DbPort     string
 	DbName     string
+}
+type ControllerConfig struct {
+	Host string
+	Post string
 }
 
 type Configuration interface {

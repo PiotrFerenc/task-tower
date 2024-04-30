@@ -18,4 +18,6 @@ const (
 	DbPassword              = "DB_PASSWORD"
 	DbPort                  = "DB_PORT"
 	DbName                  = "DB_NAME"
+	ControllerHost          = "CONTROLLER_HOST"
+	ControllerPort          = "CONTROLLER_PORT"
 )
