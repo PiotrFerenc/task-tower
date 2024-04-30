@@ -12,19 +12,17 @@
         <div class="row">
             <div class="col-12">
                 <nav class="navbar bg-body-tertiary">
-                    <form class="container-fluid justify-content-start">
-                        <button class="btn btn-primary">
-                            <i class="bi bi-play-fill"></i> ▶
-                        </button>
-                    </form>
+                    <button class="btn btn-primary" id="execute-btn">
+                        <i class="bi bi-play-fill"></i> ▶
+                    </button>
                 </nav>
             </div>
         </div>
-    <div class="row">
-        <div class="col-12">
-            <div id="container" style="height:600px;"></div>
+        <div class="row">
+            <div class="col-12">
+                <div id="container" style="height:600px;"></div>
+            </div>
         </div>
-    </div>
     </div>
 </div>
 <script type="module">
@@ -72,26 +70,59 @@
             }
         });
 
-        let editor = monaco.editor.create(document.getElementById('container'), {
+        window.editor = monaco.editor.create(document.getElementById('container'), {
             value: initialPipeline,
             language: 'json'
         });
 
+        updateCode();
         //(async () => {
         //    await drawDiagram();
         //})();
 
-        //editor.onDidChangeModelContent(function (e) {
-        //    (async () => {
-        //        await drawDiagram();
-        //    })();
-        //    let code = editor.getValue();
-        //    let js = JSON.parse(code)
-        //    console.log(js.Tasks)
-        //});
+      editor.onDidChangeModelContent(function (e) {
+      //    (async () => {
+      //        await drawDiagram();
+      //    })();
+          //let code = editor.getValue();
+          //window.code = JSON.parse(code)
+          updateCode();
+      });
 
+        function handleSuggestionInsertion(event) {
+            console.log("Wstawiono sugestię:", event);
+            // Tutaj możesz dodać swoją logikę
+            alert(`Wstawiono sugestię: ${event.completion.label}`);
+        }
+
+// Dodaj listener dla zdarzenia didInsertSuggestion
+        editor.onDidInsertSuggestion(handleSuggestionInsertion);
+   });
+    function updateCode(){
+        let code = editor.getValue();
+        window.code = JSON.parse(code)
+    }
+</script>
+
+{{template "scripts" .}}
+<script>
+    $(document).ready(function () {
+        $("#execute-btn").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/execute",
+                data: JSON.stringify(window.code),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.error(error.responseText);
+                }
+            });
+        })
     });
 </script>
-{{template "scripts" .}}
 </body>
 </html>
