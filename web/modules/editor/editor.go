@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/PiotrFerenc/mash2/api/types"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
+	Message "github.com/PiotrFerenc/mash2/internal/consts"
+	"github.com/PiotrFerenc/mash2/internal/controllers"
 	"github.com/PiotrFerenc/mash2/internal/executor"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -28,9 +30,37 @@ func CreateEditorHandler() func(c echo.Context) error {
 		return c.Render(http.StatusOK, "edytor.html", data)
 	}
 }
-func ExecutePipelineHandler() func(c echo.Context) error {
+func ExecutePipelineHandler(client controllers.ControllerClient) func(c echo.Context) error {
 	return func(c echo.Context) error {
 
+		var pipe types.Pipeline
+
+		if err := c.Bind(&pipe); err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+		if err := pipe.Validate(); err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+
+		if len(pipe.Tasks) == 0 {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": Message.EmptyTaskList,
+			})
+		}
+
+		result, err := client.Execute(pipe)
+		if err != nil {
+			return c.Render(http.StatusBadRequest, "error.html", map[string]interface{}{
+				"error": err,
+			})
+		}
+		return c.Render(http.StatusOK, "success.html", map[string]interface{}{
+			"result": result,
+		})
 	}
 }
 func initActions() (map[string]string, error) {
