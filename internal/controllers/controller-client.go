@@ -18,12 +18,16 @@ type client struct {
 	config configuration.ControllerConfig
 }
 
+// CreateControllerClient creates a ControllerClient using the provided ControllerConfig.
 func CreateControllerClient(config configuration.ControllerConfig) ControllerClient {
 	return &client{
 		config: config,
 	}
 
 }
+
+// Execute executes the given pipeline by sending a POST request to the specified URL with the pipeline data.
+// It returns the process ID if the execution is successful, otherwise an error is returned.
 func (c *client) Execute(pipeline types.Pipeline) (uuid.UUID, error) {
 	data, err := json.Marshal(pipeline)
 	if err != nil {
