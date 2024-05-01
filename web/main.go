@@ -28,6 +28,7 @@ func main() {
 	t := LoadTemplates([]string{
 		"web/public/views/*.html",
 		"web/public/views/dashboard/*.html",
+		"web/public/views/partials/*.html",
 	})
 	parameters := executor.CreateActionMap(&configuration.Config{})
 	e := echo.New()

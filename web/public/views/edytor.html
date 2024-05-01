@@ -15,6 +15,7 @@
                     <button class="btn btn-primary" id="execute-btn">
                         <i class="bi bi-play-fill"></i> ▶
                     </button>
+                    <div id="execute-result"></div>
                 </nav>
             </div>
         </div>
@@ -115,13 +116,22 @@
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response);
+                   $('#execute-result').html(response)
                 },
                 error: function(error) {
-                    console.error(error.responseText);
+                    $('#execute-result').html(error.responseText)
                 }
             });
         })
+
+        $.post('/execute',  window.code)
+            .done(function(response) {
+                console.log(response);
+                $('#execute-result').html(response.responseText);
+            })
+            .fail(function(xhr, status, error) {
+                $('#execute-result').html(error);
+            });
     });
 </script>
 </body>
