@@ -59,21 +59,23 @@ make docker-rebuild
 
 
 
-## Todo
-
-- [ ] User Interface (UI)
+## Todo 1.0
 - [x] Application Programming Interface (API)
-- [ ] Scheduling
+- [ ] Monitoring and Logging
+- [ ] CLI
 - [x] Triggering Tasks
 - [x] Handling Distributed Tasks
-- [ ] Dependency Management of Tasks
-- [ ] Monitoring and Logging
 - [x] Error Management
+- [x] Extensibility
+- [x] Configuration
+
+## Todo: 2.0
+- [ ] User Interface (UI)
+- [ ] Scheduling
+- [ ] Dependency Management of Tasks
 - [ ] Retry Mechanisms
 - [ ] Security
 - [ ] Integration with External Services and Applications
-- [x] Extensibility
-- [x] Configuration
 
 ## STATISTICS
 
