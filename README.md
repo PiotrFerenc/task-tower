@@ -29,8 +29,9 @@ Task Tower is a tool for automating distributed tasks, utilizing pipelines with 
 - Ease of integration and collaboration
 
 ## How it works
+## Installation 
 
-## Installation
+## Build 
 
 ### requirements
 
@@ -53,10 +54,7 @@ make docker-rebuild
 
 ## Usage 
 
-
-
 ## Actions
-
 
 
 ## Todo 1.0
