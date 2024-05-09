@@ -30,7 +30,12 @@ Task Tower is a tool for automating distributed tasks, utilizing pipelines with 
 - Ease of integration and collaboration
 
 ## How it works
+
 ## Installation 
+Linux:
+```shell
+wget https://raw.githubusercontent.com/PiotrFerenc/mash2/main/install.sh && chmod +x install.sh && ./install.sh
+```
 
 ## Build 
 
