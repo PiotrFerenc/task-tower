@@ -31,6 +31,32 @@ Task Tower is a tool for automating distributed tasks, utilizing pipelines with 
 
 ## How it works
 
+```mermaid
+sequenceDiagram
+    participant a as API
+    participant c as Controller
+    participant q as Queue
+    participant w1 as Worker 1 
+    participant w2 as Worker 2
+    participant w3 as Worker 3
+
+    a->>c: API Call Request
+    c->>a: Response: Pipeline Added to Queue
+    c->>q: Add new task: Action1
+    q->>w1: Assign Action1 to Worker 1
+    w1->>q: Action1 Completed
+    q->>c: Notify Controller: Action1 Done
+    c->>q: Add new task: Action2
+    q->>w2: Assign Action2 to Worker 2
+    w2->>q: Action2 Completed
+    q->>c: Notify Controller: Action2 Done
+    c->>q: Add new task: Action3
+    q->>w3: Assign Action3 to Worker 3
+    w3->>q: Action3 Completed
+    q->>c: Notify Controller: Action3 Done
+
+```
+
 ## Installation 
 Linux:
 ```shell
