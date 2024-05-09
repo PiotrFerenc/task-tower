@@ -75,7 +75,9 @@ wget https://raw.githubusercontent.com/PiotrFerenc/mash2/main/install.sh && chmo
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose](https://docs.docker.com/compose/install/)
 - [GO](https://go.dev/doc/install)
-
+```shell
+wget https://raw.githubusercontent.com/PiotrFerenc/mash2/main/build.sh && chmod +x build.sh && ./build.sh
+```
 ```git
 git clone https://github.com/PiotrFerenc/mash2
 ```
@@ -84,7 +86,7 @@ git clone https://github.com/PiotrFerenc/mash2
 cd mash2
 ```
 
-```makefile
+```shell
 make docker-rebuild
 ```
 
