@@ -86,6 +86,40 @@ make docker-rebuild
 
 ## Usage 
 
+```shell
+curl -X POST localhost:5000/execute -H "Content-Type: application/json" -d '{
+    "Parameters": {
+        "console.text": "hallo word"
+    },
+    "Tasks": [
+        {
+            "Sequence": 1,
+            "Name": "log",
+            "Action": "console"
+        }
+    ]
+}'
+```
+
+or
+```shell
+
+echo '{
+    "Parameters": {
+        "console.text": "hallo word"
+    },
+    "Tasks": [
+        {
+            "Sequence": 1,
+            "Name": "log",
+            "Action": "console"
+        }
+    ]
+}' > request.json
+
+curl -X POST localhost:5000/execute -H "Content-Type: application/json" -d @request.json
+```
+
 ## Actions
 
 
