@@ -67,6 +67,12 @@ Linux:
 wget https://raw.githubusercontent.com/PiotrFerenc/mash2/main/install.sh && chmod +x install.sh && ./install.sh
 ```
 
+Windows:
+```shell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/PiotrFerenc/mash2/main/install.ps1" -OutFile "install.ps1"; .\install.[s1
+```
+
+
 ## Build 
 
 ### requirements
@@ -75,19 +81,10 @@ wget https://raw.githubusercontent.com/PiotrFerenc/mash2/main/install.sh && chmo
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose](https://docs.docker.com/compose/install/)
 - [GO](https://go.dev/doc/install)
+
+  Linux:
 ```shell
 wget https://raw.githubusercontent.com/PiotrFerenc/mash2/main/build.sh && chmod +x build.sh && ./build.sh
-```
-```git
-git clone https://github.com/PiotrFerenc/mash2
-```
-
-```shell
-cd mash2
-```
-
-```shell
-make docker-rebuild
 ```
 
 ## Usage 
