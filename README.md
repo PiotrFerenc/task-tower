@@ -83,9 +83,15 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/PiotrFerenc/mash2/main
 - [docker-compose](https://docs.docker.com/compose/install/)
 - [GO](https://go.dev/doc/install)
 
+
   Linux:
 ```shell
 wget https://raw.githubusercontent.com/PiotrFerenc/mash2/main/build.sh && chmod +x build.sh && ./build.sh
+```
+
+Windows:
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/PiotrFerenc/mash2/main/build.ps1" -OutFile "build.ps1"; Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force; ./build.ps1
 ```
 
 ## Usage 
