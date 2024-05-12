@@ -137,6 +137,9 @@ curl -X POST localhost:5000/execute -H "Content-Type: application/json" -d @requ
 - [x] Application Programming Interface (API)
 - [ ] Monitoring and Logging
 - [ ] CLI
+  - prompt
+  - list
+  - run
 - [x] Triggering Tasks
 - [x] Handling Distributed Tasks
 - [x] Error Management
