@@ -127,6 +127,10 @@ echo '{
 
 curl -X POST localhost:5000/execute -H "Content-Type: application/json" -d @request.json
 ```
+or
+
+[C#](https://github.com/PiotrFerenc/mash2/wiki/C%23), [Go](https://github.com/PiotrFerenc/mash2/wiki/Go), [Rust](https://github.com/PiotrFerenc/mash2/wiki/Rust), [Java](https://github.com/PiotrFerenc/mash2/wiki/Java), [Typescript](https://github.com/PiotrFerenc/mash2/wiki/TypeScript), [PHP](https://github.com/PiotrFerenc/mash2/wiki/PHP), [COBOL](https://github.com/PiotrFerenc/mash2/wiki/COBOL), [Erlang](https://github.com/PiotrFerenc/mash2/wiki/Erlang), [Python](https://github.com/PiotrFerenc/mash2/wiki/Python), [Ruby](https://github.com/PiotrFerenc/mash2/wiki/Ruby), [Scala](https://github.com/PiotrFerenc/mash2/wiki/Scala)
+
 
 ## Actions
 
