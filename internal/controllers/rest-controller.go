@@ -3,7 +3,10 @@ package controllers
 import (
 	"fmt"
 	"github.com/PiotrFerenc/mash2/api/types"
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
+	"github.com/PiotrFerenc/mash2/internal/configuration"
 	Message "github.com/PiotrFerenc/mash2/internal/consts"
+	"github.com/PiotrFerenc/mash2/internal/executor"
 	"github.com/PiotrFerenc/mash2/internal/repositories"
 	"github.com/PiotrFerenc/mash2/internal/services"
 	"github.com/gin-gonic/gin"
@@ -38,6 +41,7 @@ func CreateRestController(pipelineService services.PipelineService, repository r
 func (controller *controller) Run(address, port string) error {
 	server := gin.Default()
 	server.GET("/process/:id", getByIdHandler(controller))
+	server.GET("/action", getActions(controller))
 	server.POST("/execute", executeHandler(controller))
 
 	err := server.Run(fmt.Sprintf(`%s:%s`, address, port))
@@ -46,6 +50,35 @@ func (controller *controller) Run(address, port string) error {
 	}
 	return nil
 
+}
+
+func getActions(c *controller) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		a := executor.CreateActionMap(&configuration.Config{})
+		actionsList := make([]Actions, 0, len(a))
+		for name, action := range a {
+			actionsList = append(actionsList, Actions{
+				Name:    name,
+				Inputs:  getPropertyNames(action.Inputs()),
+				Outputs: getPropertyNames(action.Outputs()),
+			})
+		}
+		c.JSON(http.StatusOK, gin.H{"actions": actionsList})
+		return
+	}
+}
+func getPropertyNames(properties []actions.Property) []string {
+	propertyNames := make([]string, len(properties))
+	for i, prop := range properties {
+		propertyNames[i] = prop.Name
+	}
+	return propertyNames
+}
+
+type Actions struct {
+	Name    string   `json:"name,omitempty"`
+	Inputs  []string `json:"inputs,omitempty"`
+	Outputs []string `json:"outputs,omitempty"`
 }
 
 // getByIdHandler is a handler function that retrieves a process by its ID and returns

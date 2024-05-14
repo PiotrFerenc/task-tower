@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions"
-	"github.com/PiotrFerenc/mash2/cmd/worker/actions/common"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/docker"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/file"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/git"
@@ -124,6 +123,6 @@ func CreateActionMap(config *configuration.Config) map[string]actions.Action {
 		"docker-run":  docker.CreateDockerRun(),
 		"file-delete": file.CreateDeleteFileAction(config),
 		"file-append": file.CreateAppendContentToFile(config),
-		"for-each":    common.CreateForEachLoop(),
+		//"for-each":    common.CreateForEachLoop(),
 	}
 }
