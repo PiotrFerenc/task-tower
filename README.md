@@ -135,6 +135,133 @@ or
 ## Actions
 
 
+## Action: git-clone
+
+**Description:** Clones a git repository to a local path.
+
+**Inputs:**
+- **url (text, required):** URL of the git repository to clone.  
+  *Display Name:* Git Repository URL
+
+**Outputs:**
+- **path (text, required):** Local path where the repository will be cloned to.  
+  *Display Name:* Destination Path
+
+---
+
+## Action: git-commit
+
+**Description:** Creates a commit in the git repository.
+
+**Inputs:**
+- **path (text, required):** Path to the Git repository.  
+  *Display Name:* Repository Path
+- **message (text, required):** Message for the Git commit.  
+  *Display Name:* Commit Message
+
+**Outputs:**
+- **id (text, required):** ID of the Git commit.  
+  *Display Name:* Commit ID
+
+---
+
+## Action: git-branch
+
+**Description:** Creates a new branch in the git repository.
+
+**Inputs:**
+- **repoPath (text, required):** The path to the local Git repository where the new branch will be created.  
+  *Display Name:* Repository Path
+- **branchName (text, required):** The name of the new branch to create in the Git repository.  
+  *Display Name:* Branch Name
+
+---
+
+## Action: docker-run
+
+**Description:** Runs a Docker container.
+
+**Inputs:**
+- **image (text, required):** The name of the Docker image to use.  
+  *Display Name:* Image Name
+- **e (text, required):** The environment variables for the Docker container.  
+  *Display Name:* Environment Variables
+- **v (text, required):** Volume.  
+  *Display Name:* Environment Variables
+
+**Outputs:**
+- **id (text):** The unique identifier for the Docker container.  
+  *Display Name:* Container ID
+
+---
+
+## Action: file-append
+
+**Description:** Appends content to a file.
+
+**Inputs:**
+- **fileName (text, required):** The name of the file to which content is being appended.  
+  *Display Name:* File Name
+- **content (text, required):** The content to be appended to the file.  
+  *Display Name:* Content
+
+**Outputs:**
+- **appendFilePath (text):** The path of the file to which the content will be appended.  
+  *Display Name:* Append File Path
+
+---
+
+## Action: console
+
+**Description:** Displays text in the console.
+
+**Inputs:**
+- **text (text, required):** Text to display.  
+  *Display Name:* 
+
+---
+
+## Action: add-numbers
+
+**Description:** Adds two numbers.
+
+**Inputs:**
+- **a (number, required):** First number to be added.  
+  *Display Name:* Number A
+- **b (number, required):** Second number to be added.  
+  *Display Name:* Number B
+
+**Outputs:**
+- **c (number):** The result of addition.  
+  *Display Name:* Sum
+
+---
+
+## Action: file-create
+
+**Description:** Creates a file with the provided content.
+
+**Inputs:**
+- **fileName (text, required):** The name of the file.  
+  *Display Name:* File Name
+- **content (text, required):** The content to be written to the file.  
+  *Display Name:* File Content
+
+**Outputs:**
+- **createdFilePath (text):** The path where the new file was created.  
+  *Display Name:* Created File Path
+
+---
+
+## Action: file-delete
+
+**Description:** Deletes a file.
+
+**Inputs:**
+- **fileName (text, required):** Name of the file to be deleted.  
+  *Display Name:* File Name
+
+
 ## Todo 1.0
 - [x] Application Programming Interface (API)
 - [ ] Monitoring and Logging
