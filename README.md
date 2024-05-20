@@ -54,9 +54,9 @@ sequenceDiagram
     w3->>q: Action3 Completed
     q->>c: Notify Controller: Action3 Done
     c->>q: Add new task: Action4
-    q->>w1: Assign Action3 to Worker 1
-    w1->>q: Action3 Completed
-    q->>c: Notify Controller: Action3 Done
+    q->>w1: Assign Action4 to Worker 1
+    w1->>q: Action4 Completed
+    q->>c: Notify Controller: Action4 Done
 ```
 The diagram shows the interactions between different participants in a task processing system. The API receives a request from a user and sends a response that the task has been added to the queue by the controller. Then, the controller adds a new task, labeled Action1, to the queue. The queue assigns this task to Worker 1, who, after completing it, informs the queue that it's done. The queue then notifies the controller that Action1 is complete. The process repeats for the next tasks, Action2 and Action3, which are assigned to Worker 2 and Worker 3, respectively. Each of these tasks is completed and reported as finished to the controller by the respective workers. Finally, Action4 is added to the queue, assigned again to Worker 1, who completes the task and reports its completion. The queue again informs the controller that the task is done.
 
@@ -265,10 +265,6 @@ or
 ## Todo 1.0
 - [x] Application Programming Interface (API)
 - [ ] Monitoring and Logging
-- [ ] CLI
-  - prompt
-  - list
-  - run
 - [x] Triggering Tasks
 - [x] Handling Distributed Tasks
 - [x] Error Management
@@ -276,6 +272,10 @@ or
 - [x] Configuration
 
 ## Todo: 2.0
+- [ ] CLI
+  - prompt
+  - list
+  - run
 - [ ] User Interface (UI)
 - [ ] Scheduling
 - [ ] Dependency Management of Tasks
