@@ -10,6 +10,7 @@ import (
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/git"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/math"
 	"github.com/PiotrFerenc/mash2/cmd/worker/actions/others"
+	"github.com/PiotrFerenc/mash2/cmd/worker/actions/zip"
 	"github.com/PiotrFerenc/mash2/internal/configuration"
 	"github.com/PiotrFerenc/mash2/internal/queues"
 	"github.com/PiotrFerenc/mash2/internal/types"
@@ -122,6 +123,7 @@ func CreateActionMap(config *configuration.Config) map[string]actions.Action {
 		"file-create":   file.CreateContentToFile(config),
 		"docker-run":    docker.CreateDockerRun(),
 		"docker-remove": docker.CreateDockerRemove(),
+		"zip-create":    zip.CreateArchiveToFile(),
 		"file-delete":   file.CreateDeleteFileAction(config),
 		"file-append":   file.CreateAppendContentToFile(config),
 		//"for-each":    common.CreateForEachLoop(),
