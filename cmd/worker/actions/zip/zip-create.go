@@ -66,17 +66,17 @@ func (action *archiveToFile) Outputs() []actions.Property {
 // The resulting archive file path is set as a property in the message.
 //
 // Parameters:
-//   - message: The input Process message containing the file path and archive file name properties.
+//   - process: The input Process message containing the file path and archive file name properties.
 //
 // Returns:
 //   - types.Process: The modified Process message with the archive file path property set.
 //   - error: An error if any occurred during the execution.
-func (action *archiveToFile) Execute(message types.Process) (types.Process, error) {
-	filePath, err := action.filePath.GetStringFrom(&message)
+func (action *archiveToFile) Execute(process types.Process) (types.Process, error) {
+	filePath, err := action.filePath.GetStringFrom(&process)
 	if err != nil {
 		return types.Process{}, err
 	}
-	archiveFileName, err := action.archiveFileName.GetStringFrom(&message)
+	archiveFileName, err := action.archiveFileName.GetStringFrom(&process)
 	if err != nil {
 		return types.Process{}, err
 	}
@@ -121,9 +121,9 @@ func (action *archiveToFile) Execute(message types.Process) (types.Process, erro
 		return err
 	})
 	if err != nil {
-		return types.Process{}, err
+		return process, err
 	}
 
-	message.SetString(action.createdArchivePath.Name, archiveFullPath)
-	return message, nil
+	process.SetString(action.createdArchivePath.Name, archiveFullPath)
+	return process, nil
 }

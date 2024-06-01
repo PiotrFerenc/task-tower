@@ -156,7 +156,7 @@ or
 **Inputs:**
 - **path (text, required):** Path to the Git repository.  
   *Display Name:* Repository Path
-- **message (text, required):** Message for the Git commit.  
+- **process (text, required):** Message for the Git commit.  
   *Display Name:* Commit Message
 
 **Outputs:**
