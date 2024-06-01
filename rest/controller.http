@@ -101,7 +101,7 @@ POST localhost:5000/execute
     "Parameters": {
         "docker.image" : "dotnet-classlib",
         "docker.e" : "PROJECT_NAME=MyCustomProject2",
-        "docker.v" : "\"$(pwd)/hostFolder:/data\"",
+        "docker.v" : "/home/piotr/Documents/mash2/docker/data:/data",
         "console.text":"container id: {{docker.id}}"
     },
     "Tasks": [

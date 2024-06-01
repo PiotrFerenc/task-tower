@@ -90,7 +90,9 @@ func (d *dockerContainer) Execute(process types.Process) (types.Process, error) 
 	}
 	env := strings.Split(envParameters, ",")
 	containerId, err := Container.StartContainer(imageName, env, []string{vol}, ctx)
-
+	if err != nil {
+		return process, err
+	}
 	process.SetString(d.containerId.Name, containerId)
 	return process, nil
 }
