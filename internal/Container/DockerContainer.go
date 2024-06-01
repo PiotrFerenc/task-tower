@@ -91,3 +91,32 @@ func BuildImage(dockerfilePath, imageName string, ctx context.Context) (string, 
 
 	return imgID.ID, nil
 }
+
+// RemoveContainer removes a Docker container with the specified container ID and context.
+//
+// Parameters:
+//
+//	containerId: The ID of the container to be removed.
+//	ctx: The context to use for the Docker client.
+//
+// Returns:
+//
+//	error: An error if the container failed to be removed.
+func RemoveContainer(containerId string, ctx context.Context) error {
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+	if err != nil {
+		return err
+	}
+
+	err = cli.ContainerRemove(ctx, containerId, container.RemoveOptions{
+		RemoveVolumes: true,
+		RemoveLinks:   true,
+		Force:         true,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
