@@ -4,4 +4,4 @@ WORKDIR /app
 
 ENV PROJECT_NAME=test
 
-CMD dotnet new classlib -n ${PROJECT_NAME} -o /data
+CMD dotnet new classlib -n ${PROJECT_NAME} -o /data/${PROJECT_NAME}
