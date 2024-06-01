@@ -25,6 +25,7 @@ POST localhost:5000/execute
         }
     ]
 }
+
 ###
 GET http://localhost:5000/process/cbff06d2-24a2-40e5-9b3e-bcd9aaaabd7f
 
@@ -93,6 +94,7 @@ POST localhost:5000/execute
         }
     ]
 }
+
 ###
 
 POST localhost:5000/execute
@@ -102,7 +104,8 @@ POST localhost:5000/execute
         "docker.image" : "dotnet-classlib",
         "docker.e" : "PROJECT_NAME=MyCustomProject2",
         "docker.v" : "/home/piotr/Documents/mash2/docker/data:/data",
-        "console.text":"container id: {{docker.id}}"
+        "console.text":"container id: {{docker.id}}",
+        "dr.id" : "{{docker.id}}"
     },
     "Tasks": [
         {
@@ -114,9 +117,14 @@ POST localhost:5000/execute
             "Sequence": 2,
             "Name": "console",
             "Action": "console"
+        },{
+            "Sequence": 3,
+            "Name": "dr",
+            "Action": "docker-remove"
         }
     ]
 }
+
 ###
 
 POST localhost:5000/execute
