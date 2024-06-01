@@ -123,7 +123,7 @@ func CreateActionMap(config *configuration.Config) map[string]actions.Action {
 		"file-create":   file.CreateContentToFile(config),
 		"docker-run":    docker.CreateDockerRun(),
 		"docker-remove": docker.CreateDockerRemove(),
-		"zip-create":    zip.CreateArchiveToFile(),
+		"zip-create":    zip.CreateArchiveToFile(config),
 		"file-delete":   file.CreateDeleteFileAction(config),
 		"file-append":   file.CreateAppendContentToFile(config),
 		//"for-each":    common.CreateForEachLoop(),
