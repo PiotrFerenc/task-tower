@@ -196,6 +196,7 @@ func (q *queue) AddTaskAsFinished(message types.Process) error {
 // It marshals the message to JSON format and publishes it to the queue.
 // Returns an error if the task addition fails.
 func (q *queue) AddTaskAsFailed(error error, message types.Process) error {
+	message.Error = error.Error()
 	return q.addTask(q.configuration.QueueTaskFailed, message)
 }
 
